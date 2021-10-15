@@ -1,0 +1,99 @@
+
+== APACHE ==
+
+# sudo apt install apache2
+- apache2 -version
+- sudo ufw app list
+- sudo ufw allow 'Apache'
+- sudo ufw status
+- sudo systemctl status apache2
+- hostname –I
+- sudo systemctl restart apache2
+- sudo apache2ctl configtest
+- sudo a2enconf servername
+- sudo systemctl start apache2
+- sudo systemctl stop apache2
+- sudo systemctl stop apache2
+- sudo systemctl reload apache2
+- sudo systemctl enable apache2
+- sudo systemctl disable apache2
+
+
+== PHP ==
+timedatectl set-timezone Asia/Jakarta
+
+STandar Instalasi 
+# sudo apt install php libapache2-mod-php php-mysql
+
+# sudo apt-get install php libapache2-mod-php5 php-mysql php-json
+
+
+Jika Perlu Tambahan Module
+sudo apt install php7.4-mysql php7.4-curl php7.4-json php7.4-cgi php7.4-xsl
+
+sudo nano /etc/php/7.4/apache2/php.ini
+sudo nano /etc/php/7.4/cli/php.ini
+jadi begini :
+date.timezone = "Asia/Jakarta"
+memory_limit = 512M
+max_execution_time = 60
+
+
+== MySql ==
+# sudo apt-get install mysql-server
+- sudo mysql_secure_installation
+- systemctl status mysql.service
+- sudo systemctl start mysql
+
+Sebagai pemeriksaan tambahan, Anda dapat mencoba terhubung ke basis data dengan menggunakan alat mysqladmin, yang merupakan suatu klien yang memungkinkan Anda menjalankan perintah administratif. Misalnya, perintah ini mengatakan untuk terhubung sebagai seorang pengguna MySQL bernama sammy (-u sammy), meminta kata sandi (-p), dan menginformasikan versi. Pastikan mengubah sammy menjadi nama pengguna MySQL khusus Anda, dan masukkan kata sandi pengguna itu saat diminta:
+
+- sudo mysqladmin -p -u sammy version
+
+Link : https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04-id
+
+
+== PHMPYADMIN ==
+# sudo apt install php-mbstring php-zip php-gd php-json php-curl
+# sudo apt install phpmyadmin 
+
+Catatan Penting : Anda mungkin telah memilih untuk mengaktifkan plugin Validasi Kata Sandi. Pada tulisan ini, mengaktifkan komponen ini akan memicu kesalahan ketika Anda mencoba untuk mengatur kata sandi untuk pengguna phpmyadmin, Cara Mengatasinya :
+# mysql -u root -p
+- mysql> UNINSTALL COMPONENT "file://component_validate_password";
+- mysql> exit
+
+# sudo apt install phpmyadmin
+
+Untuk menginstal lagi yang tadi kita hapus
+# mysql -u root -p
+- mysql> INSTALL COMPONENT "file://component_validate_password";
+
+sudo phpenmod mbstring
+sudo systemctl restart apache2
+
+Jika root tidak bisa login
+===================
+# mysql -u root -p
+- ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY 'passwordnya';
+- plush privileges;
+
+
+LEBIH LENGKAPNYA ADA DI PDF TENTANG PHPMYADMIN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
