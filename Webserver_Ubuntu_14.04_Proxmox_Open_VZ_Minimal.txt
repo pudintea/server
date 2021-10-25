@@ -7,6 +7,7 @@ UBUNTU 14.04 - PHP 5.5 - PROXMOX - OPEN VZ
 ---------------------------------------------------------------------------------------------------------------------------
 apt-get update
 apt update
+apt-get dist-upgrade
 apt-get install systemd
 apt-get install apache2
 
