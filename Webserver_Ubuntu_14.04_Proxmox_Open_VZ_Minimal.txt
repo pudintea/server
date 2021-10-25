@@ -1,0 +1,221 @@
+UBUNTU 14.04 - PHP 5.5 - PROXMOX - OPEN VZ
+: Pudin
+: https://t.me/pudin_ira
+: www.pdn.my.id
+
+1. ## APACHE
+---------------------------------------------------------------------------------------------------------------------------
+apt-get update
+apt update
+apt-get install systemd
+apt-get install apache2
+
+2. ## PHP 5
+--------------------------------------------------------------------------------------------
+apt install php5 libapache2-mod-php5 php5-mysql -y
+
+
+3. ## MYSQL
+-----------------------------------------------------------------------------------------------------------------------------
+apt-get install mysql-server -y
+
+Errors where encountered while prosessing : mysql-server-5.5 mysql-server
+
+#MENGHAPUS
+apt-get purge mysql*
+apt-get autoremove
+apt-get autoclean
+
+#UPGRADE
+# apt-get dist-upgrade
+
+ALHAMDULILAH BISA BERHASIL
+
+# mysql_install_db
+# mysql_secure_installation
+
+Lihat Versi MySql
+# mysql -u root -p
+mysql> select version(); 
+
+
+4. ## PHPMYADMIN
+------------------------------------------------------------------------------------------------------------
+KEBUTUHAN PHPMYADMIN
+- php5-mbstring
+- php5-zip
+- php5-gd
+- php5-json
+- php5-curl
+
+Cara cek modul PHP yang terinstall
+# php -m
+
+yang kurang cuman ini.
+# apt-get install php5-gd install php5-curl -y
+
+
+Nonaktifkan komponen falidasi mysql
+$ mysql -u root -p
+mysql> UNINSTALL COMPONENT "file://component_validate_password";
+
+INSTALL
+#apt install phpmyadmin -y
+
+Mengaktifkan kembali komponen falidasi mysql
+$ mysql -u root -p
+mysql> INSTALL COMPONENT "file://component_validate_password";
+
+
+5. ## ERROR MCRYPT
+-----------------------------------------------------------------------------------------------------------------------------------
+Install 
+# apt-get install php5-mcrypt
+
+Install perintah locate
+# apt install mlocate
+# sudo updatedb 
+# locate mcrypt.ini
+Biasanya Tampil :  /etc/php5/mods-available/mcrypt.ini
+
+# locate mcrypt.so
+Biasanya keluar
+/usr/lib/libmcrypt.so.4
+/usr/lib/libmcrypt.so.4.4.8
+/usr/lib/php5/20121212/mcrypt.so
+
+Edit file mcrypt.ini dan ganti/tambah extension ke mcrypt.so,
+jadinya :
+; configuration for php MCrypt module
+; extension=mcrypt.so
+extension=/usr/lib/php5/20121212/mcrypt.so
+
+# php5enmod mcrypt
+
+Create symbol links now
+dari ke empat perintah symbolic link di bawah ini, bisa gunakan 2 saja, terserah mau yang atas atau bawah
+
+# ls -al /etc/php5/cli/conf.d/20-mcrypt.ini
+# ls -al /etc/php5/apache2/conf.d/20-mcrypt.ini
+
+Create symbol links now
+
+# ln -s /etc/php5/mods-available/mcrypt.ini /etc/php5/cli/conf.d/20-mcrypt.ini
+# ln -s /etc/php5/mods-available/mcrypt.ini /etc/php5/apache2/conf.d/20-mcrypt.ini
+
+Restart Apache
+
+$> service apache2 restart
+
+6. ## Mengamankan Instans phpMyAdmin Anda
+# nano /etc/apache2/conf-available/phpmyadmin.conf
+<Directory /usr/share/phpmyadmin>
+	Options SymLinksIfOwnerMatch
+	DirectoryIndex index.php
+	AllowOverride All
+
+Restart Apache
+# service apache2 restart
+
+Amankan lewat httaccess
+# nano /usr/share/phpmyadmin/.htaccess
+
+Masukan :
+AuthType Basic
+AuthName "Restricted Files"
+AuthUserFile /etc/phpmyadmin/.htpasswd
+Require valid-user
+
+Artinya :
+- AuthType Basic : Baris ini menentukan jenis otentikasi yang Anda terapkan. Jenis ini akan
+menerapkan otentikasi kata sandi menggunakan file kata sandi.
+- AuthName : Ini menetapkan pesan untuk kotak dialog otentikasi. Anda harus menyimpan
+generik ini sehingga pengguna yang tidak sah tidak akan mendapatkan informasi apa pun
+tentang apa yang dilindungi.
+- AuthUserFile : Ini menetapkan lokasi file kata sandi yang akan digunakan untuk otentikasi.
+Ini harus berada di luar direktori yang sedang dilayani. Kami akan segera membuat file ini.
+- Require valid-user : Ini menetapkan bahwa hanya pengguna yang diautentikasi yang harus
+diberikan akses ke sumber daya ini. Inilah yang sebenarnya menghentikan pengguna yang
+tidak sah untuk masuk.
+
+Membuat username dan passord autentikasi
+- Install htpasswd
+# apt-get install apache2-utils
+# htpasswd -c /etc/phpmyadmin/.htpasswd username // username terserah bisa diganti
+- masukan 2x password autentikasi
+
+-  jika ingin nambah username lagi
+# htpasswd /etc/phpmyadmin/.htpasswd additionaluser
+
+Restart Apache
+# service apache2 restart
+
+
+KEAMANAN WEBSERVER
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+1
+=
+Sembunyikan informasi mengenai server apache yang digunakan,
+$nano /etc/apache2/conf-enabled/security.conf 
+Ganti dari = ServerTokens OS 
+Menjadi =  ServerTokens Prod.
+‘Prod’ hanya menyediakan least information.
+=========================================================
+
+2
+=
+menyembunyikan informasi mengenai versi server yang digunakan dan lain-lain
+$nano /etc/apache2/conf-enabled/security.conf 
+‘ServerSignatures’ 
+dari bernilai = ‘On’ 
+menjadi = ‘Off’
+=============================================================
+
+3
+=
+Nonaktifkan autoindex, Metoda ini sering digunakan untuk XSS attack oleh hacker.
+$nano /etc/apache2/conf-enabled/security.conf 
+
+TraceEnable Off
+=============================================================
+
+4
+=
+Menonaktifkan info php
+$ nano /etc/php5/apache2/php.ini
+
+search:
+Ctrl + W
+
+disable_functions = phpinfo
+====================================================================
+
+
+5
+=
+Anda dapat menginstall mod security dengan perintah berikut:
+
+$ sudo apt-get install libapache2-modsecurity2
+Untuk mengecek apakah mod_security modul sudah berjalan, gunakan perintah berikut:
+
+$ sudo apachectl -M | grep --color security2
+
+security2_module (shared) // tandanya sudah aktif
+
+
+https://github.com/SpiderLabs/owasp-modsecurity-crs.git
+
+IncludeOptional /usr/share/owasp-modsecurity-crs-3.2-dev/crs-setup.conf
+IncludeOptional /usr/share/owasp-modsecurity-crs-3.2-dev/rules/*.conf
+
+======================================
+
+
+
+
+
+
+
+
+
+
