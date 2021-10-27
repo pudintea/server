@@ -211,7 +211,18 @@ IncludeOptional /usr/share/owasp-modsecurity-crs-3.2-dev/rules/*.conf
 
 ======================================
 
+## INSTALL FTP VSFTPD
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# apt install vsftpd
 
+Backup konfigurasi Awal
+# cp /etc/vsftpd.conf /etc/ASLI-vsftpd.conf
+
+Edit file vsftpd.conf
+# nano /etc/vsftpd.conf
+- #write_enable=YES
+- Hilangkan Tanda Pagar
+- Save
 
 
 
