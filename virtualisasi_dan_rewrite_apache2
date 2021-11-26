@@ -1,0 +1,64 @@
+
+Nama : Pudin S. I.
+Telegram : https://t.me/pudin_ira
+Instagram : https://instagram.com/pudin.ira
+Web : https://pdn.my.id
+
+Mengaktifkan mode rewrite
+=========================
+# sudo a2enmod rewrite
+
+Restart Apache2
+===============
+sudo systemctl restart apache2
+
+
+Tambahkan pada file virtualhost
+===============================
+/etc/apach2/site-available/nama file virtualisasi.conf
+
+-------------------------------------------------- START ----------------------------------
+
+        ServerAdmin admin@al-azhar.or.id
+        ServerName pudintea.or.id
+        ServerAlias www.pudintea.or.id
+
+        DocumentRoot /var/www/html/pudintea
+
+        <Directory /var/www/html/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+        <Directory "/usr/lib/cgi-bin">
+                AllowOverride None
+                Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+        # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+        # error, crit, alert, emerg.
+        # It is also possible to configure the loglevel for particular
+        # modules, e.g.
+        #LogLevel info ssl:warn
+
+        <IfModule security2_module>
+                SecRuleEngine Off
+        </IfModule>
+
+        ErrorLog ${APACHE_LOG_DIR}/pudintea.or.id-1-error.log
+        CustomLog ${APACHE_LOG_DIR}/pudintea.or.id-1-access.log combined
+
+------------------------------------------------------------- END -----------------------------------------------------------------------------
+Mengaktifkan file virtualhost
+=============================
+a2ensite nama_file_virtualisasi.conf
+
+Nonktifkan file virtualhost
+=============================
+a2dissite nama_file_virtualisasi.conf
+
