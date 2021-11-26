@@ -4,6 +4,11 @@ Telegram : https://t.me/pudin_ira
 Instagram : https://instagram.com/pudin.ira
 Web : https://pdn.my.id
 
+Membuat Symbolin Link / Shorcut
+---------------------------------------------------------
+ln -s /home/aplikasi/webku (sepasi) /var/www/html
+ln -ls /home/aplikasi/webku (sepasi) /var/www/html
+
 Mengaktifkan mode rewrite
 =========================
 # sudo a2enmod rewrite
