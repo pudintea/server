@@ -1,0 +1,167 @@
+
+Install dan Konfigurasi Snort Ubuntu 14.04
+
+
+
+Nonaktifkan LRO dan GRO pada kartu jaringan
+
+# nano /etc/network/interface
+masukan text :
+- post-up ethtool -K em1 gro off
+- post-up ethtool -K em1 lro off
+
+Restart Jaringan
+# sudo ifconfig em1 down && sudo ifconfig em1 up
+
+verifikasi LRO dan GRO tidak aktif
+# ethtool -k eth0 | grep receive-offload
+# ethtool -k em1 | grep receive-offload
+
+Install kebutuhan sebelum menginstall snort
+# apt-get install -y build-essential
+# apt-get install -y libpcap-dev libpcre3-dev libdumbnet-dev
+# apt-get install -y bison flex
+
+Buat direktori snort_src dalam root
+# mkdir ~/snort_src
+# cd ~/snort_src
+
+Download snort
+# wget https://snort.org/downloads/snort/daq-2.0.6.tar.gz
+# wget https://src.fedoraproject.org/lookaside/extras/daq/daq-2.0.6.tar.gz/2cd6da422a72c129c685fc4bb848c24c/daq-2.0.6.tar.gz
+# wget https://snort.org/downloads/snort/daq-2.0.7.tar.gz
+
+# tar -xvzf daq-2.0.6.tar.gz
+# cd daq-2.0.6
+# ./configure
+# make
+# sudo make install
+
+Installasi Snort
+#  sudo apt-get install -y zlib1g-dev liblzma-dev openssl libssl-dev
+Ubuntu 14 only (not Ubuntu 16)
+# apt-get install -y autoconf libtool pkg-config
+
+# cd ~/snort_src
+# wget https://github.com/nghttp2/nghttp2/releases/download/v1.17.0/nghttp2-1.17.0.tar.gz
+# tar -xzvf nghttp2-1.17.0.tar.gz
+# cd nghttp2-1.17.0
+# autoreconf -i --force
+# automake
+# autoconf
+# ./configure --enable-lib-only
+# make
+# sudo make install
+
+pastikan telah mendownload dan menginstall Luajit
+# wget http://luajit.org/download/LuaJIT-2.0.5.tar.gz
+# tar -xvzf luaJIT-2.0.5.tar.gz
+# cd ~/snort_src/LuaJIT-2.0.5
+# make
+# make install
+
+
+# cd ~/snort_src
+# wget https://www.snort.org/downloads/snort/snort-2.9.12.tar.gz
+# tar -xvzf snort-2.9.12.tar.gz
+# cd snort-2.9.12
+# ./configure --enable-sourcefire
+# make
+# sudo make install
+# ldconfig
+# ln -s /usr/local/bin/snort /usr/sbin/snort
+# snort -V
+
+
+Konfigurasi snort agar berjalan pada nids mode
+Create the snort user and group:
+# groupadd snort
+# useradd snort -r -s /sbin/nologin -c SNORT_IDS -g snort
+
+Create the Snort directories:
+# mkdir /etc/snort
+# mkdir /etc/snort/rules
+# mkdir /etc/snort/rules/iplists
+# mkdir /etc/snort/preproc_rules
+# mkdir /usr/local/lib/snort_dynamicrules
+# mkdir /etc/snort/so_rules
+
+Create some files that stores rules and ip lists
+# touch /etc/snort/rules/iplists/black_list.rules
+# touch /etc/snort/rules/iplists/white_list.rules
+# touch /etc/snort/rules/local.rules
+# touch /etc/snort/sid-msg.map
+
+Create our logging directories:
+# mkdir /var/log/snort
+# mkdir /var/log/snort/archived_logs
+
+Adjust permissions:
+# chmod -R 5775 /etc/snort
+# chmod -R 5775 /var/log/snort
+# chmod -R 5775 /var/log/snort/archived_logs
+# chmod -R 5775 /etc/snort/so_rules
+# chmod -R 5775 /usr/local/lib/snort_dynamicrules
+
+Ubah kepemilikan pada folder berikut:
+# chown -R snort:snort /etc/snort
+# chown -R snort:snort /var/log/snort
+# chown -R snort:snort /usr/local/lib/snort_dynamicrules
+
+untuk menyalin konfigurasi dan dynamic preprocessors, jalankan perintah berikut:
+# cd ~/snort_src/snort-2.9.12/etc/
+# cp *.conf* /etc/snort
+# cp *.map /etc/snort
+# cp *.dtd /etc/snort
+# cd ~/snort_src/snort-2.9.12/src/dynamic-preprocessors/build/usr/local/lib/snort_dynamicpreprocessor/
+# cp * /usr/local/lib/snort_dynamicpreprocessor/
+
+#  sed -i "s/include \$RULE\_PATH/#include \$RULE\_PATH/" /etc/snort/snort.conf
+
+# nano /etc/snort/snort.conf
+ipvar HOME_NET 192.168.137.0/24 pada line 45
+var RULE_PATH /etc/snort/rules
+var SO_RULE_PATH /etc/snort/so_rules
+var PREPROC_RULE_PATH /etc/snort/preproc_rules
+var WHITE_LIST_PATH /etc/snort/rules/iplists
+var BLACK_LIST_PATH /etc/snort/rules/iplists
+
+pada baris 546 tulis include $RULE_PATH/local.rules
+kemudian beri komen (#) pada rule yang tidak digunakan
+
+Jalankan perintah berikut sehingga muncul logo snort dan pesan konfigurasi berhasil
+# snort -T -i em1 -c /etc/snort/snort.conf
+
+lakukan installasi libgconf-2-4
+# apt-get install libgconf-2-4 -y
+
+Tulis aturan untuk melakukan tes deteksi snort aturan-aturan berada pada file local.rules
+NB: apabila file local.rules tidak ditemukan dapat digunakan perintah berikut:
+#  touch /etc/snort/rules/local.rules
+#  nano /etc/snort/rules/local.rules
+kemudian tambahkan perintah berikut:
+alert icmp any any -> any any (msg: "ada ping dari luar server";sid:10000001;rev:0;)
+
+jalankan perintah berikut untuk melakukan tes pada konfigurasi snort
+# snort -T -c /etc/snort/snort.conf -i em1
+
+
+jangan lupa beri hak akses pada /var/log/snort/snort.log dengan perintah berikut karena saya mengalami error ketika melewatkan perintah berikut:
+# chmod -R 755 /var/log/snort/snort.log
+
+kemudian jalankan perintah berikut
+# /usr/local/bin/snort -A console -q -u snort -g snort -c /etc/snort/snort.conf -i em1
+tampak diserver:
+
+Menonaktifkan/kill Snort
+Kang ono purbo
+
+# killall snort
+# snort -C /etc/snort/snort.conf -l var/log/snort/ -K ascii -D
+# ps ax
+# ps ax | grep snort
+
+alert tcp any any -> any 23 (msg: "Ada yang Telnet"; sid: 1000002;)
+alert tcp any any -> any 23 (msg: "Ada SQL Injection"; content:"%27+OR+";sid: 1000003;)
+alert tcp any any -> any 23 (msg: "Ada SQL Injection"; content:"%27+AND+";sid: 1000004;)
+alert tcp any any -> any 8022 (msg: "Ada yang SSH"; sid: 1000005;)
