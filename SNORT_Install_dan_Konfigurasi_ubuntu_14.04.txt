@@ -1,7 +1,9 @@
 
 Install dan Konfigurasi Snort Ubuntu 14.04
 
-
+em1 = Port ethernet yang saya gunakan
+untuk bisa tau nama ethernet yang digunakan, silahkan masukan perintah
+# ifconfig -a
 
 Nonaktifkan LRO dan GRO pada kartu jaringan
 
