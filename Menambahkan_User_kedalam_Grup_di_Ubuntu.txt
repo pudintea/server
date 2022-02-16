@@ -1,0 +1,104 @@
+Menambahkan user ke dalam grup sudo
+Gunakan perintah
+
+# usermod -aG sudo nama_user
+Parameter -a berarti menambahkan (append) ke dalam grup supplementary. Digunakan bersama parameter -G (group).
+
+Sebelum melanjutkan, kita harus login sebagai root untuk menambahkan user yang dimaksud ke file sudoers. Buka file /etc/sudoers dan tambahkan baris berikut:
+
+nama_user        ALL=(ALL)      ALL
+Tes akses sudo pada user
+Setelah berhasil menambahkan akun user ke dalam grup sudo, sekarang tinggal login menggunakan akun tersebut dan mencoba tes akses sudo. Switch ke akun user yang akan dicoba:
+
+# su -l nama_user
+Opsi -l pada perintah di atas berarti login. Sekarang cobalah melihat isi direktori /root menggunakan perintah ls, yang tadinya hanya dapat dilakukan root.
+
+$ sudo ls -la /root
+
+
+===================================
+
+Group di Linux
+Group adalah unit organisasi yang digunakan untuk mengatur dan mengelola akun user di Linux. Tujuan utama grup adalah untuk menetapkan serangkaian hak istimewa seperti izin read, write, atau mengeksekusi sumber daya yang diberikan yang dapat dibagikan di antara user dalam grup.
+
+Ada dua jenis grup dalam sistem operasi Linux:
+
+Grup Primer– Saat user membuat file, grup file diatur ke grup utama user. Biasanya, nama grup sama dengan nama user. Informasi tentang grup primer user disimpan di file /etc/passwd.
+Grup sekunder atau grup tambahan – Berguna saat Anda ingin memberikan izin file tertentu kepada sekelompok user yang merupakan anggota grup. Misalnya, jika Anda menambahkan user tertentu ke grup docker, maka user tersebut secara otomatis akan mendapatkan hak akses yang sama dengan user lain di grup docker dan sanggup menjalankan berbagai perintah docker.
+Setiap user dapat memiliki hanya satu grup primer, atau juga dapat berkaitan dengan satu atau lebih grup sekunder.
+
+Cara Menambahkan User ke Grup
+Untuk menambahkan user yang sudah ada ke grup sekunder, gunakan perintah usermod diikuti oleh opsi -G dan nama grup:
+
+sudo usermod -a -G namagrup username
+Misalnya, untuk menambahkan user adhit ke grup bernama sudo , Anda dapat menjalankan perintah berikut:
+
+sudo usermod -a -G sudo adhit
+usermod -a -G www-data subagti
+Selalu gunakan switch -a (append) saat menambahkan user ke grup baru. Jika Anda menghilangkan -a, user akan dihapus dari grup mana pun yang tidak terdaftar setelah -G.
+
+Jika berhasil, perintah usermod tidak akan menampilkan output apa pun. Perintah usermod hanya akan menampilkan peringatan jika user atau grup tidak ada, sehingga Anda harus membuat grup tersebut terlebih dahulu.
+
+Cara Menambahkan User yang Ada ke Beberapa Grup
+Jika Anda ingin menambahkan user yang sudah ada ke beberapa grup sekunder dalam satu perintah, gunakan perintah usermod diikuti dengan flag-G dan nama grup yang dipisahkan oleh , (koma):
+
+sudo usermod -a -G group1,group2 username
+Cara Menghapus user Dari Grup
+Untuk menghapus user dari grup, gunakan perintah gpasswd, Pada contoh berikut ini kami menghapus user yang bernama nama rachma dari grup bernama webmaster:
+
+sudo gpasswd -d rachma webmaster
+Membuat Grup baru di Linux
+Untuk membuat grup baru, Anda dapat menggunakan perintah groupadd diikuti dengan nama grup:
+
+sudo groupadd groupname
+Cara Menghapus Grup di Linux
+Untuk menghapus grup yang ada, gunakan perintah groupdel diikuti dengan nama grup:
+
+sudo groupdel groupname
+Cara Mengubah Grup Utama user di Linux
+Untuk mengubah grup utama user, gunakan perintah usermod diikuti oleh opsi -g:
+
+sudo usermod -g namagrup username
+Dalam contoh berikut ini, kami mengubah grup utama user linux menjadi developers:
+
+sudo usermod -g developers linux
+Cara Membuat user Baru dan Menetapkan Grup
+Perintah useradd berikut akan membuat user baru bernama bagas dengan grup primer users dan grup sekunder berada di wheel dan developers.
+
+sudo useradd -g users -G wheel,developers bagas
+Tampilkan Grup user di Linux
+Untuk menampilkan informasi user yang lengkap termasuk semua grup yang menjadi anggotanya, gunakan perintah id diikuti oleh nama user:
+
+id username
+Jika Anda menghilangkan nama user, perintah akan mencetak informasi tentang user yang saat ini masuk. Mari kita periksa user linux:
+
+id linux
+uid=1000(linux) gid=100(users) groups=100(users),10(wheel),95(storage),98(power),990(libvirt),993(docker),999(kvm)
+Dari output di atas, kita melihat bahwa grup primer user linux adalah users dan berada di grup lain seperti wheel, storage, libvirt, docker dan kvm .
+
+Gunakan perintah groups untuk menampilkan grup tambahan user:
+
+groups linux
+wheel storage power users libvirt docker kvm
+Sama seperti dengan perintah id jika Anda menghilangkan nama pengguna, perintah groups akan mencetak grup pengguna yang saat ini masuk.
+
+
+sudo usermod -a -G namagrup namauser
+sudo usermod -g namagrup namauser
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
