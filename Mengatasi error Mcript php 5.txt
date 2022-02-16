@@ -1,0 +1,36 @@
+
+Try this:
+Install perintah locate
+# apt install mlocate
+# sudo updatedb 
+# locate mcrypt.ini
+Should show it located at /etc/php5/mods-available
+
+$> locate mcrypt.so
+Edit mcrypt.ini and change extension to match the path to mcrypt.so, example:
+
+extension=/usr/lib/php5/20121212/mcrypt.so
+Now this:
+
+$> sudo php5enmod mcrypt - (optional since its already enabled during phpmyadmin setup)
+Verify that new files exists here (they should be auto created from the issue above)
+
+=============================
+
+$> ls -al /etc/php5/cli/conf.d/20-mcrypt.ini
+$> ls -al /etc/php5/apache2/conf.d/20-mcrypt.ini
+Otherwise do the following
+
+Create symbol links now
+
+$> sudo ln -s /etc/php5/mods-available/mcrypt.ini /etc/php5/cli/conf.d/20-mcrypt.ini
+$> sudo ln -s /etc/php5/mods-available/mcrypt.ini /etc/php5/apache2/conf.d/20-mcrypt.ini
+
+Restart Apache
+
+$> sudo service apache2 restart
+$> Restart php5 or php5-fpm
+
+$> sudo service php5 restart
+
+
