@@ -1,0 +1,63 @@
+-- https://t.me/pudin_ira
+-- Email : pudin.alazhar@gmail.com
+-- Web : https://www.italazhar.com
+
+Tahap instalasi :
+
+
+Setelah menginstal web server dengan apache, kita aktifkan modul SSL terlebih dahulu dengan perintah :
+# sudo a2enmod ssl
+
+Menonaktifkan
+# sudo a2dismod ssl
+
+Restart apache, dengan perintah :
+# sudo systemctl restart apache2
+
+Buat folder untuk meletakan key dan sertifikat kita, dengan perintah :
+# sudo mkdir /etc/apache2/ssl
+
+Buat self signed sertifikat SSL kita, dengan perintah :
+# sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/apache1.key -out /etc/apache2/ssl/apache1.crt
+
+Tutor dari video
+# sudo openssl req -new -newkey rsa:2048 -nodes -keyout /etc/apache2/ssl/server.key -out /etc/apache2/ssl/server.csr
+
+
+Setelah mengeksekusi perintah di atas maka akan muncul seperti gambar berikut :SSL cert
+
+Country Name (2 letter code) [AU]: ID
+State or Province Name (full name) [Some-State]: Jakarta
+Locality Name (eg, city) []: Jakarta
+Organization Name (eg, company) [Internet Widgits Pty Ltd]: YPI Al Azhar
+Organizational Unit Name (eg, section) []: SDIA 27
+Common Name (e.g. server FQDN or YOUR name) []: IPSERVER/DOMAINSERVER
+Email Address []: sdia27@al-azhar.sch.id
+
+Sesuaikan kolom merah dengan profile kalian
+
+Pasang sertifikat kita, dengan perintah :
+# nano /etc/apache2/sites-available/default-ssl.conf
+
+Pada file tersebut, terdapat div dengan isi , tambahkan line berikut setelah server admin email :
+- ServerName example.com:443
+
+Ubah example.com dengan domain atau IP address sesuai dengan kalian
+Kemudian tambahkan line ini :
+- SSLEngine on
+- SSLCertificateFile /etc/apache2/ssl/apache.crt
+- SSLCertificateKeyFile /etc/apache2/ssl/apache.key
+
+Pastikan direktori tersebut benar, karena pada step4 kita membuat self signed kita pada direktori tersebut
+save dan exit
+
+Aktifkan virtual host yang telah kita generate tadi pada port 443, dengan perintah :
+# sudo a2ensite default-ssl.conf
+
+Terakhir restart apache, dengan perintah :
+# sudo service apache2 reload
+
+Cek apakah SSL berhasil di instal
+Buka web browser kalian
+Pada tab bar masukan https://youraddress, ganti youraddress dengan domain kalian atupun dengan alamat IP kalian.
+SSL berhasil diinstall
