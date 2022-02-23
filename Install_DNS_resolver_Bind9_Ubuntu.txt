@@ -1,0 +1,142 @@
+-- https://t.me/pudin_ira
+-- Email : pudin.alazhar@gmail.com
+-- Web : https://www.italazhar.com
+======================================
+
+
+Perintah Install
+===========
+# sudo apt-get install bind9 bind9utils
+# sudo apt install dnsutils
+
+AGAR BISA DIAKSESS DARI SEMUA NETWORK
+
+#nano /etc/bind/named.conf.options
+=========================
+-- Gunakan Tab, Jangan Gunakan sepasi --
+
+acl goodclients {
+	0.0.0.0/0;
+	localhost;
+	localnets;
+};
+
+options {
+	directory "/var/cache/bind";
+	recursion yes;
+	allow-query { goodclients; };
+
+        // If there is a firewall between you and nameservers you want
+        // to talk to, you may need to fix the firewall to allow multiple
+        // ports to talk.  See http://www.kb.cert.org/vuls/id/800113
+
+        // If your ISP provided one or more IP addresses for stable
+        // nameservers, you probably want to use them as forwarders.
+        // Uncomment the following block, and insert the addresses replacing
+        // the all-0's placeholder.
+
+         forwarders {
+               //Iglobal
+                202.182.48.18;
+                202.182.48.19;
+
+                //Biznet
+                203.142.82.222;
+                203.142.84.222;
+
+                //Nawala
+                180.131.144.144;
+                180.131.145.145;
+
+	// Hypernet
+	114.129.23.33;
+        	114.129.22.33;
+
+	// moratel
+	27.50.20.21;
+	27.50.30.21;
+ 
+	//icon icon+ 
+	202.162.220.110;
+	202.162.220.220;
+
+	// Google
+	8.8.4.4;
+	8.8.8.8;
+
+	//DNS Cloudflar
+	1.1.1.1;
+
+         };
+        // allow-query { any;};
+        // recursion yes;
+        // allow-recursion {any;};
+        //=====================================================================$
+        // If BIND logs error messages about the root key being expired,
+        // you will need to update your keys.  See https://www.isc.org/bind-keys
+        //=====================================================================$
+        dnssec-validation auto;
+
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on-v6 { any; };
+};
+
+=============================================================================================
+== DNS Lokal ==
+
+Kita masuk kedalam folder konfigurasi bind9]
+# cd /etc/bind
+
+Edit file konfigurasi domain local
+# nano named.conf.local
+
+// untuk domain yang perpustakaan.local
+zone "perpustakaan.local"{ type master;file "/etc/bind/master/perpustakaan.local"; } ;
+
+Buat satu buah folder bernama master di dalam /etc/bind/
+# mkdir master
+
+Pindah ke dalam folder master
+# cd master
+
+Buat satu buah file perpustakaan.local
+# nano perpustakaan.local
+
+Masukan pengaturan dibawah ini :
+
+;
+; Pudin S. I.
+; https://t.me/pudin_ira
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     ns1.perpustakaan.local. root.perpustakaan.local. (
+                        4               ; Serial number YYMMDDNN
+                        900             ; Refresh 8 hours
+                        600             ; Retry 2 hours
+                        86400           ; Expire 10 days
+                        3600     )      ; min ttl 1 day
+;
+@                       IN      NS      perpustakaan.local.
+@                       IN      A       192.168.3.20
+
+cendana                 IN      CNAME   @
+www.cendana             IN      CNAME   @
+
+sdia1                   IN      CNAME   @
+www.sdia1               IN      CNAME   @
+
+tkia1                   IN      CNAME   @
+www.tkia1               IN      CNAME   @
+
+Sesuaikan dengan kebutuhan.
+
+
+=====================================================
+        # dns-nameservers 192.168.3.3
+        # dns-nameservers 203.142.82.222 203.142.84.222
+        #DNS Hypernet
+        # dns-nameservers 114.129.23.33 114.129.22.33
+        dns-nameservers 203.142.82.222 203.142.84.222
+        # dns-nameservers 8.8.8.8 8.8.4.4
+
