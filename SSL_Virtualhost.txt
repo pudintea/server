@@ -9,7 +9,7 @@
 
 ====================== APACHE + CLOUDFLARE =======================
 
-# sudo a2enmode ssl
+# sudo a2enmod ssl
 
 <VirtualHost *:443>
 
