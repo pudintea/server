@@ -10,6 +10,10 @@
 ====================== APACHE + CLOUDFLARE =======================
 
 # sudo a2enmod ssl
+# mkdir -p /etc/cloudflare
+# cd /etc/cloudflare
+# nano example.com.pem
+# nano example.com.key
 
 <VirtualHost *:443>
 
@@ -117,7 +121,27 @@
 
 -------------------------------------------------------------------------------------------------------------------------------------------
 
+<VirtualHost *:80>
 
+    ServerAdmin webmaster@example.com
+    ServerName example.com
+    ServerAlias www.example.com
+    DocumentRoot /var/www/example.com/public_html
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+    
+	#redirect http to https
+    RewriteEngine On
+
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+	#redirect domain
+	RewriteOptions inherit
+    RewriteCond %{HTTP_HOST} ^dp4\.al\-azhar\.or\.id$ [OR]
+    RewriteCond %{HTTP_HOST} ^www\.dp4\.al\-azhar\.or\.id$
+    RewriteRule ^/?$ "http\:\/\/aes\.sekolah\.pro\/" [R=301,L]
+</VirtualHost>
 
 
 
