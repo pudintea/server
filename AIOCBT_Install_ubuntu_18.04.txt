@@ -1,0 +1,249 @@
+AIOCBT, Moodle versi 3.5, Ubuntu 18.04
+-------------------------------
+: Pudin S.
+: t.me/pudin_ira
+: instagram.com/pudin.ira
+: https://www.pdn.my.id
+: youtube.com/c/pudintv
+: youtube.com/c/pudintea
+
+Catatan : Install nginx, postgre, php dulu. moodle, mysql terkahir.
+
+--------------------------------
+PERSIAPAN - PROXMOX - Create CT
+-------------------------------------------------------------
+# apt update
+# apt-get dist-upgrade
+# apt-get install systemd
+# apt install mlocate
+# apt-get install nano
+# apt-get install ssh
+# apt-get install zip
+# apt-get install unzip
+
+- mengganti waktu server localtime jakarta
+# mv /etc/localtime /etc/localtime-asal
+# cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+
+- mengubah timezone asia-jakarta
+# timedatectl set-timezone Asia/Jakarta 
+
+--------------------------
+SSH
+---------------------------
+# nano /etc/ssh/sshd_config
+- PermitRootLogin yes
+# service sshd restart
+
+------------------------------------
+NGINX
+-------------------------------------
+1. Instal Nginx.
+# apt-get install nginx -y
+# apt-get install graphviz aspell ghostscript clamav git mlocate
+# ufw allow 'Nginx Full'
+# cp /etc/nginx/sites-available/default /etc/nginx/sites-available/ASLI-default
+# nano /etc/nginx/sites-available/default
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root /var/www/html;
+        index index.html index.htm index.nginx-debian.html;
+        server_name _;
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}
+
+UBAH MENJADI BEGINI
+
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root /var/www/html;
+        index index.php index.html index.htm index.nginx-debian.html;
+        server_name _;
+        location / {
+                try_files $uri $uri/ =404;
+        }
+        location ~ [^/]\.php(/|$) {
+                fastcgi_split_path_info  ^(.+\.php)(/.+)$;
+                fastcgi_index            index.php;
+                fastcgi_pass unix:/var/run/php/php-fpm.sock;
+                include fastcgi_params;
+                fastcgi_param   PATH_INFO  $fastcgi_path_info;
+                fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
+       }
+}
+
+cek konfigurasi
+# nginx -t
+
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+# service php7.2-fpm restart
+
+untuk mengecek user apa yang menjalankan nginx, bisa menggunakan kode ini.
+Kode Sumber
+# ps -eo user,comm | grep nginx
+-------------------------
+MYSQL
+------------------------
+# apt-get install mysql-server mysql-client -y
+# mysql -u root -p
+# CREATE DATABASE moodle DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+# CREATE USER 'moodle'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+# GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE TEMPORARY TABLES,DROP,INDEX,ALTER ON moodle.* TO moodle@localhost;
+# quit; (keluar)
+
+-------------------------------------
+PostgreSQL
+-------------------------------------
+1. Install PostgreSQL
+Install PostgreSQL dari default Ubuntu repositories.
+
+# sudo apt-get install postgresql postgresql-contrib -y
+
+Default data directory berada di /var/lib/postgresql/12/main, file konfigurasi tersimpan di directory /etc/postgresql/12/main, dan postgresql service berjalan di port 5432.
+
+Cek apakah PostgreSQL service sudah active, running, dan enabled.
+
+# sudo systemctl is-active postgresql
+# sudo systemctl is-enabled postgresql
+# sudo systemctl status postgresql 
+Cek juga apakah PostgreSQL sudah siap untuk menerima koneksi dari client.
+
+# sudo pg_isready 
+Hasil perintah di atas.
+/var/run/postgresql:5432 - accepting connections 
+
+2. Mengakses PostgreSQL
+Proses install PostgreSQL membuat akun dengan nama postgres yang menjadi user root PostgreSQL. Untuk PostgreSQL shell menggunakan psql.
+
+Beralih ke user postgres dan login ke psql.
+
+# sudo -u postgres psql 
+Hasil dari perintah di atas.
+
+psql (12.4 (Ubuntu 12.4-0ubuntu0.20.04.1))
+Type "help" for help.
+ 
+postgres=# 
+
+3. Membuat Database
+Membuat database, user, dan memberikan hak akses database kepada user.
+
+# CREATE USER namauser WITH PASSWORD 'password';
+# CREATE DATABASE namadb;
+# GRANT ALL PRIVILEGES ON DATABASE namadb TO namauser;
+# \list (melihat list database)
+# \du (lihat list user)
+# \q - Keluar
+
+Selanjutnya silahkan jalankan perintah berikut ini untuk mengamankan Postgresql, buat password baru :
+# passwd postgres
+
+
+4. Membuat User Baru tanpa login.
+Login ke psql dengan user postgres dan buat user baru.
+
+sudo -u postgres createuser --interactive 
+Hasil dari perintah di atas.
+
+Enter name of role to add: musaamin
+Shall the new role be a superuser? (y/n) y
+
+Ketika menjalankan psql, sistem otentikasi PostgreSQL secara default akan menggunakan user sistem yang aktif sebagai user login ke psql, dan user tersebut harus memiliki database dengan nama yang sama dengan nama user.
+
+Misalnya, username yang saya gunakan adalah musaamin, berarti harus ada juga database dengan nama musaamin.
+
+Membuat database dengan nama musaamin.
+
+sudo -u postgres createdb musaamin 
+Tes login dengan bukan user postgres.
+
+psql 
+Hasil dari perintah di atas.
+
+psql (12.4 (Ubuntu 12.4-0ubuntu0.20.04.1))
+Type "help" for help.
+ 
+musaamin=# 
+Login ke psql dengan database lain.
+
+psql -d namadatabase 
+Cek koneksi yang sedang aktif untuk menampilkan nama database dan user.
+
+\conninfo 
+Hasil perintah di atas.
+
+You are connected to database "namadatabase" as user "musaamin" via socket in "/var/run/postgresql" at port "5432". 
+
+--
+elanjutnya, silahkan mengkonfigurasi otentifikasi client. File konfigurasi Postgres utama terletak di /etc/postgresql/10/main/postgresql.conf . Selain file ini, Postgres menggunakan dua file konfigurasi yang diedit secara manual, yang mengontrol otentikasi klien.
+
+Jika Anda memilih untuk menggunakan otentikasi berbasis kata sandi , Anda dapat mengimplementasikan salah satu metode ini: md5 atau kata sandi yang beroperasi dengan cara yang sama kecuali untuk cara kata sandi ditransmisikan melalui koneksi, yaitu masing -masing hash MD5 dan teks jernih.
+
+Menggunakan otentikasi kata sandi md5 mencegah pencabutan kata sandi oleh peretas dan menghindari menyimpan kata sandi di server dalam teks biasa. Metode kata sandi hanya dapat digunakan dengan aman jika koneksi dilindungi oleh enkripsi SSL.
+
+Untuk panduan ini, kami akan menunjukkan cara mengkonfigurasi otentikasi kata sandi md5 untuk otentikasi klien.
+
+Otentikasi klien dikendalikan oleh file konfigurasi /etc/postgresql/10/main/pg_hba.conf . Postgres menyediakan berbagai metode otentikasi klien termasuk otentikasi berbasis kata sandi. Koneksi klien diautentikasi berdasarkan alamat host database, basis data, dan pengguna.
+
+# nano /etc/postgresql/10/main/pg_hba.conf
+Cari baris berikut dan ubah metode otentikasi menjadi md5 seperti yang ditunjukkan dibawah ini.
+
+# "local" is for Unix domain socket connections only
+- Asal :
+local   all             all                                     peer
+- Jadi :
+local   all             all                                     md5
+
+# systemctl restart postgresql
+
+-------------------
+PHP
+------------------
+# apt-get install php-fpm php-cli -y
+# apt-get install php-mysql php-mbstring php-xmlrpc php-zip php-gd php-xml php-bcmath php-ldap php-pspell php-curl php-intl php-soap -y
+
+# updatedb
+# locate php.ini
+# cp /etc/php/7.2/fpm/php.ini /etc/php/7.2/fpm/ASLI-php.ini
+# nano /etc/php/7.2/fpm/php.ini
+
+SESUAIKAN SEPERTI DI BAWAH INI :
+max_execution_time = 300
+max_input_time = 300
+max_input_vars = 4440
+memory_limit = 256M
+post_max_size = 32M
+file_uploads = On
+upload_max_filesize = 32M
+date.timezone = Asia/Jakarta
+
+# nano /etc/php/7.2/fpm/pool.d/www.conf
+security.limit_extensions = .php
+
+# php -i|grep extension_dir
+extension=/usr/lib/php/20170718/pdo_mysql
+
+RESTART PHP
+# service php7.2-fpm restart
+
+------------------
+MOODLE
+--------------------
+
+mkdir /downloads
+# cd /downloads
+# wget https://download.moodle.org/stable39/moodle-3.9.1.tgz
+# tar -zxvf moodle-3.9.1.tgz
+# cp /downloads/moodle /var/www/html/ -R
+# chown -R www-data.www-data /var/www/html/moodle
+# chmod -R 755 /var/www/html/moodle
+# mkdir -p /var/www/moodledata
+# chown -R www-data.www-data /var/www/moodledata
+# chmod -R 755 /var/www/moodledata
+
