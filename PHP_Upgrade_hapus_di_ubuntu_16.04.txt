@@ -1,0 +1,140 @@
+---------------------------------------------------------
+: Pudin S
+https://instagram.com/pudin.ira
+https://t.me/pudin_ira
+https://youtube.com/c/pudintv
+https://youtube.com/c/pudintea
+---------------------------------------------------------
+
+
+== Cara Cek Versi PHP ==
+Untuk mengecek versi PHP yang digunakan Ubuntu 16.04 cukup dengan mengetikan perintah:
+php --version
+Output:
+PHP 7.1.33-17+ubuntu16.04.1+deb.sury.org+1 (cli) (built: Aug  7 2020 14:46:52) ( NTS )
+Copyright (c) 1997-2018 The PHP Group
+Zend Engine v3.1.0, Copyright (c) 1998-2018 Zend Technologies
+    with Zend OPcache v7.1.33-17+ubuntu16.04.1+deb.sury.org+1, Copyright (c) 1999-2018, by Zend Technologies
+
+Disana terlihat bahwa PHP yang saya gunakan ternyata versi 7.1. Sedangkan untuk memenuhi kebutuhan woocommerce yang saya pasang minimal PHP versi 7.2.
+
+
+=== Cara Update Versi PHP 7.4 di Ubuntu 16.04 ===
+Adapun PHP terbaru pada saat artikel ini ditulis yaitu versi 7.4. Sedangkan repositori default dari server utama tidak menyediakan versi tersebut. Oleh karena itu, berikut ini langkah-langkah dalam memasang PHP versi 7.4 di Ubuntu 16.04.
+
+1. Pertama, sebelum menambahkan repository PPA ketik perintah:
+# sudo apt-get install software-properties-common
+
+2. Kedua, tambahkan repository PPA untuk PHP 7.4 dengan perintah:
+# sudo add-apt-repository ppa:ondrej/php
+
+Output:
+Co-installable PHP versions: PHP 5.6, PHP 7.x and most requested extensions are included. Only Supported Versions of PHP (http://php.net/supported-versions.php) for Supported Ubuntu Releases (https://wiki.ubuntu.com/Releases) are provided. Don't ask for end-of-life PHP versions or Ubuntu release, they won't be provided.
+
+Debian oldstable and stable packages are provided as well: https://deb.sury.org/#debian-dpa
+
+You can get more information about the packages at https://deb.sury.org
+
+IMPORTANT: The <foo>-backports is now required on older Ubuntu releases.
+
+BUGS&FEATURES: This PPA now has a issue tracker:
+https://deb.sury.org/#bug-reporting
+
+CAVEATS:
+1. If you are using php-gearman, you need to add ppa:ondrej/pkg-gearman
+2. If you are using apache2, you are advised to add ppa:ondrej/apache2
+3. If you are using nginx, you are advised to add ppa:ondrej/nginx-mainline
+   or ppa:ondrej/nginx
+
+PLEASE READ: If you like my work and want to give me a little motivation, please consider donating regularly: https://donate.sury.org/
+
+WARNING: add-apt-repository is broken with non-UTF-8 locales, see
+https://github.com/oerdnj/deb.sury.org/issues/56 for workaround:
+
+# LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
+ More info: https://launchpad.net/~ondrej/+archive/ubuntu/php
+Press [ENTER] to continue or ctrl-c to cancel adding it
+
+
+3. Ketiga, tekan enter untuk melanjutkan
+
+Output:
+gpg: keyring `/tmp/tmptucua20g/secring.gpg' created
+gpg: keyring `/tmp/tmptucua20g/pubring.gpg' created
+gpg: requesting key E5267A6C from hkp server keyserver.ubuntu.com
+gpg: /tmp/tmptucua20g/trustdb.gpg: trustdb created
+gpg: key E5267A6C: public key "Launchpad PPA for Ondřej Surý" imported
+gpg: Total number processed: 1
+gpg:               imported: 1  (RSA: 1)
+OK
+
+4. Keempat, perbarui sistem dengan perintah:
+# sudo apt-get update
+
+5. Kelima, instal PHP 7.4 dengan perintah
+# sudo apt-get install php7.4
+
+Output:
+The following additional packages will be installed:
+  libapache2-mod-php7.4 libargon2-1 libpcre2-8-0 libsodium23 php7.4-cli
+  php7.4-common php7.4-gd php7.4-json php7.4-mbstring php7.4-mysql
+  php7.4-opcache php7.4-readline php7.4-xml
+The following NEW packages will be installed:
+  libapache2-mod-php7.4 libargon2-1 libpcre2-8-0 libsodium23 php7.4 php7.4-cli
+  php7.4-json php7.4-opcache php7.4-readline
+The following packages will be upgraded:
+  php7.4-common php7.4-gd php7.4-mbstring php7.4-mysql php7.4-xml
+5 upgraded, 9 newly installed, 0 to remove and 109 not upgraded.
+Need to get 5.127 kB of archives.
+After this operation, 10,4 MB of additional disk space will be used.
+Do you want to continue? [Y/n] 
+
+6. Keenam, proses selesai silahkan cek dengan perintah
+# php -v
+
+Output:
+PHP 7.4.11 (cli) (built: Oct 18 2020 11:32:57) ( NTS )
+Copyright (c) The PHP Group
+Zend Engine v3.4.0, Copyright (c) Zend Technologies
+    with Zend OPcache v7.4.11, Copyright (c), by Zend Technologies
+
+7. Ketujuh, instal software tambahan PHP7.4 Extention dengan perintah:
+
+# sudo apt-get install php7.4-common php7.4-mysql php7.4-xml php7.4-xmlrpc php7.4-curl php7.4-gd php7.4-imagick php7.4-cli php7.4-dev php7.4-imap php7.4-mbstring php7.4-opcache php7.4-soap php7.4-zip php7.4-intl -y
+
+8. Kedelapan, beritahukan Apache untuk mengaktifkan versi 7.4 dan menonaktifkan versi lama dengan perintah:
+# sudo a2enmod php7.4
+# sudo a2dismod php7.1 
+
+Output:
+Considering dependency mpm_prefork for php7.4:
+Considering conflict mpm_event for mpm_prefork:
+Considering conflict mpm_worker for mpm_prefork:
+Module mpm_prefork already enabled
+Considering conflict php5 for php7.4:
+Enabling module php7.4.
+To activate the new configuration, you need to run:
+  service apache2 restart
+
+9. Kesembilan, restart Apache web server dengan perintah:
+# sudo service apache2 restart
+
+10. Kesepuluh, jika ingin meng-uninstall PHP versi lama silahkan ketik perintah:
+# sudo apt purge php7.1-common
+Atau
+# sudo apt autoremove php7.0-common 
+
+Output:
+The following packages will be REMOVED:
+  libapache2-mod-php7.1* php7.1* php7.1-cli* php7.1-common* php7.1-dev*
+  php7.1-gd* php7.1-json* php7.1-mbstring* php7.1-mysql* php7.1-opcache*
+  php7.1-readline*
+0 upgraded, 0 newly installed, 11 to remove and 94 not upgraded.
+After this operation, 21,0 MB disk space will be freed.
+Do you want to continue? [Y/n]
+
+Silahkan tekan y atau Y untuk melanjutkan proses uninstall PHP versi sebelumnya. Sekian praktek hari ini dengan tema tutorial cara update versi PHP di Ubuntu 16.04.
+
+Selamat mencoba.
+
+
