@@ -1,0 +1,95 @@
+-- Pudin S.
+: http://t.me/pudin_ira
+: https://www.pdn.my.id
+: https://instagram.com/pudin.ira
+: https://youtube.com/c/pudintv
+: https://youtube.com/c/pudintea
+
+DEFAULT
+---------
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+	
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name _;
+	
+    location / {
+       try_files $uri $uri/ =404;
+    }
+}
+---------------------------------
+
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.php index.html index.htm index.nginx-debian.html;
+    server_name _;
+    location / {
+        try_files $uri $uri/ =404;
+    }
+    location ~ [^/]\.php(/|$) {
+        fastcgi_split_path_info  ^(.+\.php)(/.+)$;
+        fastcgi_index            index.php;
+        fastcgi_pass unix:/var/run/php/php-fpm.sock;
+        include fastcgi_params;
+        fastcgi_param   PATH_INFO  $fastcgi_path_info;
+        fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
+
+---------------------------------
+server {
+ listen 80;
+ listen [::]:80;
+
+ server_name _;
+ root   /var/www/html/;
+ index index.php index.html index.nginx-debian.html;
+ 
+ #log files
+ access_log  /var/log/nginx/namanya_access.log;
+ error_log   /var/log/nginx/namanya_error.log;
+ 
+ location / {
+    try_files $uri $uri/ /index.php?$args;
+ }
+
+  location ~ \.php(?:$|/) {
+    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param PATH_INFO $fastcgi_path_info;
+    fastcgi_param HTTPS on;
+    fastcgi_param modHeadersAvailable true; #Avoid sending the security headers twice
+    fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+    fastcgi_intercept_errors on;
+  }
+}
+
+--------------------------
+server {
+  listen 80;
+  
+  #namaserver, bisa juga langsung dg ip address si server.
+  server_name _;
+  
+  root /usr/share/nginx/html/moodle;
+  rewrite ^/(.*\.php)(/)(.*)$ /$1?file=/$3 last;
+  
+  #log files
+  access_log  /var/log/nginx/namanya_access.log;
+  error_log   /var/log/nginx/namanya_error.log;
+ 
+  location ^~ / {
+     try_files $uri $uri/ /index.php?q=$request_uri;
+     index index.php index.html index.htm;
+     location ~ \.php$ {
+      include snippets/fastcgi-php.conf;
+      fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+     }
+  }
+}
+
