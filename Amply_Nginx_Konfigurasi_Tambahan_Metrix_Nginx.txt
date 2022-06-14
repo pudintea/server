@@ -12,6 +12,8 @@ NGINX, Ubuntu 20.04
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Konfigurasi Tambahan Metrix Nginx ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+Link Dashboard : https://amplify.nginx.com
+
 
 1. Edit file /etc/nginx/nginx.conf, lalu tambahkan script berikut pada section http
 
