@@ -31,6 +31,13 @@ server {
     #log files
     access_log  /var/log/nginx/default-nginx_access.log;
     error_log   /var/log/nginx/default-nginx_error.log;
+    
+    #codeigniter, aplikasinya ada di folder cbtadmin
+    location /cbtadmin {
+        try_files $uri $uri/ /cbtadmin/index.php?/$request_uri;
+    }
+    
+    
 
     location / {
         try_files $uri $uri/ =404;
