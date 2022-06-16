@@ -1,0 +1,194 @@
+  -- UBUNTU 20.04 --
+-------------------------------
+: Pudin S.
+: t.me/pudin_ira
+: instagram.com/pudin.ira
+: https://www.pdn.my.id
+: youtube.com/c/pudintv
+: youtube.com/c/pudintea
+
+----------------------------------------
+--- PERSIAPAN - PROXMOX - Create CT ----
+-----------------------------------------
+# apt update
+# apt-get dist-upgrade
+# apt-get install systemd
+# apt install mlocate
+# apt-get install nano
+# apt-get install ssh
+# apt-get install zip
+# apt-get install unzip
+
+- mengganti waktu server localtime jakarta
+# mv /etc/localtime /etc/localtime-asal
+# cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+
+- mengubah timezone asia-jakarta
+# timedatectl set-timezone Asia/Jakarta 
+
+------------------------------------
+NGINX
+-------------------------------------
+1. Instal Nginx.
+# apt-get install nginx -y
+# ufw allow 'Nginx Full'
+# systemctl enable nginx
+# systemctl start nginx
+# systemctl status nginx
+# cp /etc/nginx/sites-available/default /etc/nginx/sites-available/ASLI-default
+- atau
+# mv /etc/nginx/sites-available/default /etc/nginx/sites-available/ASLI-default
+# nano /etc/nginx/sites-available/default
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root /var/www/html;
+        index index.html index.htm index.nginx-debian.html;
+        server_name _;
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}
+
+UBAH MENJADI BEGINI
+
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root /var/www/html;
+        index index.php index.html index.htm index.nginx-debian.html;
+        server_name _;
+		
+		#log files
+        access_log  /var/log/nginx/default-nginx_access.log;
+        error_log   /var/log/nginx/default-nginx_error.log;
+		
+        location / {
+                try_files $uri $uri/ =404;
+        }
+        location ~ [^/]\.php(/|$) {
+                fastcgi_split_path_info  ^(.+\.php)(/.+)$;
+                fastcgi_index            index.php;
+                fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+                include fastcgi_params;
+                fastcgi_param   PATH_INFO  $fastcgi_path_info;
+                fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
+       }
+}
+
+cek konfigurasi
+# nginx -t
+
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+# service nginx restart
+
+untuk mengecek user apa yang menjalankan nginx, bisa menggunakan kode ini.
+Kode Sumber
+# ps -eo user,comm | grep nginx
+
+------------------------------------------------------------------------------------------------------------------
+-----------
+ -- PHP --
+-----------
+# apt-get install php-fpm php-cli -y
+# apt-get install php-mysql php-pgsql php-mbstring php-xmlrpc php-zip php-gd php-xml php-bcmath php-ldap php-pspell php-curl php-intl php-soap -y
+# php -v
+# php -m
+
+# updatedb
+# locate php.ini
+# cp /etc/php/7.4/fpm/php.ini /etc/php/7.4/fpm/ASLI-php.ini
+
+# nano /etc/php/7.4/fpm/php.ini
+
+SESUAIKAN SEPERTI DI BAWAH INI :
+max_execution_time = 300
+max_input_time = 300
+max_input_vars = 5000
+memory_limit = 256M
+post_max_size = 32M
+file_uploads = On
+upload_max_filesize = 32M
+date.timezone = Asia/Jakarta
+
+RESTART PHP
+# service php7.4-fpm restart
+
+
+IONCUBE
+# wget http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz
+# tar xzf ioncube_loaders_lin_x86-64.tar.gz -C /usr/local
+
+# php -i | grep php.ini
+Configuration File (php.ini) Path => /etc/php/7.4/cli
+Loaded Configuration File => /etc/php/7.4/cli/php.ini
+
+/etc/php/7.3/cli/php.ini #for PHP CLI
+/etc/php/7.3/fpm/php.ini #for PHP FPM
+/etc/php/7.3/apache/php.ini #for PHP with Apache
+
+# nano /etc/php/7.4/fpm/php.ini
+
+zend_extension = /usr/local/ioncube/ioncube_loader_lin_7.4.so
+
+# service php7.4-fpm restart
+-------------------------------------------------------------------------------------------
+;;;;;;;;;
+; MYSQL ;
+;;;;;;;;;
+
+- Install Mysql
+# apt-get install mysql-server mysql-client -y
+
+TEST
+# mysql -u root -p
+- Masukan Password
+
+- Keamanan MySql
+# mysql_secure_installation
+
+- Enter current password for root (enter for none): Just press the Enter
+- Set root password? [Y/n]: Y
+- New password: Enter password
+- Re-enter new password: Repeat password
+- Remove anonymous users? [Y/n]: Y
+- Disallow root login remotely? [Y/n]: Y
+- Remove test database and access to it? [Y/n]:  Y
+- Reload privilege tables now? [Y/n]:  Y
+
+- Lihat Versi MySql
+# mysql -u root -p  //nanti akan diminta password root si mysql, masukan saja passwordnya
+> select version();
+> exit;
+
+
+- Mempersiapkan databases
+
+SMAIA1
+# mysql -u root -p
+> CREATE USER 'usermoodle'@'localhost' IDENTIFIED BY '@Moodle123';
+> CREATE DATABASE dbmoodle;
+> GRANT ALL ON dbmoodle.* TO 'smaia1_usermoodle'@'localhost';
+> flush privileges;
+> exit;
+
+--------------------
+-- Install Moodle --
+--------------------
+
+# apt install git curl -y
+# cd /var/www/html/
+# git clone -b MOODLE_38_STABLE git://git.moodle.org/moodle.git moodle
+
+
+# mkdir -p /var/www/moodledata
+# chown -R www-data:www-data /var/www/html/moodle
+# chown -R www-data:www-data /var/www/moodledata
+# chmod -R 755 /var/www/html/moodle
+# chmod -R 775 /var/www/moodledata
+
+Buka lewat browser : http://pAddressServer/moodle
+
+---------------- END www.pdn.my.id -------------------------------------
