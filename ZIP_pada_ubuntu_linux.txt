@@ -1,0 +1,111 @@
+: Pudin S.
+: t.me/pudin_ira
+: instagram.com/pudin.ira
+: https://www.pdn.my.id
+: youtube.com/c/pudintv
+: youtube.com/c/pudintea
+
+=================
+ ====== ZIP =======
+=================
+- Perintah Zip
+Zip adalah utilitas yang membantu Anda membuat arsip file yang terkompress dengan ekstensi ZIP.
+
+Perintah zip mengambil bentuk sintaks berikut:
+
+- zip OPTIONS NAMA_ARSIP FILE
+Untuk membuat arsip ZIP di direktori tertentu, pengguna harus memiliki izin menulis di direktori yang di tuju. File ZIP tidak mendukung informasi kepemilikan seperti di Linux, dan semua file yang diekstraks akan dimiliki oleh pengguna yang menjalankan perintah. Jika Anda ingin mempertahankan kepemilikan dan izin file, gunakan perintah tar.
+
+Utilitas zip tidak diinstal secara default di sebagian besar distribusi Linux, tetapi Anda dapat dengan mudah menginstalnya menggunakan manajer paket distribusi Anda.
+
+----------------------------------------------------------
+-- Instal Zip di Ubuntu dan Debian --
+---------------------------------------------------------
+# sudo apt install zip
+Instal Zip pada CentOS dan Fedora
+# sudo yum install zip
+
+----------------------------------------------------
+--- Cara ZIP File dan Direktori ---
+----------------------------------------------------
+Untuk memasukkan satu atau beberapa file, tentukan file yang ingin Anda tambahkan ke arsip yang dipisahkan oleh ruang seperti yang ditunjukkan di bawah ini:
+
+zip archivename.zip filename1 filename2 filename3
+adding: filename1 (deflated 63%)
+adding: filename2 (stored 0%)
+adding: filename3 (deflated 38%)
+Secara default perintah zip akan mencetak nama-nama semua file yang ditambahkan ke arsip dan metode kompresi. Kami akan menjelaskan metode dan level kompresi dalam panduan ini.
+
+Ketika menentukan nama arsip zip, Anda dapat menonaktifkan ekstensi .zip di akhir nama file. Perintah zip secara otomatis akan menambahkan esktensi. Misalnya ketika kita ingin membuat  zip nama_arsip_output.zip namafileinput , kita juga dapat membuat arsip dengan perintah yang sama seperti zip nama_arsip_output namafile.
+
+Jika Anda ingin menyembunyikan output dari perintah zip gunakan opsi -q:
+
+# zip -q archivename.zip filename1 filename2 filename3
+
+Dalam penggunaan yang umum, Anda akan membuat arsip ZIP  dari suatu direktori termasuk konten dalam subdirektori. Opsi -r memungkinkan Anda untuk menelusuri seluruh struktur direktori secara rekursif. Untuk membuat arsip zip direktori Anda akan menggunakan:
+
+# zip -r archivename.zip nama_direktori
+Anda juga dapat menambahkan banyak file dan direktori dalam arsip yang sama dengan perintah:
+
+# zip -r archivename.zip nama_direktori1 nama_direktori2 file1 file1
+
+---------------------------------------------------------
+--- Metode dan Tingkat Kompresi ---
+---------------------------------------------------------
+Metode kompresi standar zip adalah deflate (di mampatkan). Jika utilitas zip menentukan bahwa file tidak dapat dikompresi, maka zip akan menyimpan file dalam arsip tanpa mengompresnya menggunakan metode store (simpan). Di sebagian besar distribusi Linux, utilitas zip juga mendukung metode kompresi bzip2 .
+
+Untuk menentukan metode kompresi gunakan opsi -Z.
+
+# zip -r -Z bzip2 archivename.zip nama_direktori
+...
+adding: sub_dir/ (stored 0%)
+adding: sub_dir/file1 (bzipped 52%)
+adding: sub_dir/file2 (bzipped 79%)
+Perintah zip memungkinkan Anda untuk menentukan tingkat kompresi menggunakan angka yang diawali dengan tanda hubung dari 0 hingga 9. Tingkat kompresi standar adalah -6. Saat menggunakan -0 semua file akan disimpan tanpa kompresi. -9 akan memaksa perintah zip untuk menggunakan kompresi optimal untuk semua file.
+
+Misalnya, untuk menggunakan tingkat kompresi -9 Anda dapat menggunakan perintah sebagai berikut :
+
+# zip -9 -r archivename.zip directory_name
+Semakin tinggi tingkat kompresi, semakin intensif zip memakan proses CPU, dan juga akan membutuhkan lebih banyak waktu untuk menyelesaikannya.
+
+Membuat file ZIP yang Dilindungi Kata Sandi
+Jika Anda memiliki informasi sensitif yang perlu disimpan dalam arsip, Anda dapat mengenkripsi menggunakan opsi -e:
+
+# zip -e  archivename.zip directory_name
+Anda akan diminta memasukkan dan memverifikasi kata sandi untuk membuka arsip Zip Anda nantinya :
+
+Enter password:
+Verify password:
+
+---------------------------------------------------
+--- Cara mudah Split File Zip -----
+---------------------------------------------------
+Bayangkan Anda ingin menyimpan arsip zip pada layanan hosting file yang memiliki batas upload maksimum 1GB dan arsip ZIP Anda sebesar 5GB.
+
+Anda dapat membuat file Zip baru dan di split dengan menggunakan opsi -s diikuti dengan ukuran yang ditentukan. Pengganda dapat berupa k (kilobytes), m (megabytes), g (gigabytes), atau t (terabytes).
+
+zip -s 1g -r archivename.zip directory_name
+Perintah di atas akan terus membuat arsip baru dalam satu set setelah mencapai batas ukuran yang ditentukan.
+
+archivename.zip
+archivename.z01
+archivename.z02
+archivename.z03
+archivename.z04
+
+-----------------------------------------------------------
+--- Contoh Penggunaan Umum ZIP ---
+-----------------------------------------------------------
+Membuat arsip ZIP bernama archivename.zip yang berisi semua file di direktori saat ini.
+
+zip archivename *
+Sama seperti perintah di atas, namun kita menambahkan file yang disembunyikan (di Linux, file yang disembunyikan, atau hidden files di mulai dengan titik di depan nama file, contoh .git atau .bashrc ):
+
+zip archivename .* *
+Buat arsip ZIP bernama arsipmusik.zip yang berisi semua file MP3 di direktori saat ini tanpa mengompres file (sesuai ukuran aslinya).
+
+zip -0 arsipmusik *.mp3
+---------------------------
+--- Kesimpulan ---
+---------------------------
+Dalam tutorial ini Anda belajar cara membuat arsip ZIP menggunakan perintah zip. Kami juga telah menunjukkan kepada Anda opsi paling umum dari perintah zip. Untuk extract file zip, Anda dapat menggunakan perintah unzip.
