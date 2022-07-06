@@ -1,0 +1,43 @@
+Repository Ubuntu Lama - OLD
+-------------------------------
+: Pudin S.
+: t.me/pudin_ira
+: instagram.com/pudin.ira
+: https://www.pdn.my.id
+: youtube.com/c/pudintv
+: youtube.com/c/pudintea
+
+---------------------------------------------------------
+
+# mv /etc/apt/sources.list /etc/apt/sources.list-ASLI
+# nano /etc/apt/sources.list
+--------------------------------------------------------
+deb http://old-releases.ubuntu.com/ubuntu saucy main restricted
+deb-src http://old-releases.ubuntu.com/ubuntu saucy main restricted
+
+deb http://old-releases.ubuntu.com/ubuntu saucy-updates main restricted
+deb-src http://old-releases.ubuntu.com/ubuntu saucy-updates main restricted
+
+deb http://old-releases.ubuntu.com/ubuntu saucy universe
+deb-src http://old-releases.ubuntu.com/ubuntu saucy universe
+deb http://old-releases.ubuntu.com/ubuntu saucy-updates universe
+deb-src http://old-releases.ubuntu.com/ubuntu saucy-updates universe
+
+deb http://old-releases.ubuntu.com/ubuntu saucy multiverse
+deb-src http://old-releases.ubuntu.com/ubuntu saucy multiverse
+deb http://old-releases.ubuntu.com/ubuntu saucy-updates multiverse
+deb-src http://old-releases.ubuntu.com/ubuntu saucy-updates multiverse
+
+deb http://old-releases.ubuntu.com/ubuntu saucy-backports main restricted universe multiverse
+deb-src http://old-releases.ubuntu.com/ubuntu saucy-backports main restricted universe multiverse
+
+deb http://old-releases.ubuntu.com/ubuntu saucy-security main restricted
+deb-src http://old-releases.ubuntu.com/ubuntu saucy-security main restricted
+deb http://old-releases.ubuntu.com/ubuntu saucy-security universe
+deb-src http://old-releases.ubuntu.com/ubuntu saucy-security universe
+deb http://old-releases.ubuntu.com/ubuntu saucy-security multiverse
+deb-src http://old-releases.ubuntu.com/ubuntu saucy-security multiverse
+
+----------------------------- END -------------------------------------
+
+
