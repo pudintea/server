@@ -1,0 +1,44 @@
+INSTALL MANUAL APLIAKSI DEBIAN/UBUNTU
+-------------------------------
+: Pudin S.
+: t.me/pudin_ira
+: instagram.com/pudin.ira
+: https://www.pdn.my.id
+: youtube.com/c/pudintv
+: youtube.com/c/pudintea
+------------------------------------------------------
+
+
+Ubuntu (atau keluarga Debain secara umum seperti Linux Mint, Kali, dsb.) memiliki jenis file installer bertipe .deb. Jika di Windows file ini adalah .exe. Kali ini kita akan belajar bagaimana memasang file .deb di sistem Ubuntu lewat command line.
+
+Lewat Perintah DPKG
+DPKG adalah aplikasi package manager untuk sistem Linux turunan Debian (dua yang paling terkenal ialah Ubuntu dan Linux Mint). Dengan aplikasi ini kita bisa memasang, menghapus, mengupdate, atau membuat file .deb. Perintah untuk memasang file .deb dengan dpkg adalah:
+
+$ sudo dpkg -i namaplikasi_amd64.deb
+Terkadang, saat kita memasang dengan perintah dpkg, muncul error yang mengatakan bahwa ada dependensi yang perlu ditambahkan. Dpkg tidak bisa mengunduh sendiri dependensi yang dibutuhkan aplikasi yang ia pasang. Maka untuk memasang dependensi tersebut dan melanjutkan pemasangan ialah dengan:
+
+$ sudo apt-get install -f	
+Dengan Perintah APT
+APT adalah aplikasi lain dari Debian untuk memasang aplikasi baru, mengupgrade aplikasi-aplikasi terpasang, bahkan mengupgrade keseluruhan sistem Linux.
+
+Selain bisa memasang lewat jaringan, apt juga bisa memasang package .deb. Caranya dengan perintah:
+
+$ sudo apt install ./namaaplikasi_amd64.deb
+$ sudo apt-get install ./namaaplikasi_amd64.deb
+Untuk memasang file .deb offline dengan apt, kita harus memberikan path relative yang absolut ataupun relatif misalnya ./ untuk folder aktif, ../ untuk folder di atas, ~/Downloads, dst. Jika pembaca lihat juga di atas kita menggunakan apt dan apt-get. Perintah apt sebetulnya hanya cara singkat untuk memanggil apt-get.
+
+Dengan Perintah GDEBI
+GDEBI adalah aplikasi untuk memasang file .deb offline. Berbeda dengan dpkg, ia bisa mencarikan dependensi yang dibutuhkan file .deb tersebut dan memasangkannya sebelum melanjutkan pemasangan file yang hendak di pasang. Hanya saja gdebi tidak terpasang di beberapa versi Linux turunan Debian (ada yang punya ada juga yang tidak). Jadi, pastikan dulu gdebi telah terpasang, jika tidak pasang dulu dengan perintah:
+
+$ sudo apt install gdebi
+Lalu setelah gdebi terpasang kita bisa memasang file .deb dengan perintah:
+
+$ sudo gdebi namaaplikasi_amd64.deb
+Penutup
+Demikianlah cara-cara memasang file .deb ke sistem Linux turunan Debian, Ubuntu, dan Linux Mint. Semoga bermanfaat.
+
+
+
+
+
+
