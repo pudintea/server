@@ -1,6 +1,11 @@
--- https://t.me/pudin_ira
--- Email : pudin.alazhar@gmail.com
--- Web : https://www.italazhar.com
+SLIMS 9, UBUNTU 20.04
+-------------------------------
+: Pudin S.
+: t.me/pudin_ira
+: instagram.com/pudin.ira
+: https://www.pdn.my.id
+: youtube.com/c/pudintv
+: youtube.com/c/pudintea
 
 == mengganti waktu server localtime jakarta ==
 # mv /etc/localtime /etc/localtime-asal
@@ -32,14 +37,13 @@
 
 == PHP ==
 Install PHP dan kebutuhanya.
-# sudo apt-get install php libapache2-mod-php php-mysql php-json php-gd php-mbstring php-curl php-zip -y
-
-Jika Perlu Tambahan Module
-- sudo apt install php7.4-mysql php7.4-curl php7.4-json php7.4-cgi php7.4-xsl
+# sudo apt-get install php libapache2-mod-php php-mysql php-json php-gd php-mbstring php-curl php-cgi php-xsl php-zip -y
 
 - sudo nano /etc/php/7.4/apache2/php.ini
 - sudo nano /etc/php/7.4/cli/php.ini
+
 jadi begini :
+
 - date.timezone = "Asia/Jakarta"
 - memory_limit = 512M
 - max_execution_time = 60
@@ -47,31 +51,37 @@ jadi begini :
 
 == MySql ==
 # sudo apt-get install mysql-server
-# sudo mysql_secure_installation
+Selanjutnya adalah lakukan sesuai dengan yanga da di tutorial pada link berikut:
+https://www.pdn.my.id/2022/06/cara-mengatasi-failed-error-set-password.html
+
+
 - systemctl status mysql.service
 - sudo systemctl start mysql
 # service mysql restart
 
-Sebagai pemeriksaan tambahan, Anda dapat mencoba terhubung ke basis data dengan menggunakan alat mysqladmin, yang merupakan suatu klien yang memungkinkan Anda menjalankan perintah administratif. Misalnya, perintah ini mengatakan untuk terhubung sebagai seorang pengguna MySQL bernama sammy (-u sammy), meminta kata sandi (-p), dan menginformasikan versi. Pastikan mengubah sammy menjadi nama pengguna MySQL khusus Anda, dan masukkan kata sandi pengguna itu saat diminta:
-
 
 == PHMPYADMIN ==
 # sudo apt install php-mbstring php-zip php-gd php-json php-curl
-# sudo apt install phpmyadmin 
 
 Catatan Penting : Anda mungkin telah memilih untuk mengaktifkan plugin Validasi Kata Sandi. Pada tulisan ini, mengaktifkan komponen ini akan memicu kesalahan ketika Anda mencoba untuk mengatur kata sandi untuk pengguna phpmyadmin, Cara Mengatasinya :
 # mysql -u root -p
 - mysql> UNINSTALL COMPONENT "file://component_validate_password";
 - mysql> exit
 
+-- Install PHPMyadmin
 # sudo apt install phpmyadmin
 
 Untuk menginstal lagi yang tadi kita hapus
 # mysql -u root -p
 - mysql> INSTALL COMPONENT "file://component_validate_password";
 
-sudo phpenmod mbstring
-sudo systemctl restart apache2
+-- Enamble MBstring
+# sudo phpenmod mbstring
+# sudo systemctl restart apache2
+
+-- Mengamankan MySql
+# sudo mysql_secure_installation
+
 
 Jika root tidak bisa login ke PHPmyadmin menggunakan root.
 ===================
@@ -81,6 +91,7 @@ mysql> CREATE USER 'slims'@'localhost' IDENTIFIED BY '!Password';
 mysql> GRANT ALL PRIVILEGES ON *.* TO 'slims'@'localhost' WITH GRANT OPTION;
 mysql> flush privileges;
 mysql> exit;
+
 
 == install yaz on Ubuntu 20.04 with PHP 7.4: ==
 
@@ -105,8 +116,6 @@ Buat databasess di phpmyadmin
 Buat user dan databases yang sudah kita buat diberikan aksess kepada user tersebut.
 Buat databases dengan type = utf8_unicode_ci
 Selesaikan instalasi seperti biasa dan jangan lupa hapus folder install
-
-
 
 
 =====================================================================
