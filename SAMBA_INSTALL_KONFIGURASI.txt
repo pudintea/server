@@ -80,12 +80,12 @@ Ubah permission pada folder private menjadi seperti berikut:
 # sudo chmod 2770 /srv/samba/smb-private
 # sudo chmod 2775 /srv/samba/smb-public
 
-Setelah itu, buatlah satu user demo tanpa akses ke shell dan tambahkan user tersebut kedalam grup smbinternal: 
+Setelah itu, buatlah satu user demo tanpa akses ke shell dan tambahkan user tersebut kedalam grup smbguru: 
 
 # sudo useradd -M -s /sbin/nologin demouser
 # sudo usermod -aG smbguru demouser
 
-Cek di direktori group apakah user sudah berada pada group smbsales
+Cek di direktori group apakah user sudah berada pada group smbguru
 # cat /etc/group
 
 Set password pada user tersebut dengan perintah dan aktifkan akun samba: 
