@@ -1,0 +1,255 @@
+VSFTPD
+-------------------------------
+: Pudin S.
+: t.me/pudin_ira
+: instagram.com/pudin.ira
+: https://www.pdn.my.id
+: youtube.com/c/pudintv
+: youtube.com/c/pudintea
+
+
+Catatanku
+= Memasukan user kedalam group
+# sudo usermod -a -G namagrup namauser
+# sudo usermod -g namagrup namauser
+
+= Mengganti kepemilikan dan hak aksess setiap folder/file
+# chown -R namauser:namagrup namafileataufoldernya
+# chmod -R 775 namafileataufoldernya
+
+= Memberikan aksess 775 setiap file yang di upload oleh si akun ftp vsftpd.
+# sudo nano /etc/vsftpd.conf
+- file_open_mode=0775
+- local_umask=002
+
+Install Vsftpd
+===========
+# sudo apt-get install vsftpd -y
+
+
+Cara konfigurasi vsftpd
+==================
+Server vsftpd dapat dikonfigurasi dengan mengedit file /etc/vsftpd.conf. Sebagian besar pengaturan didokumentasikan dengan baik di dalam file konfigurasi. Untuk semua opsi yang tersedia, kunjungi halaman vsftpd resmi.
+
+Di bagian berikut, kita akan membahas beberapa pengaturan penting yang diperlukan untuk konfigurasi instalasi vsftpd yang aman.
+
+Mulailah dengan membuka file konfigurasi vsftpd:
+
+# sudo nano /etc/vsftpd.conf
+
+
+1. Akses FTP
+==========
+Saya akan mengizinkan akses ke server FTP hanya pengguna lokal, temukan arahan anonymous_enable dan local_enable dan verifikasi kecocokan konfigurasi Anda ke baris di bawah ini:
+
+anonymous_enable=NO
+local_enable=YES
+
+
+2. Mengaktifkan Upload
+==================
+Batalkan komentar pada pengaturan write_enable untuk memungkinkan perubahan pada sistem file seperti mengupload dan menghapus file.
+
+write_enable=YES
+
+
+3. Chroot Jail
+===========
+Untuk mencegah pengguna FTP mengakses file di luar direktori home mereka batalkan komentar pada pengaturan chroot.
+
+chroot_local_user=YES
+Secara default untuk mencegah kerentanan keamanan, ketika chroot diaktifkan vsftpd akan menolak untuk mengupload file jika direktori yang dikunci pengguna dapat ditulis.
+
+Gunakan salah satu metode di bawah ini untuk memungkinkan upload saat chroot diaktifkan.
+
+Metode 1 : Metode yang disarankan untuk memungkinkan upload adalah untuk tetap mengaktifkan chroot, dan konfigurasikan direktori FTP. Dalam tutorial ini, kita akan membuat direktori ftp di dalam home user yang akan berfungsi sebagai chroot dan direktori uploads yang dapat ditulis untuk mengupload file.
+
+user_sub_token=$USER
+local_root=/home/$USER/ftp
+
+Metode 2 : Pilihan lain adalah menambahkan arahan berikut dalam file konfigurasi vsftpd. Gunakan opsi ini jika Anda harus memberikan akses yang dapat ditulis kepada pengguna Anda ke direktori home-nya.
+
+allow_writeable_chroot=YES
+
+
+4. Koneksi FTP Pasif
+================
+vsftpd dapat menggunakan port apa saja untuk koneksi FTP pasif. Saya akan menentukan kisaran port minimum dan maksimum dan kemudian membuka kisaran di firewall saya.
+
+Tambahkan baris berikut ke file konfigurasi:
+
+pasv_min_port=30000
+pasv_max_port=31000
+
+
+5. Membatasi Login Pengguna
+=======================
+Untuk mengizinkan hanya pengguna tertentu untuk masuk ke server FTP, tambahkan baris berikut di akhir file:
+
+userlist_enable=YES
+userlist_file=/etc/vsftpd.user_list
+userlist_deny=NO
+Ketika opsi ini diaktifkan, Anda harus secara eksplisit menentukan pengguna mana yang dapat login dengan menambahkan nama pengguna ke file /etc/vsftpd.user_list (satu pengguna per baris).
+
+
+6. Mengamankan Transmisi dengan SSL / TLS
+===================================
+Untuk mengenkripsi transmisi FTP dengan SSL / TLS, Anda harus memiliki sertifikat SSL dan mengkonfigurasi server FTP untuk menggunakannya.
+
+Anda dapat menggunakan sertifikat SSL yang sudah ada yang ditandatangani oleh Otoritas Sertifikat tepercaya atau membuat sertifikat yang ditandatangani sendiri.
+
+Jika Anda memiliki domain atau subdomain yang menunjuk ke alamat IP server FTP, Anda dapat dengan mudah menghasilkan sertifikat SSL Let’s Encrypt.
+
+Saya akan menghasilkan sertifikat SSL yang ditandatangani sendiri menggunakan perintah openssl.
+
+Perintah berikut akan membuat private key 2048-bit dan sertifikat yang ditandatangani sendiri berlaku selama 10 tahun. Private key dan sertifikat akan disimpan dalam file yang sama:
+
+# sudo openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout /etc/ssl/private/vsftpd.pem -out /etc/ssl/private/vsftpd.pem
+
+Setelah sertifikat SSL dibuat, buka file konfigurasi vsftpd:
+
+# sudo nano /etc/vsftpd.conf
+
+Temukan arahan rsa_cert_file dan rsa_private_key_file, ubah nilainya ke jalur file pam dan tetapkan arahan ssl_enable menjadi YES:
+
+rsa_cert_file=/etc/ssl/private/vsftpd.pem
+rsa_private_key_file=/etc/ssl/private/vsftpd.pem
+ssl_enable=YES
+
+Jika tidak ditentukan sebaliknya, server FTP hanya akan menggunakan TLS untuk membuat koneksi yang aman.
+
+Tambahkan baris berikut ini untuk membuat keamanan yang lebih baik: (Koneksi tak dikenal tidak akan diperbolehkan melewati SSL)
+
+allow_anon_ssl=NO
+force_local_data_ssl=YES
+force_local_logins_ssl=YES
+
+Konfigurasikan server untuk menggunakan TLS dengan:
+
+ssl_tlsv1=YES
+ssl_sslv2=NO
+ssl_sslv3=NO
+
+Kita akan menambahkan 2 opsi lagi. Pertama, penggunaan kembali SSL tidak begitu berpengaruh karena hanya akan membuat sebagian besar aplikasi FTP rusak. Kedua, kita akan menggunakan high encryption cipher suites, yang mana itu berarti bahwa panjang key sama dengan (atau lebih besar dari) 128 bit.
+
+require_ssl_reuse=NO
+ssl_ciphers=HIGH
+
+Restart sekali lagi untuk menerapkan konfigurasi baru:
+# sudo systemctl restart vsftpd
+
+7. Restart Layanan vsftpd
+====================
+Setelah selesai mengedit, file konfigurasi vsftpd (tidak termasuk komentar) akan terlihat seperti ini:
+
+listen=NO
+listen_ipv6=YES
+anonymous_enable=NO
+local_enable=YES
+write_enable=YES
+dirmessage_enable=YES
+use_localtime=YES
+xferlog_enable=YES
+connect_from_port_20=YES
+chroot_local_user=YES
+secure_chroot_dir=/var/run/vsftpd/empty
+pam_service_name=vsftpd
+rsa_cert_file=/etc/ssl/private/vsftpd.pem
+rsa_private_key_file=/etc/ssl/private/vsftpd.pem
+ssl_enable=YES
+user_sub_token=$USER
+local_root=/home/$USER/ftp
+pasv_min_port=30000
+pasv_max_port=31000
+userlist_enable=YES
+userlist_file=/etc/vsftpd.user_list
+userlist_deny=NO
+Simpan file dan restart layanan vsftpd agar perubahan diterapkan:
+
+# sudo systemctl restart vsftpd
+
+8. Membuka Firewall
+=================
+Jika Anda menjalankan firewall UFW, Anda harus mengizinkan lalu lintas FTP.
+
+Untuk membuka port 21 (FTP command port), port 20 (FTP data port) dan 30000-31000 (rentang port Pasif), jalankan perintah berikut:
+
+# sudo ufw allow 20:21/tcp
+# sudo ufw allow 30000:31000/tcp
+
+Untuk menghindari terkunci, buka port 22:
+
+# sudo ufw allow OpenSSH
+
+Restart aturan UFW dengan menonaktifkan dan mengaktifkan kembali UFW:
+
+# sudo ufw disable
+# sudo ufw enable
+
+Untuk memverifikasi, jalankan perubahan:
+
+# sudo ufw status
+
+Output
+Status: active
+
+To                         Action      From
+--                         ------      ----
+20:21/tcp                  ALLOW       Anywhere
+30000:31000/tcp            ALLOW       Anywhere
+OpenSSH                    ALLOW       Anywhere
+20:21/tcp (v6)             ALLOW       Anywhere (v6)
+30000:31000/tcp (v6)       ALLOW       Anywhere (v6)
+OpenSSH (v6)               ALLOW       Anywhere (v6)
+
+
+9. Membuat Pengguna FTP
+=====================
+Untuk menguji server FTP saya, saya akan membuat pengguna baru.
+
+Jika Anda sudah memiliki pengguna yang ingin Anda berikan akses FTP, lewati langkah 1.
+Jika Anda mengatur allow_writeable_chroot = YES dalam file konfigurasi Anda lewati langkah ke-3.
+
+Buat pengguna baru bernama newftpuser:
+
+# sudo adduser newftpuser
+
+Tambahkan pengguna ke daftar pengguna FTP yang diizinkan:
+
+# echo "newftpuser" | sudo tee -a /etc/vsftpd.user_list
+
+Buat pohon direktori FTP dan atur permission yang benar:
+
+# sudo mkdir -p /home/newftpuser/ftp/upload
+# sudo chmod 550 /home/newftpuser/ftp
+# sudo chmod 750 /home/newftpuser/ftp/upload
+# sudo chown -R newftpuser: /home/newftpuser/ftp
+
+Sebagaimana dibahas di bagian sebelumnya, pengguna dapat mengunggah file-nya ke direktori ftp/uploads.
+
+Pada titik ini, server FTP Anda berfungsi penuh dan Anda harus dapat terhubung ke server Anda menggunakan FTP client apa pun yang dapat dikonfigurasi untuk menggunakan enkripsi TLS seperti FileZilla.
+
+
+10. Menonaktifkan Akses Shell/Aksess SSH pada User.
+==========================================
+Secara default, saat membuat pengguna, jika tidak ditentukan secara spesifik pengguna akan memiliki akses SSH ke server.
+
+Untuk menonaktifkan akses shell, saya akan membuat shell baru yang hanya akan mencetak pesan yang memberi tahu pengguna bahwa akun mereka terbatas hanya untuk akses FTP.
+
+Buat shell /bin/ftponly dan buat itu dapat dieksekusi:
+
+# echo -e '#!/bin/sh\necho "This account is limited to FTP access only."' | sudo tee -a  /bin/ftponly
+# sudo chmod a+x /bin/ftponly
+
+Tambahkan shell baru ke daftar shell yang valid di file /etc/shells:
+
+# echo "/bin/ftponly" | sudo tee -a /etc/shells
+
+Ubah shell pengguna ke /bin/ftponly:
+
+# sudo usermod newftpuser -s /bin/ftponly
+# sudo usermod hrisalazhar -s /bin/ftponly
+
+Gunakan perintah yang sama untuk mengubah shell semua pengguna yang ingin Anda berikan hanya akses FTP.
+
+
