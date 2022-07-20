@@ -1,0 +1,111 @@
+SAMBA SERVER UBUNTU 20.04
+-------------------------------
+: Pudin S.
+: t.me/pudin_ira
+: instagram.com/pudin.ira
+: https://www.pdn.my.id
+: youtube.com/c/pudintv
+: youtube.com/c/pudintea
+
+Cara Install dan Konfigurasi
+=======================
+Tahapan berikutnya,kita akan install Samba server pada sistem operasi Ubuntu Server dan untuk clientnya bisa mengakses menggunakan sistem operasi Windows/Unix.
+
+Di sini kami menggunakan Ubuntu Server 20.04 LTS. Pertama sekali Anda harus mengakses command line dengan mencari pintasan Terminal atau menekan kombinasi tombol Ctrl+Alt+T. 
+
+Tahapan Install
+---------------------------
+1. Update dan install sambar server pada Ubuntu server 20.04 dengan perintah berikut:
+
+# sudo apt-get update
+# sudo apt install samba smbclient cifs-utils -y
+
+Jangan lupa allow port 139 (service samba) dari sisi firewall router (Portal) dan dari sisi firewall OS.
+
+2. Buatlah direktori/folder share, dimana folder tersebut akan digunakan sebagai tempat sharing file. Anda bisa dapat membagi dua semisal folder public dan folder private.
+
+# mkdir -p /srv/samba/smb-public
+# mkdir -p /srv/samba/smb-private
+# chown nobody:nogroup /srv/samba/smb-public
+
+
+Untuk folder public dapat diakses oleh public, sedangkan folder private hanya diakses oleh user tertentu saja. 
+
+3. Buka file konfgurasi samba, sebelumnya silakan backup file konfigurasi tersebut.
+
+# sudo cp /etc/samba/smb.conf /etc/samba/smb-ASLI.conf
+# sudo nano /etc/samba/smb.conf
+
+
+Konfigurasi Public Share
+--------------------------------------------
+Tambahkan baris konfigurasi berikut pada baris paling bawah: 
+
+[publicshare]
+path = /srv/samba/smb-public
+writable = yes
+guest ok = yes
+guest only = yes
+force create mode = 775
+force directory mode = 775
+
+Konfigurasi Private Share
+---------------------------------------------
+Tambahkan baris konfigurasi berikut pada baris paling bawah: 
+
+[privateshare]
+path = /srv/samba/smb-private
+writable = yes
+guest ok = no
+valid users = @smbguru
+force create mode = 770
+force directory mode = 770
+inherit permissions = yes
+
+*CATATAN : 
+- @smbguru adalah nama group user.
+- [privateshare] text dalam kurung bisa kita sesuaikan dg kebutuhan.
+
+
+4. Langkah selanjutnya, silakan buat grup smbinternal dan tambahkan user tertentu pada grup tersebut. Dimana private share hanya akan bisa diakses oleh user tersebut saja.
+
+# sudo groupadd smbguru
+
+5. Update permission pada folder share
+
+Ubah permission pada folder private menjadi seperti berikut: 
+# sudo chgrp -R smbguru /srv/samba/smb-private
+# sudo chgrp -R smbguru /srv/samba/smb-public
+
+# sudo chmod 2770 /srv/samba/smb-private
+# sudo chmod 2775 /srv/samba/smb-public
+
+Setelah itu, buatlah satu user demo tanpa akses ke shell dan tambahkan user tersebut kedalam grup smbinternal: 
+
+# sudo useradd -M -s /sbin/nologin demouser
+# sudo usermod -aG smbguru demouser
+
+Cek di direktori group apakah user sudah berada pada group smbsales
+# cat /etc/group
+
+Set password pada user tersebut dengan perintah dan aktifkan akun samba: 
+# sudo smbpasswd -a demouser
+# sudo smbpasswd -e demouser
+
+6. Langkah berikutnya, silakan verifikasi hasil konfigurasi yang telah ditambahkan sebelumnya apakah terdapat error atau tidak.
+
+# sudo testparm
+
+Jika keluar bacaan : Loaded Services File OK.
+
+Harusnya konfigurasi yang kita lakukan sudah ok.
+
+SERVICE SERVER SAMBA
+------------------------------------------
+# sudo systemctl restart smbd.service nmbd.service
+# systemctl restart smbd
+
+
+Pengetesan
+---------------------
+Untuk pengetesan silakan dari Client windows jalankan perintah  \\[IP Address Server] untuk mengakses Folder Sales. Klik Folder smb-private/smb-public lalu masukan user dan password user yang tadi sudah kita buat.
