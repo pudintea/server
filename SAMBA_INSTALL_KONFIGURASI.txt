@@ -108,4 +108,5 @@ SERVICE SERVER SAMBA
 
 Pengetesan
 ---------------------
-Untuk pengetesan silakan dari Client windows jalankan perintah  \\[IP Address Server] untuk mengakses Folder Sales. Klik Folder smb-private/smb-public lalu masukan user dan password user yang tadi sudah kita buat.
+Untuk pengetesan silakan dari Client windows jalankan perintah  \\[IP Address Server] untuk mengakses Folder nya. Klik Folder smb-private/smb-public lalu masukan user dan password user yang tadi sudah kita buat.
+
