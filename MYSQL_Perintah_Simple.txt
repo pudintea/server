@@ -1,0 +1,100 @@
+
+
+
+MASUK
+--------------
+# mysql -u root -p
+
+
+
+=== USER ===
+
+
+
+Membuat User dan Password
+----------------------------------------------------
+mysql> CREATE USER 'nama_user'@'localhost' IDENTIFIED BY 'password';
+mysql> CREATE USER 'nama_user'@'%' IDENTIFIED BY 'password';
+
+
+Melihat semua User
+------------------------------------
+mysql> SELECT user,host FROM mysql.user;
+
+
+Menghapus User
+----------------------------------
+mysql> DROP USER pudintea;
+
+
+Mengganti Password
+--------------------------------------------
+mysql> SET PASSWORD FOR 'nama_user'@'localhost' = PASSWORD('NewPassword');
+
+
+Refresh Databases
+--------------------------------------
+mysql> FLUSH PRIVILEGES;
+
+
+=== DATABASES ===
+
+
+Membuat Database
+--------------------------------------
+mysql> create database nama_database; 
+
+
+Melihat Databases
+-------------------------------------
+mysql> show databases;
+
+
+Menghapus
+--------------------------
+mysql> DROP DATABASE nama_database;
+
+
+=== HAK AKSESS ===
+
+
+Memberikan hak aksess penuh kepada user untuk bisa membuat databases dll,
+---------------------------------------------------------------------------------------------------------------------------------------------
+mysql> grant all privileges on *.* to ’nama_user’@’localhost’;
+mysql> grant create,delete,update,select on *.* to 'nama_user'@'%';
+mysql> grant all privileges on *.* to 'nama_user'@'%' identified by 'passwordnya' with grant option;
+
+
+
+Memberikan hak aksess databases kepada User
+-----------------------------------------------------------------------------------------
+mysql> GRANT ALL ON nama_database TO 'nama_user'@'localhost';
+
+
+Membatalkan pemberian hak akses
+------------------------------------------------------------------
+mysql> REVOKE [permission type] ON [database_name].[table name] FROM 'non-root'@'localhost';
+
+
+
+=== BACKUP DAN RESTORE ===
+
+
+BACKUP / EXPORT
+---------------------
+mysql> mysqldump -uroot -p namadatabaseygmaudibackup > namadabasehasilbackupan.sql 
+
+
+RESTORE / IMPORT
+-------------------------
+mysql> mysql -u root -p namadatabasenya < filedatabaseyangmaudirestore.sql
+
+
+MySQL memiliki beberapa jenis permission, di antaranya sebagai berikut:
+CREATE – Memperbolehkan user membuat database/table
+SELECT – Memperbolehkan user menerima data
+INSERT – Memperbolehkan user menambahkan entry baru pada tabel
+UPDATE – Memperbolehkan user memodifikasi entry yang sudah ada di tabel
+DELETE – Memperbolehkan user menghapus entry tabel
+DROP – Memperbolehkan user menghapus seluruh database/tabel
+
