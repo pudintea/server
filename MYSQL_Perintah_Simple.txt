@@ -75,7 +75,7 @@ mysql> grant all privileges on *.* to 'nama_user'@'%' identified by 'passwordnya
 
 Memberikan hak aksess databases kepada User
 -----------------------------------------------------------------------------------------
-mysql> GRANT ALL ON nama_database TO 'nama_user'@'localhost';
+mysql> GRANT ALL ON nama_database.* TO 'nama_user'@'localhost';
 
 
 Membatalkan pemberian hak akses
