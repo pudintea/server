@@ -1,0 +1,59 @@
+ENABLE DISABLE MODULES PHP, UBUNTU 20.04
+-------------------------------
+: Pudin S.
+: t.me/pudin_ira
+: instagram.com/pudin.ira
+: https://www.pdn.my.id
+: youtube.com/c/pudintv
+: youtube.com/c/pudintea
+
+Semua file konfigurasi modul PHP yang terinstal tersedia di direktori /etc/php/{php_version}/mods-available . Anda dapat melihat jumlah file dengan ekstensi .ini. Anda harus menginstal modul PHP tertentu , Anda harus mengaktifkannya sebelum menggunakan tutorial ini. Paket php-common menyediakan perintah berikut untuk mengelola modul PHP.
+
+phpenmod – Digunakan untuk mengaktifkan modul di PHP
+phpdismod – Digunakan untuk menonaktifkan modul di PHP
+phpquery – Digunakan untuk melihat status modul PHP
+
+Aktifkan Modul PHP
+==================
+
+### Sintaks
+phpenmod MODULE_NAME
+
+### Aktifkan modul php mbstring
+phpenmod mbstring
+
+
+Anda juga dapat menentukan versi PHP menggunakan -v untuk mengaktifkan modul tertentu (switch). Dengan menggunakan ini, Anda akan mengaktifkan modul untuk semua SAPI.
+
+### Sintaks
+phpenmod -v <VERSI PHP> <NAMA MODUL>
+
+### Aktifkan modul untuk versi php tertentu
+phpenmod -v 5.6 mbstring
+phpenmod -v 7.4 mbstring
+
+
+Gunakan -s sakelar untuk menentukan SAPI guna mengaktifkan modul khusus untuk SAPI tertentu untuk semua versi PHP.
+
+### Sintaks
+phpenmod -s <SAPI> <NAMA MODUL>
+
+### Aktifkan modul untuk SAPI tertentu
+phpenmod -s cli mbstring
+phpenmod -s fpm mbstring
+phpenmod -s apache2 mbstring
+
+Anda juga dapat menentukan versi PHP dan SAPI untuk pembaruan yang lebih spesifik.
+
+
+Nonaktifkan Modul PHP
+====================
+Anda juga dapat menonaktifkan modul PHP yang tidak perlu dari sistem Anda menggunakan perintah phpdismod . Misalnya, nonaktifkan modul mbstring untuk SEMUA versi PHP dan semua SAPI.
+# phpdismod mbstring
+
+Untuk menonaktifkan modul apa pun untuk versi PHP tertentu, gunakan perintah di bawah ini.
+# phpdismod -v 7.4 mbstring
+
+Untuk menonaktifkan modul apa pun untuk SAPI tertentu pada semua versi PHP, gunakan perintah di bawah ini.
+# phpdismod -s apache2 mbstring
+
