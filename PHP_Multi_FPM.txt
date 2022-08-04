@@ -141,21 +141,3 @@ Install Extension
 sudo apt-get install php8.1-mysql php8.1-json php8.1-gd php8.1-mbstring php8.1-curl php8.1-cgi php8.1-xsl php8.1-zip -y
 sudo apt install php8.1-mysql -y
 sudo apt install php8.1-curl php8.1-zip -y
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
