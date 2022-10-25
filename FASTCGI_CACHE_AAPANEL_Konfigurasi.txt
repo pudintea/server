@@ -8,7 +8,7 @@ KONFIGURASI FASTCGI DI AAPANEL
 : youtube.com/c/pudintea
 
 ===========================
-
+SUMBER : https://www.pdn.my.id/2022/10/tutorial-aktifkan-fastcgi-cache-wordpress-aapanel.html
 
 Login dengan ssh dengan putty lalu buat folder seperti di bawah ini
 
@@ -103,6 +103,8 @@ PERCOBAAN
 Selanjutnya buka web kamu, klik kana > Inspeksi > Network/Jaringan > Reload lagi halaman > Pilih domain > Header
 - nginx-cache: HIT
 - x-cache: HIT From namadomainkamu
+
+SUMBER : https://www.pdn.my.id/2022/10/tutorial-aktifkan-fastcgi-cache-wordpress-aapanel.html
 
 Sampai disini harunsya sudah berhasil dengan baik.
 
