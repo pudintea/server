@@ -7,6 +7,9 @@ Tutorial Aktifkan FastCGI Cache WordPress dengan aaPanel.
 : youtube.com/c/pudintv
 : youtube.com/c/pudintea
 
+SUMBER : https://www.pdn.my.id/2022/10/tutorial-aktifkan-fastcgi-cache-wordpress-aapanel.html
+
+
 Buat Folder Cache
 # mkdir /dev/shm/fastcgi-cache
 
@@ -24,7 +27,7 @@ fastcgi_ignore_headers Cache-Control Expires Set-Cookie;
 site configuration > Config
 Simpan dibawah #SSL-END 
 ---------------------------------------------
-set $skip_cache 0;
+        set $skip_cache 0;
         if ($request_method = POST) {
             set $skip_cache 1;
         }   
@@ -66,12 +69,19 @@ set $skip_cache 0;
             fastcgi_cache_purge WORDPRESS "$scheme$request_method$host$1";
         }
 
+NOTE :
+Sesuaikan 
+1. fastcgi_pass unix:/tmp/php-cgi-80.sock;
+2. allow "change_to_your_server_ip";
+
+
 Tambahkan di wp-config.php
 ------------------------------------------------
 
 define('RT_WP_NGINX_HELPER_CACHE_PATH', '/dev/shm/fastcgi-cache');
 
-
+------------- END --------------------------
+SUMBER : https://www.pdn.my.id/2022/10/tutorial-aktifkan-fastcgi-cache-wordpress-aapanel.html
 
 
 
