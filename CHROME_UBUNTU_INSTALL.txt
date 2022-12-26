@@ -1,0 +1,15 @@
+1. Download Google Chrome
+Buka terminal Anda dengan menggunakan keyboard shortcut Ctrl+Alt+T atau dengan mengklik ikon terminal.
+
+Unduh paket Google .deb Google Chrome terbaru dengan wget :
+
+# wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+
+2. Install Google Chrome
+Menginstal paket di debian membutuhkan hak akses sudo. Pastikan Anda menjalankan perintah berikut sebagai pengguna dengan hak sudo.
+
+Instal paket Google Chrome .deb dengan mengetik:
+
+# sudo dpkg -i google-chrome-stable_current_amd64.deb
+
+Anda akan diminta memasukkan kata sandi pengguna Anda.
