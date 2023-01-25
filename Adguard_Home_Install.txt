@@ -1,0 +1,35 @@
+: Pudin S.
+: t.me/pudin_ira
+: instagram.com/pudin.ira
+: https://www.pdn.my.id
+: youtube.com/c/pudintv
+: youtube.com/c/pudintea
+
+- mengganti waktu server localtime jakarta
+# mv /etc/localtime /etc/localtime-asal
+# cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+
+- mengubah timezone asia-jakarta
+# timedatectl set-timezone Asia/Jakarta
+
+
+=== INSTALL DNS ADGUARD HOME ===
+# sudo snap install adguard-home
+
+Port 3000
+Buka Browser
+IPADRRES SERVER : 3000
+
+# cp /etc/systemd/resolved.conf /etc/systemd/resolved-asli.conf
+Edit : nano /etc/systemd/resolved.conf
+
+[Resolve]
+DNS=127.0.0.1
+DNSStubListener=no
+
+# sudo mv /etc/resolv.conf /etc/resolv.conf.backup
+# ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
+
+
+Restart DNSStubListener:
+# systemctl reload-or-restart systemd-resolved
