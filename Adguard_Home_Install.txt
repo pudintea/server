@@ -12,6 +12,9 @@
 - mengubah timezone asia-jakarta
 # timedatectl set-timezone Asia/Jakarta
 
+Tools Tambahan
+# sudo apt install net-tools
+# sudo apt install traceroute
 
 === INSTALL DNS ADGUARD HOME ===
 # sudo snap install adguard-home
