@@ -3,6 +3,10 @@
 -- Web : https://www.italazhar.com
 ======================================
 
+Tools Tambahan
+# sudo apt install net-tools
+# sudo apt install traceroute
+
 
 Perintah Install
 ===========
