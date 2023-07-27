@@ -1,0 +1,60 @@
+
+Nama : Pudin S.I
+- https://t.me/pudin.ira
+- https://instagram.com/pudin.ira
+
+
+Install SNMP
+# apt-get install snmpd
+
+Backup file konfigurasi asli
+# mv /etc/snmp/snmpd.conf /etc/snmp/snmpd.conf.ori
+
+Buat file konfigurasi baru
+# nano /etc/snmp/snmpd.conf
+
+Masukan script dibawah ini, dan sesuaikan
+### ===================================
+# this create a  SNMPv1/SNMPv2c community named "my_servers"
+# and restricts access to LAN adresses 192.168.0.0/16 (last two 0's are ranges)
+rocommunity my_servers 192.168.0.0/16
+
+# setup info
+syslocation  "rack 1, room 3, serverrroom"
+syscontact  "Svenn"
+
+# open up
+agentAddress  udp:161
+
+# run as
+agentuser  root
+
+# dont log connection from UDP:
+dontLogTCPWrappersConnects yes
+
+# fix for disks larger then 2TB
+realStorageUnits 0
+### =================================
+
+
+
+Konfigurasi untuk firewall Iptables
+# iptables -A INPUT -s 192.168.0.0/16 -p udp --dport 161 -j ACCEPT
+
+Restart service SNMP/SNMPD
+# service snmpd restart
+
+Aktifkan secara Default
+# update-rc.d snmpd enable
+
+Test Konfigurasi
+# snmpwalk -c my_server -v1 servername SNMPv2-MIB::sysDescr.0
+
+Ini harus mengembalikan sesuatu seperti:
+
+SNMPv2-MIB::sysDescr.0 = STRING: Linux ...
+
+Itu saja, selamat mencoba..!
+
+
+### ==================================================================================================== ###
