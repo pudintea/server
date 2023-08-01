@@ -1,0 +1,83 @@
+Tahap Instalasi
+
+Perintah untuk menginstall SNMP dan kelengkapanya:
+
+# sudo apt-get install snmp snmpd snmp-mibs-downloader
+
+setelah berhasil diinstall, mari kita lengkapi dengan melakukan beberapa konfigurasi
+yang pertama adalah di file /etc/snmp/snmp.conf melalui perintah:
+
+# nano /etc/snmp/snmp.conf
+
+cari bagian:
+
+ mibs :
+
+lalu ubah menjadi:
+
+ #mibs :
+
+simpan, lalu buka lagi file yang akan kita setting yang berada di /etc/smp/snmpd.conf dengan perintah:
+
+# nano /etc/snmp/snmpd.conf
+
+kemudian cari bagian:
+
+ agentAddress  udp:127.0.0.1:161
+
+ubah menjadi:
+
+ #agentAddress  udp:127.0.0.1:161
+
+lalu cari selanjutnya bagian:
+
+ #agentAddress udp:161,udp6:[::1]:161
+
+ubah menjadi:
+
+ agentAddress udp:161,udp6:[::1]:161
+
+setelah itu pada bagian:
+
+ #rocommunity public localhost
+ rocommunity public  default    -V systemonly
+ rocommunity6 public  default   -V systemonly 
+
+menjadi: 
+
+ rocommunity server  localhost
+ # rocommunity public  default    -V systemonly
+ # rocommunity6 public  default   -V systemonly
+
+dan terakhir pada bagian:
+
+ #rocommunity secret  10.0.0.0/16
+
+menjadi:
+
+ rocommunity server  192.168.1.0/24
+
+Keterangan: alamat host yang akan saya monitoring memiliki alamat IP 192.168.1.5 dengan netmask 255.255.255.0.
+
+Setelah berhasil diubah sesuai dengan konfigurasi di atas maka selanjutnya  kita save.
+
+langkah selanjutnya adalah restart layanan snmp dengan perintah:
+
+#>  sudo service snmpd restart
+
+selanjutnya, kita test dengan menjalankan perintah:
+
+#>  snmpwalk -v 2c -c server localhost system
+
+jika layanan snmp berjalan dengan normal maka akan terlihat tampilan nomer perangkat
+
+
+
+If you can check, SNMP is now listening on two interfaces;
+
+# netstat -nlpu|grep snmp
+
+udp    16128      0 192.168.43.154:161      0.0.0.0:*                           10057/snmpd         
+udp     3072      0 127.0.0.1:161           0.0.0.0:*                           10057/snmpd
+
+
