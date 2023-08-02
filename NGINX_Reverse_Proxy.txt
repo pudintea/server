@@ -1,0 +1,46 @@
+Akses Ke Banyak Aplikasi Backend Lewat Satu Pintu | REAL CASE !!!
+
+/**
+* Pudin S Ilham
+* pudin.alazhar@gmail.com
+**/
+
+Install NGINX
+# sudo apt install nginx
+
+Cek sudah running atau belum
+# sudo systemctl status nginx
+
+Pindah ke folder konfigurasi
+# cd /etc/nginx/sites-available
+
+Kita hapus konfigurasi default (optional)
+# sudo rm -rf default
+# sudo rm -rf ../sites-enabled/default
+
+Jangan lupa arahkan domain ke server reverse proxy
+Buat file konfigurasi baru di folder tadi untuk domain yang tadi sudah di arahkan
+# nano contoh1pudin
+
+buat file konfigurasi seperti di bawah ini :
+server{
+  listen 80;
+  server_name contoh1.pudin.my.id;
+  location / {
+    proxy_pass http://192.168.20.3:8080;
+  }
+}
+
+Save dan exit
+Control X, Y, Enter.
+
+setelah selesai, buat symbilik link, perhatikan dibawah ini
+# sudo ln -s /etc/nginx/sites-available/contoh1pudin /etc/nginx/sites-enabled/
+
+Cek konfigurasi nginx, apakah ada error
+# sudo nginx -t
+
+Selanjutnya restart
+# sudo systemctl restart nginx
+
+##==========================================================================================##
