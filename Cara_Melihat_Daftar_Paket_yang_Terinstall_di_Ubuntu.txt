@@ -1,0 +1,43 @@
+Cara Melihat Daftar Paket yang Terinstall di Ubuntu
+===================================================
+
+1. Perintah mencetak daftar semua paket yang telah diinstal, termasuk informasi tentang versi paket dan arsitektur.
+# sudo apt list --installed
+
+2. Perintah juga akan mencetak daftar paket panjang. Merupakan ide yang bagus untuk menyalurkan output menjadi lebih sedikit agar lebih mudah dibaca. Gunakan perintah less untuk memotong per halaman baris perintah
+# sudo apt list --installed | less
+
+3. Untuk mengetahui apakah paket tertentu diinstal, Anda dapat memfilter output dengan perintah grep. Misalnya, untuk mengetahui apakah paket screen diinstal pada sistem kami, maka perintahnya:
+# sudo apt list --installed | grep screen
+screen/bionic,now 4.6.2-1 amd64 [installed]
+
+Output di atas menunjukkan bahwa kita memiliki versi screen 4.6.2-1 diinstal pada sistem kami.
+
+
+
+Lihat Daftar Paket Terinstal dengan dpkg-query
+===============================================
+Jika Anda menjalankan versi Ubuntu yang lebih lama, maka Anda dapat menggunakan perintah dpkg-query untuk melihat daftar paket:
+Anda dapat memfilter output dpkg-query -l dengan grep, sama dengan output apt:
+# sudo dpkg-query -l | grep nama_paket
+
+
+
+Buat daftar semua paket yang diinstal
+=====================================
+Untuk membuat daftar nama semua paket yang diinstal pada sistem Ubuntu atau Debian Anda, kemudian menyimpannya dalam file bernama daftar_paket.txt, jalankan perintah berikut:
+
+# sudo dpkg-query -f '${binary:Package}\n' -W > daftar_paket.txt
+
+Sekarang Anda memiliki daftar paket yang terinstal, jika Anda ingin menginstal paket yang sama di server baru Anda, Anda dapat melakukannya dengan dengan perintah xargs berikut :
+
+# sudo xargs -a daftar_paket.txt apt install
+Hitung jumlah paket yang terinstall pada mesin Ubuntu dan Debian
+Untuk mengetahui berapa banyak paket yang telah diinstal pada sistem, Anda dapat menggunakan perintah yang sama seperti sebelumnya tetapi alih-alih mengarahkan output ke file, Anda dapat mengirimkannya ke utilitas wc untuk menghitung baris:
+
+# sudo dpkg-query -f '${binary:Package}\n' -W | wc -l
+544
+Seperti yang Anda lihat, saya memiliki 544 paket yang diinstal di server Ubuntu saya.
+
+
+===================== END ===============================
