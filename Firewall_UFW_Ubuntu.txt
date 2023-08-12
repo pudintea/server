@@ -1,0 +1,119 @@
+
+Install Firewall UFW di Ubuntu 14.04
+	sudo apt-get install ufw
+	
+pengaturan
+	sudo nano /etc/default/ufw
+
+
+Check UFW Status and Rules
+	sudo ufw status verbose
+	
+Cek setatus ada nomernya
+	sudo ufw status numbered
+	
+	output
+	Status: active
+
+     To                         Action      From
+     --                         ------      ----
+	[ 1] 22                         ALLOW IN    15.15.15.0/24
+	[ 2] 80                         ALLOW IN    Anywhere
+	
+Menghapus berdasarkan nomernya
+	sudo ufw delete 2
+	
+default UFW
+	Output:
+	Status: inactive
+
+Mengaktifkan firewall UFW
+	sudo ufw enable
+	Catatan : Sebaiknya sebelum mengaktifkan Firewall UFW harus Allow dulu Port SSH, jika anda menggunakan SSH
+	
+Mematikan firewall UFW
+	sudo ufw disable
+	
+Mereset Firewal UFW // menghilangkan semua aturan
+	sudo ufw reset
+	
+Port SSH
+	sudo ufw allow ssh 			// artinya aksess ssh di perbolehkan.
+	sudo ufw allow 22
+	sudo ufw allow 2222 		// jika port sudah di ganti.
+	
+	sudo ufw deny ssh			// Tidak boleh aksess ssh
+	
+Port HTTP/80:
+	sudo ufw allow 80 			// artinya aksess HTTP di perbolehkan.
+	sudo ufw allow http
+	
+	sudo ufw deny http			//	artinya tidak boleh aksess ke port http/80
+	
+Port HTTPS/443:
+	sudo ufw allow https		// Aksess HTTPS di persilahkan.
+	sudo ufw allow 443
+
+Port FTP/21:
+	sudo ufw allow ftp  		// Port FTP dipersilahkan
+	sudo ufw allow 21/tcp
+	
+Misalnya, untuk memungkinkan koneksi X11, yang menggunakan port 6000-6007,
+	sudo ufw allow 6000:6007/tcp
+   	sudo ufw allow 6000:6007/udp
+
+Mengijinkan Alamat Ip Terntentu Untuk Mengaksess contoh ip 15.15.15.15
+	sudo ufw allow from 15.15.15.51 // boleh
+	
+	sudo ufw deny from 15.15.15.51	// Tidak boleh
+
+Memperbolehkan alamat ip tertentu terhubung ke port tertentu, misalhak ip 15.15.15.15 ke port 22/ssh
+	sudo ufw allow from 15.15.15.51 to any port 22
+	
+Mengijinkan subnate/network ip tertentu
+	sudo ufw allow from 15.15.15.0/24
+	
+Memperbolehkan subnate/network tertentu terhubung ke port tertentu, misalhak ip 15.15.15.15/24 ke port 22/ssh
+	sudo ufw allow from 15.15.15.0/24 to any port 22
+	
+-- Mengatur koneksi melalui interface
+melihat interface
+	ip addr
+	
+	contoh yang tampil:
+	...
+	2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state
+	...
+	3: eth1: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN group default 
+	...
+	
+mengijinkan lalulintas port 80/http dari eth0
+	sudo ufw allow in on eth0 to any port 80
+	
+Mengijinkan koneksi ke eth 1 masuk ke port mysql/3306
+	sudo ufw allow in on eth1 to any port 3306
+
+#MENONAKTIFKAN PING/ ICMP
+aksess di /etc/ufw/before.rules
+
+kasih #
+
+# ok icmp codes for INPUT
+#-A ufw-before-input -p icmp --icmp-type destination-unreachable -j ACCEPT
+#-A ufw-before-input -p icmp --icmp-type source-quench -j ACCEPT
+#-A ufw-before-input -p icmp --icmp-type time-exceeded -j ACCEPT
+#-A ufw-before-input -p icmp --icmp-type parameter-problem -j ACCEPT
+#-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT
+
+tambah 
+
+# drop icmp codes for INPUT
+-A ufw-before-input -p icmp --icmp-type destination-unreachable -j DROP
+-A ufw-before-input -p icmp --icmp-type source-quench -j DROP
+-A ufw-before-input -p icmp --icmp-type time-exceeded -j DROP
+-A ufw-before-input -p icmp --icmp-type parameter-problem -j DROP
+-A ufw-before-input -p icmp --icmp-type echo-request -j DROP
+
+
+
+===============================END=========================================
