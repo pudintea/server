@@ -1,0 +1,62 @@
+============Htaccess==============
+
+1. Akses admin dari satu IP
+Tips pertama untuk meningkatkan keamanan website yaitu dengan membuat akses login di wp-admin hanya bisa diakses dengan satu IP saja.
+Caranya masuk ke folder wp-admin dan buat file .htaccess dan masukan kode dibawah ini :
+
+order deny,allow
+allow from 202.090.21.1 (ganti dengan IP address Anda)
+deny from all
+
+
+2. Mengamankan file WordPress wp-config.php dan xmlrpc.php
+Jadi untuk lebih amannya Anda bisa mengamankannya dengan menambah kode dibawah ini pada file .htaccess.
+
+<Files wp-config.php>
+    order allow,deny
+    deny from all
+</Files>
+
+<Files xmlrpc.php>
+    order allow,deny
+    deny from all
+</Files>
+
+
+3. Memblokir IP berbahaya
+Jika terdeteksi ada percobaan login illegal ke akun website atau database Anda, maka lebih baik segera melakukan blokir terhadap IP tersebut.
+Brute force attack seperti ini memang bukanlah hal yang asing lagi, sudah banyak kejadian website dibobol dengan brute force attack.
+
+<Limit GET POST>
+    order allow,deny
+    deny from 202.090.21.1 (ganti dengan IP yang diblokir )
+    allow from all
+</Limit>
+
+
+4. Mencegah akses ke inc
+Folder inc dalam website berisi file-file penting seperti template, plugin, image, video dan lainnya.
+
+Order deny,allow
+Deny from all
+<Files ~”.(xml|css|jpe?g|png|gif|js)$”>
+   Allow from all
+</Files>
+
+5. Menutup akses ke direktori
+Ketika hacker sudah faham strukturnya, solusinya Anda bisa menutup akses direktori agar terhindar dari pencurian data pada direktori.
+
+#directory browsing
+Options All -Indexes
+
+Anda juga bisa mengkustom folder secara individu, tidak semua folder Anda tutup aksesnya.
+Jadi Anda bisa mengamankan folder yang dirasa penting saja dan memang perlu dilindungi.
+
+#Protect the .htaccess (.htaccess bisa diganti sesuai nama folder yang diblokir)
+<files .htaccess="">
+  order allow,deny
+  deny from all
+</files>
+
+
+============END====================
