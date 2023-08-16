@@ -1,4 +1,5 @@
 ============Htaccess==============
+# chmod -R 444 .htaccess
 
 1. Akses admin dari satu IP
 Tips pertama untuk meningkatkan keamanan website yaitu dengan membuat akses login di wp-admin hanya bisa diakses dengan satu IP saja.
