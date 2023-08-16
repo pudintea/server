@@ -99,6 +99,154 @@ security2_module (shared) // tandanya sudah aktif
 # sudo mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
 # sudo service apache2 reload
 
+File konfigurasi ModSecurity default diatur ke DetectionOnly, yang mencatat permintaan sesuai dengan aturan yang cocok dan tidak memblokir apa pun. Ini dapat diubah dengan mengedit modsecurity.conffile dan memodifikasi SecRuleEnginedirektif. Jika Anda mencoba ini di server produksi, ubah arahan ini hanya setelah menguji semua aturan Anda.
+# sed -i "s/SecRuleEngine DetectionOnly/SecRuleEngine On/" /etc/modsecurity/modsecurity.conf
+
+The SecResponseBodyAccessmengkonfigurasi direktif apakah tubuh respon buffer (yaitu dibaca oleh ModSecurity). Ini hanya diperlukan jika deteksi dan perlindungan kebocoran data diperlukan. Oleh karena itu, membiarkannya aktif akan menghabiskan sumber daya Droplet dan juga meningkatkan ukuran file log, jadi kami akan mematikannya.
+# sed -i "s/SecResponseBodyAccess On/SecResponseBodyAccess Off/" /etc/modsecurity/modsecurity.conf
+
+Secara khusus, SecRequestBodyLimitdirektif menentukan ukuran data POST maksimum. Jika sesuatu yang lebih besar dikirim oleh klien, server akan merespons dengan kesalahan 413 Permintaan Entitas Terlalu Besar . Jika aplikasi web Anda tidak memiliki file yang diunggah, nilai ini dapat dibiarkan apa adanya. Nilai pra-konfigurasi yang ditentukan dalam file konfigurasi adalah 13107200 byte (12,5MB). Jika Anda ingin mengubah nilai ini, cari baris berikut modsecurity.conf:
+
+Perubahan direktif "modsecurity.conf" opsional
+# nano /etc/modsecurity/modsecurity.conf
+- SecRequestBodyLimit 13107200
+- SecRequestBodyLimit 131072  //Ubah aja jadi segini   
+
+Arahan yang mempengaruhi kinerja server adalah SecRequestBodyInMemoryLimit. Arahan ini cukup jelas; itu menentukan berapa banyak data "badan permintaan" (data POSTed) harus disimpan dalam memori (RAM), apa pun lagi akan ditempatkan di hard disk (seperti bertukar). Karena Droplet menggunakan SSD, ini bukan masalah besar. Namun, ini dapat diubah jika Anda memiliki RAM cadangan. Nilai pra-konfigurasi untuk arahan ini adalah 128KB. Jika Anda ingin mengubah nilai ini, cari baris berikut modsecurity.conf:
+
+Perubahan direktif "modsecurity.conf" opsional
+# nano /etc/modsecurity/modsecurity.conf
+- SecRequestBodyInMemoryLimit 131072
+
+---- YANG INI DARI CATATAN LAMA - GAK SAYA PAKE
+https://github.com/SpiderLabs/owasp-modsecurity-crs.git
+
+IncludeOptional /usr/share/owasp-modsecurity-crs-3.2-dev/crs-setup.conf
+IncludeOptional /usr/share/owasp-modsecurity-crs-3.2-dev/rules/*.conf
+
+======================================
+
+Mengaktifkan CRS
+Untuk mempermudah, ada banyak aturan yang sudah diinstal bersama dengan ModSecurity. Ini disebut CRS (Core Rule Set) dan terletak di /usr/share/modsecurity-crs direktori. Untuk memuat aturan ini, kita perlu mengkonfigurasi Apache untuk membaca .conffile di direktori ini, jadi buka security2.conffile untuk diedit.
+
+# nano /etc/apache2/mods-enabled/security2.conf
+
+Tambahkan dua arahan berikut, disorot dengan warna merah, di dalam sebelum baris terakhir dalam file ( </IfModule>).
+
+- Keamanan2.conf yang diperbarui
+	IncludeOptional /etc/modsecurity/*.conf
+	IncludeOptional "/usr/share/modsecurity-crs/*.conf"
+	IncludeOptional "/usr/share/modsecurity-crs/activated_rules/*.conf"
+</IfModule>
+
+
+- Tidak termasuk Direktori/Domain (Opsional)
+Terkadang masuk akal untuk mengecualikan direktori atau nama domain tertentu jika menjalankan aplikasi, seperti phpMyAdmin, karena ModSecurity akan memblokir kueri SQL. Juga lebih baik untuk mengecualikan backend admin dari aplikasi CMS seperti WordPress. Jika Anda mengikuti tutorial ini di server baru, Anda dapat melewati langkah ini.
+
+Untuk menonaktifkan ModSecurity untuk VirtualHost lengkap, tempatkan arahan berikut di dalam <VirtualHost>[...]</VirtualHost>blok di file host virtualnya.
+
+<IfModule security2_module>
+	SecRuleEngine Off
+</IfModule>
+
+- Untuk menghilangkan direktori tertentu (misalnya, /var/www/wp-admin):
+
+<Directory "/var/www/wp-admin">
+    <IfModule security2_module>
+	SecRuleEngine Off
+    </IfModule>
+</Directory>
+
+- Jika Anda tidak ingin sepenuhnya menonaktifkan ModSecurity di direktori, gunakan SecRuleRemoveByIddirektif untuk menghapus aturan atau rantai aturan tertentu dengan menentukan ID-nya.
+
+<LocationMatch "/wp-admin/update.php">
+    <IfModule security2_module>
+	SecRuleRemoveById 981173
+    </IfModule>
+</LocationMatch>
+
+
+
+- Mengaktifkan Aturan Injeksi SQL
+Selanjutnya, kita akan mengaktifkan file aturan injeksi SQL. File aturan yang diperlukan harus disinkronkan ke activated_rulesdirektori, yang mirip dengan mods-enableddirektori Apache . Ubah ke activated_rulesdirektori.
+
+# cd /usr/share/modsecurity-crs/activated_rules/
+ 
+Kemudian buat tautan simbolis dari modsecurity_crs_41_sql_injection_attacks.conffile.
+# ln -s ../base_rules/modsecurity_crs_41_sql_injection_attacks.conf .
+ 
+Terakhir, muat ulang Apache agar aturan diterapkan.
+# service apache2 reload
+
+- Jika halaman PHPMYADMIN tidak bisa di akses, seperti perintah di atas, kita memasukan perintah tambahan di virtualhost phpmyadmin
+# nano /etc/apache2/conf-available/phpmyadmin.conf
+- Tambahnakn secript di bawah ini, simpan di paling bawah
+
+<IfModule security2_module>
+	SecRuleEngine Off
+</IfModule>
+
+ini juga berlaku untuk semua file virtualhost di etc/apache/sit-available  yang butuh terhubung ke databasess
+
+
+Sekarang buka halaman login yang kita buat sebelumnya dan coba gunakan query injeksi SQL yang sama pada kolom username. Karena kami mengubah SecRuleEnginedirektif ke Ondalam langkah 2, kesalahan 403 Forbidden ditampilkan. (Jika SecRuleEnginedibiarkan pada DetectionOnlyopsi, injeksi akan berhasil tetapi upaya akan dicatat dalam modsec_audit.logfile.)
+
+Karena skrip login PHP ini hanya dimaksudkan untuk menguji ModSecurity, Anda harus menghapusnya sekarang setelah pengujian selesai.
+
+sudo rm /var/www/html/login.php
+
+=============================================
+- Jika masih ingin di tambah lagi aturan nya
+Menulis Aturan Anda Sendiri
+
+Di bagian ini, kami akan membuat rantai aturan yang memblokir permintaan jika kata-kata tertentu yang biasanya dikaitkan dengan spam dimasukkan dalam bentuk HTML.
+
+Pertama, kita akan membuat contoh skrip PHP yang mendapatkan input dari kotak teks dan menampilkannya kembali ke pengguna. Buka file yang dipanggil form.phpuntuk diedit.
+
+sudo nano /var/www/html/form.php
+ 
+Tempelkan kode berikut:
+
+/var/www/html/form.php
+<html>
+    <body>
+        <?php
+            if(isset($_POST['data']))
+                echo $_POST['data'];
+            else
+            {
+        ?>
+                <form method="post" action="">
+                        Enter something here:<textarea name="data"></textarea>
+                        <input type="submit"/>
+                </form>
+        <?php
+            }
+        ?>
+    </body>
+</html>
+ 
+Aturan khusus dapat ditambahkan ke salah satu file konfigurasi atau ditempatkan di direktori ModSecurity. Kami akan menempatkan aturan kami di file baru yang terpisah bernama modsecurity_custom_rules.conf.
+
+sudo nano /etc/modsecurity/modsecurity_custom_rules.conf
+Rekatkan yang berikut ini di file ini. Dua kata yang kami blokir adalah blockword1 dan blockword2 .
+
+modsecurity_custom_rules.conf
+SecRule REQUEST_FILENAME "form.php" "id:'400001',chain,deny,log,msg:'Spam detected'"
+SecRule REQUEST_METHOD "POST" chain
+SecRule REQUEST_BODY "@rx (?i:(blockedword1|blockedword2))"
+ 
+Sintaks untuk SecRuleadalah SecRule VARIABLES OPERATOR [ACTIONS]. Di sini kita menggunakan tindakan berantai untuk mencocokkan variabel REQUEST_FILENAMEdengan form.php, REQUEST_METHODdengan POST, dan REQUEST_BODYdengan (@rx)string ekspresi reguler (blockedword1|blockedword2). Melakukan ?i:pertandingan yang tidak peka huruf besar/kecil. Pada kecocokan yang sukses dari ketiga aturan ini, ACTIONadalah untuk menolak dan masuk dengan msg "Spam detected."Tindakan berantai mensimulasikan logika AND untuk mencocokkan ketiga aturan tersebut.
+
+Simpan file dan muat ulang Apache.
+
+sudo service apache2 reload
+Buka di peramban. Jika memasukkan teks yang berisi kata-kata yang diblokir1 atau kata yang diblokir2, Anda akan melihat halaman 403.http://your_server_ip/form.php
+
+Karena skrip formulir PHP ini hanya dimaksudkan untuk menguji ModSecurity, Anda harus menghapusnya sekarang setelah pengujian selesai.
+
+sudo rm /var/www/html/form.php
+
 ======================================
 
 
