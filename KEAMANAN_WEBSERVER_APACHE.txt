@@ -3,7 +3,7 @@
 =
 Menonaktifkan Info Versi PHP
 =============================
-#nano php.ini
+# nano etc/php5/apache2/php.ini
 ubah perintah ini jadi 'Off'
 expose_php = Off
 
@@ -24,7 +24,8 @@ Jika memasang di apache
 
 # a2enmod headers
 # service apache2 restart
-# nano apache2/conf-available/security.conf
+Debian based systems: # nano /etc/apache2/conf-enabled/security.conf
+Redhat based systems: # nano /etc/httpd/conf/httpd.conf
 
 pilih masukan dan sesuaikan
 
