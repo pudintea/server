@@ -96,11 +96,8 @@ $ sudo apachectl -M | grep --color security2
 
 security2_module (shared) // tandanya sudah aktif
 
-
-https://github.com/SpiderLabs/owasp-modsecurity-crs.git
-
-IncludeOptional /usr/share/owasp-modsecurity-crs-3.2-dev/crs-setup.conf
-IncludeOptional /usr/share/owasp-modsecurity-crs-3.2-dev/rules/*.conf
+# sudo mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
+# sudo service apache2 reload
 
 ======================================
 
