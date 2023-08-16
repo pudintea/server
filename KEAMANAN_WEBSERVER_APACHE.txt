@@ -1,0 +1,35 @@
+======KEAMANAN_WEBSERVER_APACHE=========
+
+Konfigurasi X-Frame-Options 
+========================================
+Mengamankan server web Apache Anda dari serangan clickjacking
+Jika memasang di .htaccess
+Header append X-Frame-Options: "SAMEORIGIN"
+
+
+Jika memasang di apache
+
+# a2enmod headers
+# service apache2 restart
+# nano apache2/conf-available/security.conf
+
+pilih masukan dan sesuaikan
+
+1. Allow for Same Origin (Default Action)
+Header set X-Frame-Options: "SAMEORIGIN"
+
+2. Allow from specific origin
+Header set X-Frame-Options: "ALLOW-FROM http://example.com/" 
+Header set X-Frame-Options: "ALLOW-FROM http://www.example.com/" 
+Header set X-Frame-Options: "ALLOW-FROM https://example.com/" 
+Header set X-Frame-Options: "ALLOW-FROM https://www.example.com/" 
+
+3. Deny to everyone
+Header set X-Frame-Options: "DENY"
+
+Menurut saya gunakan yang default saja no 1.
+
+# service apache2 restart
+
+
+===========END===========================
