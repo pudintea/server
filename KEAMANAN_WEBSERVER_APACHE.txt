@@ -89,7 +89,7 @@ disable_functions = phpinfo
 =
 Anda dapat menginstall mod security dengan perintah berikut:
 
-$ sudo apt-get install libapache2-modsecurity2
+$ sudo apt-get install libapache2-mod-security2 -y
 Untuk mengecek apakah mod_security modul sudah berjalan, gunakan perintah berikut:
 
 $ sudo apachectl -M | grep --color security2
