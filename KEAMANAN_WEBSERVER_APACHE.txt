@@ -97,7 +97,7 @@ $ sudo apachectl -M | grep --color security2
 
 security2_module (shared) // tandanya sudah aktif
 
-# sudo mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
+# sudo cp /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
 # sudo service apache2 reload
 
 File konfigurasi ModSecurity default diatur ke DetectionOnly, yang mencatat permintaan sesuai dengan aturan yang cocok dan tidak memblokir apa pun. Ini dapat diubah dengan mengedit modsecurity.conffile dan memodifikasi SecRuleEnginedirektif. Jika Anda mencoba ini di server produksi, ubah arahan ini hanya setelah menguji semua aturan Anda.
