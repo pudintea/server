@@ -1,5 +1,18 @@
 ======KEAMANAN_WEBSERVER_APACHE=========
+1
+=
+Menonaktifkan Info Versi PHP
+=============================
+#nano php.ini
+ubah perintah ini jadi 'Off'
+expose_php = Off
 
+Test
+wget --server-response --spider https://namawebsiteanda.com/
+
+
+2
+=
 Konfigurasi X-Frame-Options 
 ========================================
 Mengamankan server web Apache Anda dari serangan clickjacking
@@ -30,6 +43,77 @@ Header set X-Frame-Options: "DENY"
 Menurut saya gunakan yang default saja no 1.
 
 # service apache2 restart
+
+
+Ubuntu 14.04.4
+
+3
+=
+Sembunyikan informasi mengenai server apache yang digunakan,
+$nano /etc/apache2/conf-enabled/security.conf 
+Ganti dari = ServerTokens OS 
+Menjadi =  ServerTokens Prod.
+‘Prod’ hanya menyediakan least information.
+=========================================================
+
+4
+=
+menyembunyikan informasi mengenai versi server yang digunakan dan lain-lain
+$nano /etc/apache2/conf-enabled/security.conf 
+‘ServerSignatures’ 
+dari bernilai = ‘On’ 
+menjadi = ‘Off’
+=============================================================
+
+5
+=
+Nonaktifkan autoindex, Metoda ini sering digunakan untuk XSS attack oleh hacker.
+$nano /etc/apache2/conf-enabled/security.conf 
+
+TraceEnable Off
+=============================================================
+
+6
+=
+Menonaktifkan info php
+$ nano /etc/php5/apache2/php.ini
+
+search:
+Ctrl + W
+
+disable_functions = phpinfo
+====================================================================
+
+
+7
+=
+Anda dapat menginstall mod security dengan perintah berikut:
+
+$ sudo apt-get install libapache2-modsecurity2
+Untuk mengecek apakah mod_security modul sudah berjalan, gunakan perintah berikut:
+
+$ sudo apachectl -M | grep --color security2
+
+security2_module (shared) // tandanya sudah aktif
+
+
+https://github.com/SpiderLabs/owasp-modsecurity-crs.git
+
+IncludeOptional /usr/share/owasp-modsecurity-crs-3.2-dev/crs-setup.conf
+IncludeOptional /usr/share/owasp-modsecurity-crs-3.2-dev/rules/*.conf
+
+======================================
+
+
+Apache pada dasarnya adalah penyedia konten web, dimana didalamnya ada banyak sekali fungsi yang bisa dimanfaatkan supaya mendapatkan hasil yang baik. Namun, adakalanya kemampuan standar tidak cukup. Hal ini terjadi karena, kebutuhan yang terus meningkat. Sehingga dibutuhkan konfigurasi ulang supaya dapat mendapatkan hasil yang cukup.
+
+Non aktifkan KeepAlive
+Untuk menonaktifkan keepalive, cukup masuk ke /etc/apache2/apache2.conf kemudian edit file tersebut. cari KeepAlive dan isi dengan off.
+
+Set TimeOut yang cukup
+Timeout sebetulnya ini juga pengaruh, namun untuk server yang digunakan untuk scrapping ada baiknya timeout ini diperlebar. sementara, untuk server yang tidak memiliki waktu proses eksekusi yang tidak lama bisa disetting dengan nilai paling sedikit.
+
+Demikian. Semoga membantu.
 
 
 ===========END===========================
