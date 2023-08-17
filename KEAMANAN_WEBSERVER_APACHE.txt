@@ -12,25 +12,40 @@ wget --server-response --spider https://namawebsiteanda.com/
 
 
 2
-=
-Konfigurasi X-Frame-Options 
-========================================
+==
+Setup X-Frame-Options with .htaccess
+======================================
 Mengamankan server web Apache Anda dari serangan clickjacking
-Jika memasang di .htaccess
+
 Header append X-Frame-Options: "SAMEORIGIN"
 
+<IfModule mod_headers.c>
+   Header set X-XSS-Protection "1; mode=block"
+   Header set X-Frame-Options "sameorigin"
+   Header set X-Content-Type-Options "nosniff"
+<IfModule mod_headers.c>
 
-Jika memasang di apache
+DI APACHE
 
 # a2enmod headers
 # service apache2 restart
-Debian based systems: # nano /etc/apache2/conf-enabled/security.conf
-Redhat based systems: # nano /etc/httpd/conf/httpd.conf
+# nano /etc/apache2/conf-available/security.conf
 
 pilih masukan dan sesuaikan
 
 1. Allow for Same Origin (Default Action)
 Header set X-Frame-Options: "SAMEORIGIN"
+
+APACHE Lengkapnya
+Header always set X-Frame-Options "SAMEORIGIN"
+Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+#Header always set Content-Security-Policy "default-src 'self'; font-src *;img-src * data:; script-src *; style-src *;"
+Header set X-XSS-Protection "1; mode=block"
+Header always set X-Content-Type-Options "nosniff"
+Header always append X-Frame-Options DENY
+Header set X-Permitted-Cross-Domain-Policies "none"
+Header always set Referrer-Policy "strict-origin"
+Header always set Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()"
 
 2. Allow from specific origin
 Header set X-Frame-Options: "ALLOW-FROM http://example.com/" 
@@ -41,7 +56,28 @@ Header set X-Frame-Options: "ALLOW-FROM https://www.example.com/"
 3. Deny to everyone
 Header set X-Frame-Options: "DENY"
 
-Menurut saya gunakan yang default saja no 1.
+Menurut saya gunakan yang default saja no 6.1.
+
+# service apache2 restart
+
+DI NGINX
+=========
+add this in nginx.conf or domain.ext.conf
+server
+{
+.............
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
+    add_header Content-Security-Policy "default-src 'self'; font-src *;img-src * data:; script-src *; style-src *";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Content-Type-Options "nosniff";
+    add_header X-Permitted-Cross-Domain-Policies "none";
+    add_header Referrer-Policy "strict-origin";
+    #add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
+    add_header Clear-Site-Data "cookies";
+..........
+..........
+}
 
 # service apache2 restart
 
@@ -260,71 +296,6 @@ Set TimeOut yang cukup
 Timeout sebetulnya ini juga pengaruh, namun untuk server yang digunakan untuk scrapping ada baiknya timeout ini diperlebar. sementara, untuk server yang tidak memiliki waktu proses eksekusi yang tidak lama bisa disetting dengan nilai paling sedikit.
 
 Demikian. Semoga membantu.
-
-8
-==
-6. Setup X-Frame-Options with .htaccess
-Mengamankan server web Apache Anda dari serangan clickjacking
-
-Header append X-Frame-Options: "SAMEORIGIN"
-
-<IfModule mod_headers.c>
-   Header set X-XSS-Protection "1; mode=block"
-   Header set X-Frame-Options "sameorigin"
-   Header set X-Content-Type-Options "nosniff"
-<IfModule mod_headers.c>
-
-DI APACHE
-
-# a2enmod headers
-# service apache2 restart
-# nano /etc/apache2/conf-available/security.conf
-
-pilih masukan dan sesuaikan
-
-1. Allow for Same Origin (Default Action)
-Header set X-Frame-Options: "SAMEORIGIN"
-
-APACHE Lengkapnya
-Header always set X-Frame-Options "SAMEORIGIN"
-Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-#Header always set Content-Security-Policy "default-src 'self'; font-src *;img-src * data:; script-src *; style-src *;"
-Header set X-XSS-Protection "1; mode=block"
-Header always set X-Content-Type-Options "nosniff"
-Header always append X-Frame-Options DENY
-Header set X-Permitted-Cross-Domain-Policies "none"
-Header always set Referrer-Policy "strict-origin"
-Header always set Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()"
-
-2. Allow from specific origin
-Header set X-Frame-Options: "ALLOW-FROM http://example.com/" 
-Header set X-Frame-Options: "ALLOW-FROM http://www.example.com/" 
-Header set X-Frame-Options: "ALLOW-FROM https://example.com/" 
-Header set X-Frame-Options: "ALLOW-FROM https://www.example.com/" 
-
-3. Deny to everyone
-Header set X-Frame-Options: "DENY"
-
-Menurut saya gunakan yang default saja no 6.1.
-
-# service apache2 restart
-
-DI NGINX
-=========
-add this in nginx.conf or domain.ext.conf
-server
-{
-    add_header X-Frame-Options "SAMEORIGIN";
-    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
-    add_header Content-Security-Policy "default-src 'self'; font-src *;img-src * data:; script-src *; style-src *";
-    add_header X-XSS-Protection "1; mode=block";
-    add_header X-Content-Type-Options "nosniff";
-    add_header X-Permitted-Cross-Domain-Policies "none";
-    add_header Referrer-Policy "strict-origin";
-    #add_header Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()";
-    add_header Clear-Site-Data "cookies";
-}
-
 
 
 
