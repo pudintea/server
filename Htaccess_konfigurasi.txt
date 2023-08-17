@@ -65,6 +65,12 @@ Mengamankan server web Apache Anda dari serangan clickjacking
 
 Header append X-Frame-Options: "SAMEORIGIN"
 
+<IfModule mod_headers.c>
+   Header set X-XSS-Protection "1; mode=block"
+   Header set X-Frame-Options "sameorigin"
+   Header set X-Content-Type-Options "nosniff"
+<IfModule mod_headers.c>
+
 DI APACHE
 
 # a2enmod headers
