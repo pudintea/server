@@ -89,6 +89,7 @@ Header always set Content-Security-Policy "default-src 'self'; font-src *;img-sr
 Header set X-XSS-Protection "1; mode=block"
 Header always set X-Content-Type-Options "nosniff"
 Header always append X-Frame-Options DENY
+Header set X-Permitted-Cross-Domain-Policies "none"
 Header always set Referrer-Policy "strict-origin"
 Header always set Permissions-Policy "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()"
 
