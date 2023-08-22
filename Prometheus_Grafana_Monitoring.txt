@@ -112,7 +112,7 @@ WantedBy=multi-user.target
 
 
 Karnas udah menambahkan system baru kita perlu restart
-# sudo sytemctl daemon-reload
+# sudo systemctl daemon-reload
 
 Kita bisa cek status prometheus nya
 # sudo systemctl status prometheus
