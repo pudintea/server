@@ -130,7 +130,7 @@ Sekarang harusnya sudah bisa dibuka lewat web browser
 IPADDRESS:9090
 
 Jika ingin tau bentuk matrix itu apa, boleh aksess
-IPADDRESS:9090/matrics
+IPADDRESS:9090/metrics
 
 NODE EXPORTER
 ========================
