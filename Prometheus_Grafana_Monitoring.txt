@@ -148,6 +148,14 @@ Seperti sebelumnya, kita akan membuat service daemon untuk node_exporter
 # which node_exporter
 # node_exporter --version
 
+BUAT GROUP DAN USER (node-exporter)
+=============================
+buat group dengan nama node_exporter
+# sudo groupadd --system node_exporter
+
+buat user dan masukan ke group node_exporter
+# sudo useradd --system -s /sbin/nologin -g node_exporter node_exporter
+
 Buat service daemon
 # sudo nano /etc/systemd/system/node-exporter.service
 
@@ -155,10 +163,12 @@ masukan ini :
 
 [Unit]
 Description=Node Exporter for machine matrics
+After=network.target
 
 [Service]
 Restart=always
-User=prometheus
+User=node_exporter
+Group=node_exporter
 ExecStart=/usr/local/bin/node_exporter
 ExecReload=/bin/kill -HUP $MAINPID
 TimeoutStopSec=20s
