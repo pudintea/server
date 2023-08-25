@@ -1,0 +1,60 @@
+===============NAJZMI_PUDINTEA========================
+Aktifkan SSL
+# sudo a2enmod ssl
+
+
+Aktifkan SSL Full (strict)
+==========================
+Masuk ke Dashboard cloudflare
+Pilih domian yang akan diamankan
+MAsuk ke menu SSL/TLS > Overview > Full (strict)
+
+
+Buat KEY
+==========
+Silahkan buat keys nya di Coudflare, lalu buat dan simpan di kedua file ini
+# nano /etc/cloudflare/namadomainanda.id.pem
+# nano /etc/cloudflare/namadomainanda.id.key
+
+
+Konfigurasi Virtualhost
+=========================
+# nano /etc/apache2/sites-available/namadomainanda.id.conf
+<VirtualHost *:443>
+
+    ServerAdmin webmaster@example.com
+    ServerName namadomainanda.id
+    DocumentRoot /var/www/html/site/
+    ErrorLog /var/log/apache2/ssl-namadomainanda.id-error.log
+    CustomLog /home/ypia/log/mrtg/ssl-namadomainanda.id-access.log combined
+
+     <Directory /var/www/html/site/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+        <Directory "/usr/lib/cgi-bin">
+                AllowOverride None
+                Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+    SSLEngine on
+    SSLCertificateFile /etc/cloudflare/namadomainanda.id.pem
+    SSLCertificateKeyFile /etc/cloudflare/namadomainanda.id.key
+
+</VirtualHost
+
+
+AKTIFKAN
+========
+# a2enmode namadomainanda.id.conf
+# apachectl configtest
+# service apache2 restart
+
+
+=============== END =========================
