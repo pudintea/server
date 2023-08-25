@@ -1,4 +1,4 @@
-===============NAJZMI_PUDINTEA========================
+=============== START NAJZMI_PUDINTEA ========================
 Aktifkan SSL
 # sudo a2enmod ssl
 
@@ -50,11 +50,13 @@ Konfigurasi Virtualhost
 </VirtualHost
 
 
-AKTIFKAN
-========
-# a2enmode namadomainanda.id.conf
+Mengaktifkan file virtualhost
+=============================
+# a2ensite namadomainanda.id.conf
 # apachectl configtest
 # service apache2 restart
 
-
-=============== END =========================
+Nonktifkan file virtualhost
+=============================
+a2dissite namadomainanda.id.conf
+=============== END  NAJZMI_PUDINTEA =========================
