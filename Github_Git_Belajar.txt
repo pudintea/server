@@ -1,0 +1,44 @@
+============== START NAJZMI PUDINTEA ====================
+
+Download Gitbash.
+=================
+https://git-scm.com/downloads
+
+Lalu Install.
+
+Buat Repository sesuai dengan usernamem contoh pudintea.github.io
+- Public
+- uncentang add readme, dll
+- Create repository
+
+Ubah konfigurasi git
+================
+> git config --global user.name "usernamenyaapa"
+> git config --global user.email "emailnyaygterdaftar"
+
+Upload File ke git
+==================
+> git init
+> git add .
+> git commit -m "First commin"
+> git branch -M main
+> git remote add origin https://
+> push -u origin main
+
+Upload Perubahan baru
+=====================
+> git add .
+> git commit -m "First commin"
+> push -u origin main
+
+
+Domain custom
+=============
+Dns Management
+CNAME namadomain namagithubsesuaiusername(pudintea.github.io)
+
+Github
+Repo Github > Settings > Pages > Custom domain
+
+
+============== END NAJZMI PUDINTEA ====================
