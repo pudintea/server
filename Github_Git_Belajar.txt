@@ -82,8 +82,10 @@ NAME : namagithubsesuaiusername(pudintea.github.io)
 
 Github
 Repo Github > Settings > Pages > Custom domain > add Domain > masukan www.namadomainkamu.com > save
+Setelah itu, tunggu sampai konfigurasi domain terbaca sempurna, biasanya Propagasi 10 menit sampai 2 jam, atau kadang 1x24 jam.
 
 NOTE : kalau kita menggunakan DNS Management Cloudflare,
 Kita bisa langsung mengkonfigurasi domain utama (tanpa www) ke CNAME Github seperti yang saya tulis di nomor 5.
+dan proses Propagasinya bisa lebih cepat
 
 ============== END NAJZMI PUDINTEA ====================
