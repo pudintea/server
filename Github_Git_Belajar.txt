@@ -1,18 +1,21 @@
 ============== START NAJZMI PUDINTEA ====================
 
 Mendaftar di Github
-Link : https://github.com/signup
+==================
+Persiapkan email aktif
+Mendaftar di : https://github.com/signup
 
-Download Gitbash.
-=================
-https://git-scm.com/downloads
-
-Lalu Install di komputer.
-
-Buat Repository sesuai dengan usernamem contoh pudintea.github.io
+Buat Repository sesuai dengan username yang tadi dibuat, contoh pudintea.github.io
 - Public
 - uncentang add readme, dll
 - Create repository
+
+
+Download Gitbash.
+=================
+Link : https://git-scm.com/downloads
+Lalu Install di komputer.
+
 
 Ubah konfigurasi git
 ====================
@@ -23,7 +26,7 @@ Upload File ke git
 ==================
 > git init
 > git add .
-> git commit -m "First commin"
+> git commit -m "First commit"
 > git branch -M main
 > git remote add origin https://
 > push -u origin main
@@ -31,17 +34,56 @@ Upload File ke git
 Upload Perubahan baru
 =====================
 > git add .
-> git commit -m "First commin"
+> git commit -m "Isikan Commit yang dilakukan"
 > push -u origin main
 
 
 Domain custom
 =============
 Dns Management
-CNAME namadomain namagithubsesuaiusername(pudintea.github.io)
+Selanjutnya buat A record sebanyak 5 baris dengan cara pilih Add Record, dan lengkapi detail DNS seperti berikut,
+
+1
+==
+Record Type : A
+Domain Name : kosongkan
+TTL : 3600
+IP Address : 185.199.108.153
+
+2
+==
+Record Type : A
+Domain Name : kosongkan
+TTL : 3600
+IP Address : 185.199.109.153
+
+3
+==
+Record Type : A
+Domain Name : kosongkan
+TTL : 3600
+IP Address : 185.199.110.153
+
+4
+==
+Record Type : A
+Domain Name : kosongkan
+TTL : 3600
+IP Address : 185.199.111.153
+
+5
+==
+Record Type : CNAME
+Domain Name : www
+TTL : 3600
+NAME : namagithubsesuaiusername(pudintea.github.io)
+
+
 
 Github
-Repo Github > Settings > Pages > Custom domain
+Repo Github > Settings > Pages > Custom domain > add Domain > masukan www.namadomainkamu.com > save
 
+NOTE : kalau kita menggunakan DNS Management Cloudflare,
+Kita bisa langsung mengkonfigurasi domain utama (tanpa www) ke CNAME Github seperti yang saya tulis di nomor 5.
 
 ============== END NAJZMI PUDINTEA ====================
