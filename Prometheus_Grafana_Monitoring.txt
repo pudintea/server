@@ -220,6 +220,7 @@ Simpan konfigurasi dan restart prometheus
 
 
 
+
 INSTALL SNMP EXPORTER (MIKROTIK)
 ================================
 Download snmp exporter 
@@ -230,7 +231,7 @@ Exstrak hasil downloadnya
 # tar xvf snmp_exporter-0.23.0.linux-amd64.tar.gz
 
 Masuk ke direktori hasil ekstrak
-#cd snmp_exporter-0.23.0.linux-amd64
+# cd snmp_exporter-0.23.0.linux-amd64
 
 didalamnya ada dua buah file 
 - snmp_exporter (binary file)
@@ -245,6 +246,16 @@ pindahkan file konfigurasinya ke etc dan buat folder baru
 pindahkan file konfigurasinya
 # sudo mv snmp.yml /etc/snmp_exporter/
 
+
+BUAT GROUP DAN USER (snmp_exporter)
+=============================
+buat group dengan nama snmp_exporter
+# sudo groupadd --system snmp_exporter
+
+buat user dan masukan ke group snmp_exporter
+# sudo useradd --system -s /sbin/nologin -g snmp_exporter snmp_exporter
+
+
 Karena akan kita jalankan dibelakang layar, maka kita buat service daemon nya, seperti sebelum-sebelumnya.
 # sudo nano /etc/systemd/system/snmp-exporter.service
 
@@ -258,7 +269,7 @@ After=network-online.target
 # This assumes you are running snmp_exporter under the user "prometheus"
 
 [Service]
-User=prometheus
+User=snmp_exporter
 Restart=on-failure
 ExecStart=/usr/local/bin/snmp_exporter --config.file=/etc/snmp_exporter/snmp.yml
 
@@ -312,6 +323,8 @@ scrape_configs:
 Setelah di sesuaikan, kita reload prometheusnya
 # sudo systemctl restart prometheus
 # sudo systemctl status prometheus
+
+
 
 
 GRAFANA
