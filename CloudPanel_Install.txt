@@ -1,0 +1,54 @@
+UBUNTU 22.04
+: Pudin
+: https://t.me/pudin_ira
+: www.pdn.my.id
+
+PERSIAPAN
+-----------------------------------------------------------------------------------------------------------------------
+# apt-get update
+# apt update
+# apt-get dist-upgrade
+# apt install net-tools
+# apt-get install systemd
+# apt install mlocate
+# apt-get install nano
+# apt-get install zip
+# apt-get install unzip
+
+- mengganti waktu server localtime jakarta
+# mv /etc/localtime /etc/localtime-asal
+# cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+
+- mengubah timezone asia-jakarta
+# timedatectl set-timezone Asia/Jakarta 
+
+
+LINK : https://www.cloudpanel.io/docs/v2/getting-started/other/
+
+Before running the installer, we need to update the system and install the required packages.
+# apt update && apt -y upgrade && apt -y install curl wget sudo
+
+Install dengan MYSQL
+# curl -sS https://installer.cloudpanel.io/ce/v2/install.sh -o install.sh; \
+echo "3c30168958264ced81ca9b58dbc55b4d28585d9066b9da085f2b130ae91c50f6 install.sh" | \
+sha256sum -c && sudo bash install.sh
+
+Install Dengan Mariadb 10.11
+# curl -sS https://installer.cloudpanel.io/ce/v2/install.sh -o install.sh; \
+echo "3c30168958264ced81ca9b58dbc55b4d28585d9066b9da085f2b130ae91c50f6 install.sh" | \
+sha256sum -c && sudo DB_ENGINE=MARIADB_10.11 bash install.sh
+
+Install dengan mariaDB 10.6
+# curl -sS https://installer.cloudpanel.io/ce/v2/install.sh -o install.sh; \
+echo "3c30168958264ced81ca9b58dbc55b4d28585d9066b9da085f2b130ae91c50f6 install.sh" | \
+sha256sum -c && sudo DB_ENGINE=MARIADB_10.6 bash install.sh
+
+
+Access CloudPanel
+=====================
+SECURITY
+For security reasons, access CloudPanel as fast as possible to create the admin user. There is a small time window where bots can create the user. If possible, open port 8443 only for your IP via firewall.
+
+You can now access CloudPanel via Browser: https://yourIpAddress:8443
+
+=============================== END NAJZMI PUDINTEA ==================================================
