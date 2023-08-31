@@ -1,0 +1,22 @@
+
+LINK 1 : https://ludigoporitas.wordpress.com/2016/12/11/project-mengetahui-website-yang-diakses-oleh-client-hotspot-mikrotik/
+LINK 2 : https://ludigoporitas.wordpress.com/2017/06/20/konfigurasi-mikrotik-hotspot-dan-rsyslog-mysql-di-centos-7/
+LINK 3 : https://sharkwifi.com/read/63/membuat-statistik-domain-yang-sering-di-akses-dengan-mikrotik-syslog.html
+
+
+INSTALASI
+PAstikan sudah menginstall WebServer, PHP dan MySQL
+# apt-get install rsyslog rsyslog-mysql
+
+
+Perintah Membuat kolom VIEW 
+
+CREATE VIEW v_system_events
+AS
+SELECT DeviceReportedTime,Message,SysLogTag FROM SystemEvents order by DeviceReportedTime DESC;
+
+Keterangan :
+DESC : Menampilkan data terbaru paling atas, berdasarkan tanggal dan waktu.
+
+
+============== END NAJZMI PUDINTEA ====================
