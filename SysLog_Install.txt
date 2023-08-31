@@ -32,16 +32,6 @@ Keterangan :
 
 
 
-Perintah Membuat kolom VIEW 
-==============================
-CREATE VIEW v_system_events
-AS
-SELECT DeviceReportedTime,Message,SysLogTag FROM SystemEvents order by DeviceReportedTime DESC;
-
-Keterangan :
-DESC : Menampilkan data terbaru paling atas, berdasarkan tanggal dan waktu.
-
-
 
 Agar log server tidak ikut masuk ke database comment baris beikut
 =====================================================================
@@ -79,5 +69,17 @@ Restart
 # systemctl restart rsyslog.service
 atau
 # service rsyslog restart
+
+
+== TAMBAHAN ==
+
+Perintah Membuat kolom VIEW 
+==============================
+CREATE VIEW v_system_events
+AS
+SELECT DeviceReportedTime,Message,SysLogTag FROM SystemEvents order by DeviceReportedTime DESC;
+
+Keterangan :
+DESC : Menampilkan data terbaru paling atas, berdasarkan tanggal dan waktu.
 
 ============== END NAJZMI PUDINTEA ====================
