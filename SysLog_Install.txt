@@ -29,7 +29,8 @@ $ModLoad ommysql
 
 Keterangan :
 ***** sesuaikan dengan password dabase anda
-
+Atau bisanya sudah ada, cek aja di : 
+# nano /etc/rsyslog.d/mysql.conf
 
 
 
