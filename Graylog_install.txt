@@ -1,0 +1,57 @@
+==== UBUNTU GRAYLOG ============================
+: Pudin
+: https://t.me/pudin_ira
+: www.pdn.my.id
+
+PERSIAPAN
+-----------------------------------------------------------------------------------------------------------------------
+# sudo apt-get update && sudo apt-get upgrade -y
+# apt-get update
+# apt update
+# apt-get dist-upgrade
+# apt install net-tools
+# apt-get install systemd
+# apt install mlocate
+# apt-get install nano
+# apt-get install zip
+# apt-get install unzip
+
+- mengganti waktu server localtime jakarta
+# mv /etc/localtime /etc/localtime-asal
+# cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+
+- mengubah timezone asia-jakarta
+# timedatectl set-timezone Asia/Jakarta 
+
+Ubuntu 22.04
+=============
+
+1. Install gnupg.
+# sudo apt-get install gnupg curl
+
+2. Import the key.
+# sudo wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | sudo gpg --dearmor --batch --yes -o /usr/share/keyrings/mongodb-keyring
+
+3. Create a list file for MongoDB.
+# echo "deb [signed-by=/usr/share/keyrings/mongodb-keyring] http://repo.mongodb.org/apt/debian bullseye/mongodb-org/6.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
+
+4. Reload the local package database.
+# sudo apt-get update
+
+5. Install the latest stable version of MongoDB.
+# sudo apt-get install -y mongodb-org
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================== END NAJZMI PUDINTEA ========================
