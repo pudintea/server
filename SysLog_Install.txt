@@ -35,6 +35,9 @@ Keterangan :
 
 Agar log server tidak ikut masuk ke database comment baris beikut
 =====================================================================
+# cp /etc/rsyslog.d/50-default.conf /etc/rsyslog.d/ASLI-50-default.ASLI
+# nano /etc/rsyslog.d/50-default.conf
+
 # Log all kernel messages to the console.
 # Logging much else clutters up the screen.
 #kern.*                                                 /dev/console
