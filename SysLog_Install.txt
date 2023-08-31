@@ -53,6 +53,8 @@ Agar log server tidak ikut masuk ke database comment baris beikut
 
 
 Restart
+# systemctl restart rsyslog.service
+atau
 # service rsyslog restart
 
 ============== END NAJZMI PUDINTEA ====================
