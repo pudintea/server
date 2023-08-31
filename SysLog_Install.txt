@@ -19,4 +19,7 @@ Keterangan :
 DESC : Menampilkan data terbaru paling atas, berdasarkan tanggal dan waktu.
 
 
+Restart
+# service rsyslog restart
+
 ============== END NAJZMI PUDINTEA ====================
