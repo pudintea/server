@@ -1,0 +1,42 @@
+UBUNTU PIHOLE
+: Pudin
+: https://t.me/pudin_ira
+: www.pdn.my.id
+
+PERSIAPAN
+-----------------------------------------------------------------------------------------------------------------------
+# apt-get update && apt-get upgrade -y
+# apt-get dist-upgrade
+# apt install net-tools
+# apt-get install systemd
+# apt install mlocate
+# apt-get install nano
+# apt-get install zip
+# apt-get install unzip
+
+- mengganti waktu server localtime jakarta
+# mv /etc/localtime /etc/localtime-asal
+# cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+
+- mengubah timezone asia-jakarta
+# timedatectl set-timezone Asia/Jakarta 
+
+# shutdown -r now
+
+
+INSTALASI
+==========
+# curl -sSL https://install.pi-hole.net | bash
+
+
+Halaman Admin
+> http://IPADDRESS/admin
+
+
+
+Ganti Password Login Admin
+==============
+# sudo pihole -a -p
+
+
+==================== END NAJZMI PUDINTEA ===============================
