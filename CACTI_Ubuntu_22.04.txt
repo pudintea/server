@@ -1,6 +1,26 @@
 /** PUDIN S Ilham **/
 How To Install Cacti Monitoring Tool on Ubuntu 22.04
 
+PERSIAPAN
+-----------------------------------------------------------------------------------------------------------------------
+# apt-get update && apt-get upgrade -y
+# apt update
+# apt-get dist-upgrade
+# apt install net-tools
+# apt-get install systemd
+# apt install mlocate
+# apt-get install nano
+# apt-get install zip
+# apt-get install unzip
+
+- mengganti waktu server localtime jakarta
+# mv /etc/localtime /etc/localtime-asal
+# cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+
+- mengubah timezone asia-jakarta
+# timedatectl set-timezone Asia/Jakarta 
+
+
 Install Required Dependencies
 # sudo apt-get update -y
 
