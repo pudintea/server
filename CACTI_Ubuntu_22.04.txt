@@ -57,6 +57,8 @@ Ubah konfigurasi default
 
 Tambahkan Konfigurasi ini di bawah [mysqld] section:
 
+character_set_server=utf8mb4
+character_set_client=utf8mb4
 collation-server = utf8mb4_unicode_ci
 max_heap_table_size = 128M
 tmp_table_size = 64M
