@@ -25,7 +25,7 @@ Install Required Dependencies
 # sudo apt-get update -y
 
 Instal dependensi lain yang diperlukan
-# sudo apt-get install snmp php-snmp rrdtool librrds-perl unzip curl git gnupg2 -y
+# sudo apt-get install snmp snmpd snmp-mibs-downloader libnet-snmp-perl snmptrapd rrdtool librrds-perl unzip curl git gnupg2 -y
 
 =====================
 Install LAMP Server
