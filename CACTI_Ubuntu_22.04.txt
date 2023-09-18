@@ -29,7 +29,7 @@ Instal dependensi lain yang diperlukan
 
 =====================
 Install LAMP Server
-# sudo apt-get install apache2 mariadb-server php php-mysql libapache2-mod-php php-xml php-ldap php-mbstring php-gd php-gmp php-intl -y
+# sudo apt-get install apache2 mariadb-server php php-mysql php-snmp libapache2-mod-php php-xml php-simplexml php-ldap php-mbstring php-gd php-gmp php-intl -y
 
 Ubah konfigurasi PHP
 # nano /etc/php/8.1/apache2/php.ini
