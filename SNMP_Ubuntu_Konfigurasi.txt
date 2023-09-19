@@ -65,10 +65,13 @@ langkah selanjutnya adalah restart layanan snmp dengan perintah:
 
 #>  sudo service snmpd restart
 
+
 selanjutnya, kita test dengan menjalankan perintah:
 
-#>  snmpwalk -v 2c -c server localhost system
+#> snmpwalk -v 2c -c server localhost system
+#> snmpwalk -Os -c public -v 2c localhost
 
+*) Gunakan salah satu perintah di atas, Mohon perhatikan recommunity nya saat pengetesan.
 jika layanan snmp berjalan dengan normal maka akan terlihat tampilan nomer perangkat
 
 
