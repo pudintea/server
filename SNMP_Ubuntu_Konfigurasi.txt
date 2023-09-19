@@ -83,4 +83,46 @@ If you can check, SNMP is now listening on two interfaces;
 udp    16128      0 192.168.43.154:161      0.0.0.0:*                           10057/snmpd         
 udp     3072      0 127.0.0.1:161           0.0.0.0:*                           10057/snmpd
 
+==================================== UBUNTU 22.04 ===============================================
 
+root@node01:~# apt -y install snmp snmpd snmp-mibs-downloader libnet-snmp-perl snmptrapd
+root@node01:~# vi /etc/snmp/snmp.conf
+# line 4 : comment out
+#mibs :
+root@node01:~# vi /etc/snmp/snmpd.conf
+# line 18, 19 : change to any location name and email address
+sysLocation    "Server World Node01"
+sysContact     "root@node01.srv.world"
+
+# line 49 : change
+agentaddress  0.0.0.0,[::]
+
+# line 71, 72 : comment out
+# line 73 : add any community name and network you allowed to access
+#rocommunity  public default -V systemonly
+#rocommunity6 public default -V systemonly
+rocommunity Serverworld 10.0.0.0/24
+
+root@node01:~# systemctl restart snmpd
+# verify status
+# replace [Serverworld] to the community name you set
+
+Gunakan untuk ini saat test
+$> snmpwalk -Os -c server -v 2c localhost
+
+root@node01:~# snmpwalk -v 2c -c Serverworld node01 system
+SNMPv2-MIB::sysDescr.0 = STRING: Linux node01.srv.world 5.15.0-47-generic #51-Ubuntu SMP Thu Aug 11 07:51:15 UTC 2022 x86_64
+SNMPv2-MIB::sysObjectID.0 = OID: NET-SNMP-MIB::netSnmpAgentOIDs.10
+DISMAN-EVENT-MIB::sysUpTimeInstance = Timeticks: (1823) 0:00:18.23
+SNMPv2-MIB::sysContact.0 = STRING: "root@node01.srv.world"
+SNMPv2-MIB::sysName.0 = STRING: node01.srv.world
+SNMPv2-MIB::sysLocation.0 = STRING: "Server World Node01"
+SNMPv2-MIB::sysServices.0 = INTEGER: 72
+SNMPv2-MIB::sysORLastChange.0 = Timeticks: (0) 0:00:00.00
+.....
+.....
+SNMPv2-MIB::sysORUpTime.8 = Timeticks: (0) 0:00:00.00
+SNMPv2-MIB::sysORUpTime.9 = Timeticks: (0) 0:00:00.00
+SNMPv2-MIB::sysORUpTime.10 = Timeticks: (0) 0:00:00.00
+
+=============================NAJZMI_PUDINTEA==========================================================
