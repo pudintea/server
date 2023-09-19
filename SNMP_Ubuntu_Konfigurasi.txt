@@ -102,6 +102,9 @@ agentaddress  0.0.0.0,[::]
 #rocommunity  public default -V systemonly
 #rocommunity6 public default -V systemonly
 rocommunity Serverworld 10.0.0.0/24
+rocommunity Serverworld localhost
+
+*) Sesuaikan dari rocommunity diatas.
 
 root@node01:~# systemctl restart snmpd
 # verify status
