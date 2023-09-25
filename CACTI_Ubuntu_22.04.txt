@@ -60,23 +60,34 @@ Create a Database
 Ubah konfigurasi default
 # nano /etc/mysql/mariadb.conf.d/50-server.cnf
 
-Tambahkan Konfigurasi ini di bawah [mysqld] section:
+Tambahkan Konfigurasi ini
 
-character_set_server=utf8mb4
-character_set_client=utf8mb4
+[mysqld]
 collation-server = utf8mb4_unicode_ci
-max_heap_table_size = 128M
-tmp_table_size = 64M
-join_buffer_size = 64M
-innodb_file_format = Barracuda
-innodb_large_prefix = 1
-innodb_buffer_pool_size = 512M
-innodb_flush_log_at_timeout = 3
-innodb_read_io_threads = 32
-innodb_write_io_threads = 16
-innodb_io_capacity = 5000
-innodb_io_capacity_max = 10000
-innodb_doublewrite = OFF
+init-connect='SET NAMES utf8mb4'
+character-set-server = utf8mb4
+max_heap_table_size=32M
+max_allowed_packet=16777216
+tmp_table_size=62M
+join_buffer_size=128M
+sort_buffer_size=512K
+innodb_file_per_table=ON
+innodb_file_format=Barracuda
+innodb_large_prefix=1
+innodb_buffer_pool_size=487M
+innodb_doublewrite=OFF
+innodb_flush_log_at_timeout=3
+innodb_read_io_threads=32
+innodb_write_io_threads=16
+innodb_buffer_pool_instances=4
+innodb_io_capacity=5000
+innodb_io_capacity_max=10000
+
+[client]
+default-character-set=utf8mb4
+
+[mysql]
+default-character-set=utf8mb4
 
 Restart Databasae MariaDB
 # systemctl restart mariadb
