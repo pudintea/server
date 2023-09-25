@@ -83,7 +83,7 @@ Restart Databasae MariaDB
 
 # mysql
 MariaDB [(none)]> CREATE DATABASE cactidb DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-MariaDB [(none)]> create database cactidb;
+MariaDB [(none)]> ALTER DATABASE cactidb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 MariaDB [(none)]> GRANT ALL ON cactidb.* TO cactiuser@localhost IDENTIFIED BY 'password';
 MariaDB [(none)]> flush privileges;
 MariaDB [(none)]> exit;
