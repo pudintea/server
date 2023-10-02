@@ -228,3 +228,13 @@ Launch Cacti Web Installation Wizard
 Sumber : https://www.howtoforge.com/how-to-install-cacti-monitoring-on-ubuntu-22-04/
 
 =====================================================================================================
+
+apt update -y
+apt install apache2 apache2-utils libapache2-mod-php -y
+apt install mariadb-server mariadb-client -y
+apt install php php-snmp php-common php-mysql php-snmp php-xml php-mbstring php-gmp php-gd php-zip php-pear php-simplexml php-ldap php-intl -y
+apt install snmp snmpd rrdtool librrds-perl -y
+apt install cacti cacti-spine -y
+
+
+=========================================END===========================================================
