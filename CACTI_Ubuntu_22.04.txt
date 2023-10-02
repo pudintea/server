@@ -237,4 +237,14 @@ apt install snmp snmpd rrdtool librrds-perl -y
 apt install cacti cacti-spine -y
 
 
+====================================== UBUNTU 20.04 ==============================================
+
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get -y install apache2 apache2-utils libapache2-mod-php
+sudo apt-get -y install mysql-server mysql-client
+sudo apt-get -y install php php-snmp php-common php-mysql php-snmp php-xml php-mbstring php-gmp php-gd php-zip php-pear php-simplexml php-ldap php-intl -y
+sudo apt-get -y install rrdtool
+sudo apt-get -y install snmp snmpd
+sudo apt-get -y install cacti cacti-spine
+
 =========================================END===========================================================
