@@ -1,0 +1,99 @@
+Syslog Cacti Ubuntu 22.04
+
+Cek status syslog
+$ systemctl status rsyslog
+
+1. Rsyslog Server ( Ubuntu diatas 20.04 biasanya sudah terinstall syslog ).
+2. Download Cacti Syslog Plugin v2.9
+
+https://github.com/Cacti/plugin_syslog
+https://github.com/Cacti/plugin_syslog/releases/tag/v2.9
+
+Silahkan di exstrak atau langsung di clone,
+Ubah namanya menjadi "syslog"
+
+Perhatikan pada file config.php.dist
+silahkan ubah menjadi config.php
+
+$ cp /var/www/html/cacti/plugins/syslog/config.php.dist /var/www/html/cacti/plugins/syslog/config.php
+
+Edit file config.php, tepat lokasi nya berada di 
+$ nano /var/www/html/cacti/plugins/syslog/config.php
+
+Ubah pengaturan
+
+$use_cacti_db = true; 
+to 
+$use_cacti_db = false;
+
+
+Perhatikan pada bagian ini juga :
+
+$syslogdb_type = 'mysql';
+$syslogdb_default = 'syslog'
+$syslogdb_hostname = 'localhost'
+$syslogdb_username = 'sysloguser'
+$syslogdb_password = 'password'
+
+
+KONFIGURASI DATABASE SYSLOG
+--------------------------------------------------------
+MariaDB > create database syslog; 
+MariaDB > show databases;
+MariaDB > GRANT ALL ON syslog.* TO sysloguser@localhost IDENTIFIED BY 'password';
+
+MariaDB > flush privileges;
+MariaDB > exit;
+
+Pastikan perhatikan nama database, username dan password, pastikan sama dengan apa yang ada di config.php.
+
+
+-------------------------------------
+Masuk ke aplikasi cacti > Configurastion > Plugins [ Lalu aktifkan ]
+- Database Storage Engine : InnoDB Storage
+- Database Arcitecture : Traditional Table
+- Retention Policy : 1 Month
+- Partitions per Day : 1 Per Day
+ [ Klik Install ]
+
+------------------------------------------------
+Selanjutnya kita membuat/edit file config
+
+nano /etc/rsyslog.d/cacti.conf
+
+$ModLoad imudp
+$UDPServerRun 514
+$ModLoad ommysql
+
+$template cacti_syslog,"INSERT INTO syslog_incoming(facility_id, priority_id, program, date, time, host, message) \
+  values (%syslogfacility%, %syslogpriority%, '%programname%', '%timereported:::date-mysql%', '%timereported:::date-mysql%', '%HOSTNAME%', TRIM('%msg%'))", SQL
+
+*.* >localhost,my_database,my_user,my_password;cacti_syslog
+
+[ Pastikan nama database, user dan passwordnya sesuai ya dengan database sebelumnya yang kita setting ]
+
+
+RESTART
+-------------
+$ systemctl restart mysql
+$ systemctl restart apache2
+$ systemctl restart rsyslog.service
+
+
+
+TAMBAHAN KONFIGURASU DI MARIADB
+-------------------------------------------------------------------
+
+$ nano /etc/mysql/mariadb.conf.d/50-server.cnf
+
+[mysqld]
+sql_mode=NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER
+
+dan perintah ini di mysql/mariadb
+
+mysql> show global variables like 'sql_mode';
+
+
+
+
+================= NAJZMI PUDINTEA ====================================
