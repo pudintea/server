@@ -90,7 +90,7 @@ default-character-set=utf8mb4
 default-character-set=utf8mb4
 
 ==========================================
-SERVER SAYA Ram 2GB 2 Core CPU 20GB HDD.
+SERVER SAYA Ram 2GB, 2 Core CPU, 20GB HDD.
 
 [mysqld]
 collation-server = utf8mb4_unicode_ci
@@ -121,7 +121,7 @@ default-character-set=utf8mb4
 
 
 ============================================
-SERVER SAYA 2 core Ram 6GB HDD 20GB
+SERVER SAYA CPU 2 core, Ram 6GB, HDD 20GB
 
 [mysqld]
 collation-server = utf8mb4_unicode_ci
