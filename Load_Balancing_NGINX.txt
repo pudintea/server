@@ -10,26 +10,36 @@ Install dan Konfigurasi Nginx di Load Balancer
 $> sudo apt install nginx -y
 $> sudo systemctl status nginx 
 
-$> sudo nano /etc/nginx/conf.d/pudintea.com.conf
+$> cp /etc/nginx/sites-available/default /etc/nginx/sites-available/a.default.asli
+$> sudo nano /etc/nginx/sites-available/default
 
 isi dengan :
-upstream backend {
-    server 10.10.10.3; #Servere1
-    server 10.10.10.4;  #Servere2
+### Nginx Load Balancer Example
+upstream samplecluster {
+        server 55.55.55.4:80;
+        server 55.55.55.3:80;
+
 }
-
+### Nginx load balancer example runs on port 80
 server {
-    listen 80;
-    server_name pudintea.com www.pudintea.com;
+  listen 80 default_server;
+  listen [::]:80 default_server;
+  root /var/www/html;
+  server_name _;
 
-    location / {
+
+  # The proxy_pass setting will also make the
+  # Nginx load balancer a reverse proxy
+  location / {
         proxy_redirect      off;
         proxy_set_header    X-Real-IP $remote_addr;
         proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header    Host $http_host;
-        proxy_pass http://backend;
-    }
-}	
+        proxy_pass http://samplecluster;
+  }
+
+} # End of Nginx load balancer and reverse proxy config file
 
 
 *) Secara default metode load balancing yang digunakan adalah Round Robin
