@@ -48,10 +48,10 @@ server {
 
 Konfigurasi load balancing jika menggunakan metode Least Connections.
 
-upstream backend {
+upstream samplecluster {
  least_conn;
-    server 10.10.10.3; #Servere1
-    server 10.10.10.4; #Servere2
+        server 55.55.55.4:80;
+        server 55.55.55.3:80;
 } 
 
 
