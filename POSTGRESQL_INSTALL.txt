@@ -27,6 +27,22 @@ RESTART
 $> service postgresql restart
 
 
+BISA DIAKSESS DIMANA SAJA
+Uncomment tulisan listen_addresses dan berikan nilai ‘*’ untuk mengijinkan semua komputer jaringan bisa mengakses database kita. Sehingga tampilannya akan menjadi seperti ini :
+
+listen_addresses = '*'      # what IP address(es) to listen on;
+                    # comma-separated list of addresses;
+                    # defaults to 'localhost'; use '*' for all
+                    # (change requires restart)
+port = 5432             # (change requires restart)
+max_connections = 100           # (change requires restart)
+
+Di folder yang sama, bukalah file pg_hba.conf dengan notepad.
+Lalu di baris terakhir tambahkan code berikut ini (ip address disesuaikan dengan ip kalian masing-masing).
+
+host all all 192.168.1.99/24 trust
+
+Selesai, maka sekarang database postgresql kita akan dapat diakses oleh orang-orang yang berada di satu jaringan dengan kita.
 
 
 
