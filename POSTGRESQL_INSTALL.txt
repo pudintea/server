@@ -8,6 +8,9 @@ $>  wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo 
 $>  sudo apt-get update
 $>  sudo apt-get -y install postgresql
 
+PORT
+: 5432
+
 Melihat Status
 $>  systemctl status postgresql
 
