@@ -44,6 +44,12 @@ host all all 192.168.1.99/24 trust
 
 Selesai, maka sekarang database postgresql kita akan dapat diakses oleh orang-orang yang berada di satu jaringan dengan kita.
 
+KONFIGURASI DI PROXMOX
+        #port posgreSQL
+        post-up iptables -t nat -A PREROUTING -i enp4s0 -p tcp --dport 5432 -j DNAT --to-destination 55.55.55.3:5432
+        post-down iptables -t nat -D PREROUTING -i enp4s0 -p tcp --dport 5432 -j DNAT --to-destination 55.55.55.3:5432
+
+
 
 
 ===================== NAJZMI PUDINTEA =========================
