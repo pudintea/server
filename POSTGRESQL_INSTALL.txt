@@ -17,4 +17,17 @@ $>  systemctl status postgresql
 MELIHAT PORT YANG AKTIF UBUNTU
 $> sudo lsof -i -P -n | grep LISTEN
 
+FOLDER KONFIGURASI
+$> cd /etc/postgresql/14/main
+
+*) Ket
+(14) tergantung versi yang digunakan
+
+RESTART
+$> service postgresql restart
+
+
+
+
+
 ===================== NAJZMI PUDINTEA =========================
