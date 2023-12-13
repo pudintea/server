@@ -11,6 +11,7 @@ $>  sudo apt-get -y install postgresql
 Melihat Status
 $>  systemctl status postgresql
 
-
+MELIHAT PORT YANG AKTIF UBUNTU
+$> sudo lsof -i -P -n | grep LISTEN
 
 ===================== NAJZMI PUDINTEA =========================
