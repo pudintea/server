@@ -69,6 +69,7 @@ NPM
 > curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh
 > nano nodesource_setup.sh
 > sudo bash nodesource_setup.sh
+> sudo apt install nodejs
 > node -v
 
 *) Paket NodeSource nodejsberisi biner nodedan npm, jadi Anda tidak perlu menginstal npmsecara terpisah.
