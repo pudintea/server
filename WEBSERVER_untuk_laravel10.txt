@@ -3,6 +3,7 @@ WEBSERVER UNTUK LARAVEL 10
 : Pudin
 : https://t.me/pudin_ira
 : www.pdn.my.id
+: OS Ubuntu 22.04 LTS
 
 PERSIAPAN
 -----------------------------------------------------------------------------------------------------------------------
