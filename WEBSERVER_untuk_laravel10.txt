@@ -66,14 +66,19 @@ TAMBAHAN
 
 NPM
 > cd ~
-> curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh
-> curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
+> curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh (sesuaikan kebutuhan)
+> curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh (sesuaikan kebutuhan)
 > nano nodesource_setup.sh
 > sudo bash nodesource_setup.sh
 > sudo apt install nodejs
 > node -v
+> npm install -g npm@10.2.5 (sesuaikan kebutuhan)
+
 
 *) Paket NodeSource nodejsberisi biner nodedan npm, jadi Anda tidak perlu menginstal npmsecara terpisah.
+melihat
+> node --version
+> npm --version
 
 
 
