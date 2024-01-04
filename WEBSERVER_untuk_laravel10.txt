@@ -1,0 +1,76 @@
+WEBSERVER UNTUK LARAVEL 10
+
+: Pudin
+: https://t.me/pudin_ira
+: www.pdn.my.id
+
+PERSIAPAN
+-----------------------------------------------------------------------------------------------------------------------
+# apt-get update
+# apt update
+# apt-get dist-upgrade
+# apt install net-tools
+# apt-get install systemd
+# apt install mlocate
+# apt-get install nano
+# apt-get install zip
+# apt-get install unzip
+
+- mengganti waktu server localtime jakarta
+# mv /etc/localtime /etc/localtime-asal
+# cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+
+- mengubah timezone asia-jakarta
+# timedatectl set-timezone Asia/Jakarta 
+
+
+APACHE
+> sudo apt install apache2
+> sudo ufw allow in "Apache"
+> sudo a2enmod rewrite
+> nano /etc/apach2/site-available/nama file virtualisasi.conf
+
+        <Directory /var/www/html/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+        <Directory "/usr/lib/cgi-bin">
+                AllowOverride None
+                Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+> sudo systemctl restart apache2
+
+MYSQL
+> sudo apt install mysql-server
+> mysql / mysql -u root -p
+> CREATE DATABASE db_monitor;
+> CREATE USER 'monitor_user'@'localhost' IDENTIFIED BY 'P4ssw0rd1234';
+> GRANT ALL ON db_monitor.* TO 'monitor_user'@'localhost';
+
+PHP
+> sudo apt install php libapache2-mod-php php-mbstring php-cli php-bcmath php-json php-xml php-zip php-pdo php-common php-tokenizer php-mysql php-intl php-curl -y
+> sudo systemctl restart apache2
+
+TAMBAHAN
+> apt install git -y
+> apt install composer -y
+
+NPM
+> cd ~
+> curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh
+> nano nodesource_setup.sh
+> sudo bash nodesource_setup.sh
+> node -v
+
+*) Paket NodeSource nodejsberisi biner nodedan npm, jadi Anda tidak perlu menginstal npmsecara terpisah.
+
+
+
+================================= pudin.my.id ==============================================================
