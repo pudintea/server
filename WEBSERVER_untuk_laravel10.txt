@@ -60,6 +60,7 @@ PHP
 > sudo systemctl restart apache2
 
 TAMBAHAN
+> apt install curl -y
 > apt install git -y
 > apt install composer -y
 
