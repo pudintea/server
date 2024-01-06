@@ -1,0 +1,56 @@
+UPTIME KUMA DI UBUNTU
+
+: Pudin
+: https://t.me/pudin_ira
+: www.pdn.my.id
+
+PERSIAPAN
+-----------------------------------------------------------------------------------------------------------------------
+# apt-get update
+# apt update
+# apt-get dist-upgrade
+# apt install net-tools
+# apt-get install systemd
+# apt install mlocate
+# apt-get install nano
+# apt-get install zip
+# apt-get install unzip
+
+> apt update && apt-upgrade && apt autoremove -y
+
+- mengganti waktu server localtime jakarta
+# mv /etc/localtime /etc/localtime-asal
+# cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+
+- mengubah timezone asia-jakarta
+# timedatectl set-timezone Asia/Jakarta 
+
+> cd ~
+> curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh (sesuaikan kebutuhan)
+> nano nodesource_setup.sh
+> sudo bash nodesource_setup.sh
+> sudo apt install nodejs git-all yarn
+> npm install npm -g
+> npm install pm2 -g
+> node -v
+
+> git https://github.com/louislam/uptime-kuma.git
+> cd uptime-kuma
+> npm run setup
+
+Test Run
+> node server/server.js
+
+> pm2 start server/server.js --name uptime-kuma
+> pm2 startup
+
+Jika mau ganti port
+> pm2 stop uptime-kuma
+> pm2 start server/server.js --name uptime-kuma -- --port=8888
+
+Test
+IPADDRESS_SERVER:3001 (default)
+IPADDRESS_SERVER:8888
+
+
+==================================== UPTIME.WEB.ID =====================================
