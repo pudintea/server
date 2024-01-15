@@ -30,6 +30,10 @@ PERSIAPAN
 - Test Apache
 - Masuk ke browser dan panggil ip servernya
 
+# nano /etc/apache2/httpd.conf
+
+Masukan text dibawah ini
+ServerName 127.0.0.1
 
 2. ## PHP 5
 --------------------------------------------------------------------------------------------
