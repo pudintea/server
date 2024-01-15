@@ -1,0 +1,63 @@
+
+
+[PERINTAH  UPDATE DI TERMINAL LINUX]
+sudo su (Masuk ke root)
+sudo apt-get update (Update repository)
+
+[ PERINTAH INSTALL NGINX DI TERMINAL LINUX ]
+sudo apt-get install nginx -y
+
+[ PERINTAH INI DIGUNAKAN JIKA KITA MENGAKTIFKAN FIREWALL UFW ]
+sudo ufw app list
+sudo ufw allow 'Nginx HTTP'
+systemctl status nginx
+
+[ PERINTAH INSTALL PHP DI TERMINAL LINUX ]
+sudo apt-get install php-fpm php-mysql php-gd php-opcache php-xml php-curl php-zip -y
+
+[ PERINTAH DI TERMINAL LINUX ]
+lsb_release -a ; getconf LONG_BIT ; hostname -I ; hostname
+apt-get install nginx python2.7 -y
+cd /etc/nginx
+grep -i include\.*conf nginx.conf
+akan keluar begini :
+include /etc/nginx/modules-enabled/*.conf;
+            include /etc/nginx/conf.d/*.conf;
+
+cat > conf.d/stub_status.conf
+server {
+             listen 127.0.0.1:80;
+             server_name 127.0.0.1;
+             location /ngix_status {
+                          stub_status on;
+                          allow 127.0.0.1;
+                          deny all;
+              }
+}
+(Ctrl + C untuk keluar)
+
+ls -la conf.d/stub_status.conf && cat conf.d/stub_status.conf
+kill -HUP `cat /var/run/nginx.pid`
+nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+systemctl restart nginx ; systemctl enable nginx
+
+[ MASUK KE BROWSER ]
+https://amplify.nginx.com/signup
+
+dapatkan ini dan masukan di Terminal Linux:
+[ PERINTAH DI TERMINAL LINUX ]
+wget https://github.com/nginxinc/nginx-amplify-agent/raw/master/packages/install.sh
+API_KEY='YOUR_KEYS' sh ./install.sh
+
+
+service amplify-agent start ; service amplify-agent status
+systemctl restart nginx
+
+[ MASUK KE BROWSER ]
+Pilih Continue
+
+
+========================================= pudin.my.id ============================================================
