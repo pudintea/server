@@ -87,7 +87,29 @@ Commercial support is available at
 </html>
 
 
+SSL
+====
+#> sudo ufw allow 'Nginx Full'
+#> apt-get install certbot python3-certbot-nginx -y
+#> sudo certbot --nginx -d "subdomain.namadomain.com"
+atau
+#> sudo certbot --nginx -d "example.com" -d "www.example.com"
 
+
+Sertifikat Let's Encrypt hanya berlaku selama sembilan puluh hari. Hal ini untuk mendorong pengguna mengotomatiskan proses perpanjangan sertifikat mereka. Paket certbotyang kami instal menangani hal ini untuk kami dengan menambahkan pengatur waktu systemd yang akan berjalan dua kali sehari dan secara otomatis memperbarui sertifikat apa pun yang masih dalam waktu tiga puluh hari setelah habis masa berlakunya.
+
+Anda dapat menanyakan status pengatur waktu dengan systemctl:
+
+#> sudo systemctl status certbot.timer
+Output
+● certbot.timer - Run certbot twice daily
+     Loaded: loaded (/lib/systemd/system/certbot.timer; enabled; vendor preset: enabled)
+     Active: active (waiting) since Mon 2020-05-04 20:04:36 UTC; 2 weeks 1 days ago
+    Trigger: Thu 2020-05-21 05:22:32 UTC; 9h left
+   Triggers: ● certbot.service
+Untuk menguji proses pembaharuan, Anda dapat melakukan uji coba dengan certbot:
+
+#> sudo certbot renew --dry-run
 
 
 
