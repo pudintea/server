@@ -26,12 +26,12 @@ Install PHP 8.1:
 # sudo apt install php8.1
 
 Install PHP 8.0
-# sudo apt-get install php8.0 libapache2-mod-php8.0 php8.0-mbstring php8.0-cli php8.0-bcmath php8.0-xml php8.0-zip php8.0-pdo php8.0-common php8.0-tokenizer php8.0-mysql php8.0-intl php8.0-curl -y (LARAVEL)
+# sudo apt-get install php8.0-fpm libapache2-mod-php8.0 php8.0-mbstring php8.0-cli php8.0-bcmath php8.0-xml php8.0-zip php8.0-pdo php8.0-common php8.0-tokenizer php8.0-mysql php8.0-intl php8.0-curl -y (LARAVEL)
 
 Install PHP 7.4:
 # sudo apt install php7.4
-# sudo apt-get install php7.4-mysql php7.4-mbstring php7.4-xml php7.4-gd php7.4-curl -y
-# sudo apt-get install php7.4 php7.4-fpm php7.4-mysql libapache2-mod-php7.4 libapache2-mod-fcgid -y
+# sudo apt-get install php7.4-fpm php7.4-mysql php7.4-mbstring php7.4-xml php7.4-gd php7.4-curl -y
+# sudo apt-get install php7.4-fpm php7.4 php7.4-fpm php7.4-mysql libapache2-mod-php7.4 libapache2-mod-fcgid -y
 
 Install PHP 5.6 (EOL):
 # sudo apt install php5.6
