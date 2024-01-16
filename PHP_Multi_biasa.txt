@@ -91,6 +91,36 @@ Hapus juga semua modul untuk versi itu dengan perintah berikut:
 # sudo apt remove php5.6-* 
 
 
+VIRTUALHOST
+============
+
+# sudo a2enmod actions fcgid alias proxy_fcgi
+# sudo systemctl restart apache2
+
+<VirtualHost *:80>
+     ServerAdmin admin@site1.your_domain
+     ServerName site1.your_domain
+     DocumentRoot /var/www/site1.your_domain
+     DirectoryIndex info.php
+
+     <Directory /var/www/site1.your_domain>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride All
+        Order allow,deny
+        allow from all
+     </Directory>
+
+    <FilesMatch \.php$>
+        # From the Apache version 2.4.10 and above, use the SetHandler to run PHP as a fastCGI process server
+         SetHandler "proxy:unix:/run/php/php7.4-fpm.sock|fcgi://localhost"
+    </FilesMatch>
+
+     ErrorLog ${APACHE_LOG_DIR}/site1.your_domain_error.log
+     CustomLog ${APACHE_LOG_DIR}/site1.your_domain_access.log combined
+</VirtualHost>
+
+
+
 
 ============ SELESAI ============================
 
