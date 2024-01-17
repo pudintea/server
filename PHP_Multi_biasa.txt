@@ -160,6 +160,34 @@ Juga pada virtualhost :
 </VirtualHost>
 
 Restart Apache
+#> service apache2 restart
+
+
+Konfigurasi MCRYPT PHP 5.6
+===========================
+
+#> apt install mlocate
+#> updatedb
+#> locate mcrypt.ini
+#> locate mcrypt.so
+
+#> nano /etc/php/5.6/mods-available/mcrypt.ini
+Ubah : 
+; extension=mcrypt.so
+extension=/usr/lib/php/20131226/mcrypt.so
+
+#> php5enmod mcrypt
+
+#> locate 20-mcrypt.ini
+/etc/php/5.6/apache2/conf.d/20-mcrypt.ini
+/etc/php/5.6/cli/conf.d/20-mcrypt.ini
+/etc/php/5.6/fpm/conf.d/20-mcrypt.ini
+
+#> ls -al /etc/php/5.6/apache2/conf.d/20-mcrypt.ini
+#> ls -al /etc/php/5.6/cli/conf.d/20-mcrypt.ini
+#> ls -al /etc/php/5.6/fpm/conf.d/20-mcrypt.ini
+
+#> service apache2 restart
 
 
 
