@@ -189,8 +189,9 @@ extension=/usr/lib/php/20131226/mcrypt.so
 
 #> service apache2 restart
 
-
-
+test :
+#> php -i | grep "mcrypt"
+#> php7.4-sp -i | grep mcrypt
 
 
 ============ PUDIN.MY.ID ============================
