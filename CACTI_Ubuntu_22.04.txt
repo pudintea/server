@@ -55,9 +55,30 @@ Restart Apache
 # systemctl restart apache2
 
 ======================
+
+
 Create a Database
+==================
+# mysql
+MariaDB [(none)]> CREATE DATABASE cactidb DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+MariaDB [(none)]> ALTER DATABASE cactidb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+MariaDB [(none)]> GRANT ALL ON cactidb.* TO cactiuser@localhost IDENTIFIED BY 'password';
+MariaDB [(none)]> flush privileges;
+MariaDB [(none)]> exit;
+
+Import timezone data to the MySQL database
+# mysql mysql < /usr/share/mysql/mysql_test_data_timezone.sql
+# mysql
+MariaDB [(none)]> GRANT SELECT ON mysql.time_zone_name TO cactiuser@localhost;
+MariaDB [(none)]> flush privileges;
+MariaDB [(none)]> exit;
+
+# service mysql restart
+
+
 
 Ubah konfigurasi default
+=========================
 # nano /etc/mysql/mariadb.conf.d/50-server.cnf
 
 Tambahkan Konfigurasi ini
@@ -184,26 +205,8 @@ default-character-set=utf8mb4
 
 ===========================================
 
-
-
-
-
 Restart Databasae MariaDB
 # systemctl restart mariadb
-
-# mysql
-MariaDB [(none)]> CREATE DATABASE cactidb DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-MariaDB [(none)]> ALTER DATABASE cactidb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-MariaDB [(none)]> GRANT ALL ON cactidb.* TO cactiuser@localhost IDENTIFIED BY 'password';
-MariaDB [(none)]> flush privileges;
-MariaDB [(none)]> exit;
-
-Import timezone data to the MySQL database
-# mysql mysql < /usr/share/mysql/mysql_test_data_timezone.sql
-# mysql
-MariaDB [(none)]> GRANT SELECT ON mysql.time_zone_name TO cactiuser@localhost;
-MariaDB [(none)]> flush privileges;
-MariaDB [(none)]> exit;
 
 ======================================
 Install and Configure Cacti
