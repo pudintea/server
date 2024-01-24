@@ -26,6 +26,7 @@ PERSIAPAN
 # timedatectl set-timezone Asia/Jakarta 
 
 > cd ~
+> apt-get install curl -y
 > curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh (sesuaikan kebutuhan)
 > nano nodesource_setup.sh
 > sudo bash nodesource_setup.sh
