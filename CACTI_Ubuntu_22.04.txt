@@ -40,6 +40,7 @@ Atau :
 # nano /etc/php/8.1/apache2/php.ini
 
 Ubah jadi seperti ini :
+max_input_vars = 1000
 memory_limit = 512M
 max_execution_time = 60
 date.timezone = Asia/Jakarta
@@ -47,6 +48,7 @@ date.timezone = Asia/Jakarta
 # nano /etc/php/8.1/cli/php.ini
 
 Ubah jadi seperti ini :
+max_input_vars = 1000
 memory_limit = 512M
 max_execution_time = 60
 date.timezone = Asia/Jakarta
