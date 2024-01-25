@@ -25,6 +25,30 @@ PERSIAPAN
 - mengubah timezone asia-jakarta
 # timedatectl set-timezone Asia/Jakarta 
 
+
+
+> cd ~
+> apt-get install curl -y
+> apt-get install git -y
+> curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
+> sudo bash nodesource_setup.sh
+> apt-get install nodejs -y
+> npm install -g npm@10.4.0
+> npm install pm2 -g
+> node -v
+> npm -v
+
+> git clone https://github.com/louislam/uptime-kuma.git
+> cd uptime-kuma
+> npm run setup
+
+> pm2 start server/server.js --name uptime-kuma
+> pm2 stop uptime-kuma
+> pm2 start server/server.js --name uptime-kuma -- --port=8888 (ganti port )
+
+
+================================================================================================
+
 > cd ~
 > apt-get install curl -y
 > apt-get install git -y
