@@ -30,7 +30,8 @@ PERSIAPAN
 > curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh (sesuaikan kebutuhan)
 > nano nodesource_setup.sh
 > sudo bash nodesource_setup.sh
-> sudo apt install nodejs git-all yarn
+> apt-get install nodejs -y
+# > sudo apt install nodejs git-all yarn (terlalu banyak)
 > npm install npm -g
 > npm install pm2 -g
 > node -v
