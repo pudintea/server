@@ -44,6 +44,7 @@ PERSIAPAN
 
 Test Run
 > node server/server.js
+IPADDRESS_SERVER:3001 (default)
 
 > pm2 start server/server.js --name uptime-kuma
 > pm2 stop uptime-kuma
