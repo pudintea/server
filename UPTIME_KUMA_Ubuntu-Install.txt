@@ -42,6 +42,9 @@ PERSIAPAN
 > cd uptime-kuma
 > npm run setup
 
+Test Run
+> node server/server.js
+
 > pm2 start server/server.js --name uptime-kuma
 > pm2 stop uptime-kuma
 > pm2 start server/server.js --name uptime-kuma -- --port=8888 (ganti port )
