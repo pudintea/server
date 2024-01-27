@@ -35,6 +35,11 @@ PERSIAPAN
 Masukan text dibawah ini
 ServerName 127.0.0.1
 
+USER GROUP
+----------
+sudo usermod -a -G namagrup namauser
+sudo usermod -g namagrup namauser
+
 2. ## PHP 5
 --------------------------------------------------------------------------------------------
 - Install PHP5
