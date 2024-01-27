@@ -81,6 +81,12 @@ TEST
 # mysql -u root -p  //nanti akan diminta password root si mysql, masukan saja passwordnya
 mysql> select version(); 
 
+PEMBUATAN DATABASE DAN USER DG SCRIPT
+-------------------------------------
+#> CREATE DATABASE nama_db DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+#> GRANT ALL ON nama_db.* TO 'nama_user'@'%' IDENTIFIED BY 'passwordnya';
+#> ALTER USER 'nama_user'@'%' IDENTIFIED WITH mysql_native_password BY 'passwordnya';
+
 
 4. ## PHPMYADMIN
 ------------------------------------------------------------------------------------------------------------
