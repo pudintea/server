@@ -6,7 +6,6 @@ Linux Panel Installation Command
 aaPanel is developed based on Centos, we recommend using Centos to install it
 
 Centos :
-
 yum install -y wget && wget -O install.sh https://www.aapanel.com/script/install_6.0_en.sh && bash install.sh forum
 
 The experimental Centos/Ubuntu/Debian/Fedora installation command supports ipv6. Note that this command is executed with root privileges (Centos8 is supported)
@@ -14,11 +13,9 @@ The experimental Centos/Ubuntu/Debian/Fedora installation command supports ipv6.
 curl -sSO https://www.aapanel.com/script/new_install_en.sh && bash new_install_en.sh forum
 
 Ubuntu/Deepin :
-
 wget -O install.sh https://www.aapanel.com/script/install-ubuntu_6.0_en.sh && bash install.sh forum
 
 Debian :
-
 wget -O install.sh https://www.aapanel.com/script/install-ubuntu_6.0_en.sh && bash install.sh forum
 
 
