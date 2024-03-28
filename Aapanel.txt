@@ -28,4 +28,32 @@ Debian :
 wget -O install.sh https://www.aapanel.com/script/install-ubuntu_6.0_en.sh && bash install.sh forum
 
 
+===================================================================================
+
+$> bt
+root@aapanel:~# bt
+===============aaPanel CLI==================
+(1) Restart panel                           (8) Change panel port
+(2) Stop panel                              (9) Clear panel cache
+(3) Start panel                             (10) Clear login limit
+(4) Reload panel                            (11) Turn on/off IP + User-Agent Authenticator 
+(5) Change panel password                   (12) Cancel domain binding limit
+(6) Change panel username                   (13) Cancel IP access limit
+(7) Forcibly change MySQL root password     (14) View panel default info
+(22) Display panel error log                (15) Clear system rubbish
+(23) Turn off BasicAuth Authenticator       (16) Repair panel (check for errors and update panel files to the latest version)
+(24) Turn off Google Authenticator          (17) Set log cutting on/off compression
+(25) Save copy when modify file in panel    (18) Set whether to back up the panel automatically
+(26) Keep/Remove local backup when backing up to cloud storage
+(27) Turn on/off panel SSL                  (28) Modify panel security entrance
+(0) Cancel
+===============================================
+Pls enter command number：14
+===============================================
+EXECUTING
+===============================================
+==================================================================
+
+
+
 ========================================= PUDIN.MY.ID ========================================================
