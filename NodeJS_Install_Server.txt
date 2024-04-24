@@ -27,8 +27,6 @@ $> apt-get install git -y
 $> curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
 $> sudo bash nodesource_setup.sh
 $> apt-get install nodejs -y
-$> npm install -g npm@10.4.0
-$> npm install pm2 -g
 $> node -v
 $> npm -v
 
