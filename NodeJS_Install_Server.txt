@@ -6,7 +6,7 @@ https://nodejs.org/en/download
 
 PERSIAPAN
 -----------------------------------------------------------------------------------------------------------------------
-$> apt-get update && apt-get upgrade -y
+
 
 - mengganti waktu server localtime jakarta
 # mv /etc/localtime /etc/localtime-asal
@@ -14,6 +14,12 @@ $> apt-get update && apt-get upgrade -y
 
 - mengubah timezone asia-jakarta
 # timedatectl set-timezone Asia/Jakarta 
+
+- Update dan Upgrade
+$> apt-get update && apt-get upgrade -y
+
+
+
 
 $> cd ~
 $> apt-get install curl -y
