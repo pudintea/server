@@ -1,0 +1,31 @@
+
+PUDIN.MY.ID
+LTS : v20.12.2
+https://nodejs.org/en/download
+
+
+PERSIAPAN
+-----------------------------------------------------------------------------------------------------------------------
+$> apt-get update && apt-get upgrade -y
+
+- mengganti waktu server localtime jakarta
+# mv /etc/localtime /etc/localtime-asal
+# cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+
+- mengubah timezone asia-jakarta
+# timedatectl set-timezone Asia/Jakarta 
+
+$> cd ~
+$> apt-get install curl -y
+$> apt-get install git -y
+$> curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
+$> sudo bash nodesource_setup.sh
+$> apt-get install nodejs -y
+$> npm install -g npm@10.4.0
+$> npm install pm2 -g
+$> node -v
+$> npm -v
+
+
+
+=========================== PUDIN.MY.ID ==========================================
