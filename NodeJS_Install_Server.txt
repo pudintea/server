@@ -39,6 +39,8 @@ INSTALL EXPRESS JS
 $> npm init -y
 $> npm i express
 $> npm i nodemon
+$> npm i body-parser
+$> npm i mysql
 
 file : package.json
 {
