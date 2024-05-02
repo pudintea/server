@@ -55,5 +55,40 @@ EXECUTING
 ==================================================================
 
 
+INSTALL AAPANEL UNTUK CODEIGNITER 4
+=====================================
+
+Install Composer
+=============
+$> curl -sS https://getcomposer.org/installer | php
+$> mv composer.phar /usr/local/bin/composer
+$> chmod +x /usr/local/bin/composer
+
+Nonaktifkan-Anti-XSS
+= Website -> namadomain - > config -> site directory -> uncentang di Anti-XSS attac
+
+Aktifkan putenv(), proc_open
+==============
+= App Store -> pilih php yg digunakan -> config -> Disabled functions -> hapus putenv
+= App Store -> pilih php yg digunakan -> config -> Disabled functions -> proc_open
+
+Install codeigniter4
+$>compser create-project codeigniter4/appstarter project-root
+$> compser create-project codeigniter4/appstarter . // biar tidak membuat folder baru lagi, ganti dengan titik
+
+Perhatikan semua vermission ke www:www
+
+Jangan lupa pindahkan arah routenya ke public
+= Website -> namadomain - > config -> site directory -> pada kolom sitedirectory tambahin /public
+
+=================================
+
+
+
+
+
+
+
+
 
 ========================================= PUDIN.MY.ID ========================================================
