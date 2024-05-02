@@ -70,13 +70,13 @@ Nonaktifkan-Anti-XSS
 Aktifkan putenv(), proc_open
 ==============
 = App Store -> pilih php yg digunakan -> config -> Disabled functions -> hapus putenv
-= App Store -> pilih php yg digunakan -> config -> Disabled functions -> proc_open
+= App Store -> pilih php yg digunakan -> config -> Disabled functions -> hapus proc_open
 
 Install codeigniter4
 $>compser create-project codeigniter4/appstarter project-root
 $> compser create-project codeigniter4/appstarter . // biar tidak membuat folder baru lagi, ganti dengan titik
 
-Perhatikan semua vermission ke www:www
+Perhatikan semua vermission folder codeigniternya ke : www:www
 
 Jangan lupa pindahkan arah routenya ke public
 = Website -> namadomain - > config -> site directory -> pada kolom sitedirectory tambahin /public
