@@ -73,7 +73,7 @@ Aktifkan putenv(), proc_open
 = App Store -> pilih php yg digunakan -> config -> Disabled functions -> hapus proc_open
 
 Install codeigniter4
-$>compser create-project codeigniter4/appstarter project-root
+$> compser create-project codeigniter4/appstarter project-root
 $> compser create-project codeigniter4/appstarter . // biar tidak membuat folder baru lagi, ganti dengan titik
 
 Perhatikan semua vermission folder codeigniternya ke : www:www
