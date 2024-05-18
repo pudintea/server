@@ -84,5 +84,6 @@ Test
 IPADDRESS_SERVER:3001 (default)
 IPADDRESS_SERVER:8888
 
+Run npm install -g npm@10.8.0 to update!
 
 ==================================== UPTIME.WEB.ID =====================================
