@@ -1,3 +1,6 @@
+NTP
+# sudo apt install ntp -y
+# ntpq -p
 
 
 - mengganti waktu server localtime jakarta
