@@ -1,0 +1,9 @@
+
+$> apt update && apt upgrade -y
+$> wget https://git.io/wireguard -O wireguard-install.sh
+$> bash wireguard-install.sh
+
+Web : https://www.wireguard.com/install/
+Yt : https://www.youtube.com/watch?v=K57V-E_UZrg
+
+==========================================PUDIN.MY.ID===========================
