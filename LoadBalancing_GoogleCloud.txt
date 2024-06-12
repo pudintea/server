@@ -171,6 +171,7 @@ Tidak ada perubahan yang diperlukan di sini.
 
 gcloud compute target-http-proxies create http-lb-proxy \
     --url-map web-map-http
+
 10. Buat aturan penerusan global
 Ubah aturan penerusan untuk menggunakan port 8083.
 
