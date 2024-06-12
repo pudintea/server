@@ -1,0 +1,477 @@
+us-west1-a
+
+$> gcloud auth list
+
+ACTIVE: *
+ACCOUNT: student-01-xxxxxxxxxxxx@qwiklabs.net
+
+Untuk menyetel akun aktif, jalankan:
+$> gcloud config set account `ACCOUNT`
+
+$> gcloud config list project
+
+Output:
+[core]
+project = <project_ID>
+
+Contoh output:
+[core]
+project = qwiklabs-gcp-44776a13dea667a6
+
+REGION				ZONE
+Amerika Serikat Bagian Barat	us-west1-a, us-west1-b
+Amerika Serikat Bagian Tengah	us-central1-a, us-central1-b, us-central1-d, us-central1-f
+Amerika Serikat Bagian Timur	us-east1-b, us-east1-c, us-east1-d
+Eropa Barat			europe-west1-b, europe-west1-c, europe-west1-d
+Asia Timur			asia-east1-a, asia-east1-b, asia-east1-c
+
+region us-central1 menunjukkan satu region di Amerika Serikat Bagian Tengah yang memiliki zona us-central1-a, us-central1-b, us-central1-c, dan us-central1-f.
+
+Jalankan perintah gcloud berikut di Cloud Shell guna menetapkan region dan zona default untuk lab Anda:
+
+gcloud config set compute/zone "Zone"
+export ZONE=$(gcloud config get compute/zone)
+
+gcloud config set compute/region "Region"
+export REGION=$(gcloud config get compute/region)
+
+
+gcloud config set compute/zone "us-west1-a"
+export ZONE=$(gcloud config get compute/zone)
+
+gcloud config set compute/region "us-west1"
+export REGION=$(gcloud config get compute/region)
+
+
+gcloud compute networks subnets create subnet-us-west1 \
+   --network taw-custom-network \
+   --region us-west1 \
+   --range 10.0.0.0/16
+
+gcloud compute networks subnets create subnet-us-east-1 \
+   --network taw-custom-network \
+   --region us-east1 \
+   --range 10.1.0.0/16
+
+gcloud compute networks subnets create subnet-us-south1 \
+   --network taw-custom-network \
+   --region us-south1 \
+   --range 10.2.0.0/16
+
+Lihat daftar jaringan Anda:
+
+gcloud compute networks subnets list \
+   --network taw-custom-network
+
+====================================================================
+
+
+gcloud config set compute/region europe-west1
+gcloud config get-value compute/region
+
+
+gcloud config set compute/zone europe-west1-d
+
+Menyetel variabel lingkungan
+Variabel lingkungan menentukan lingkungan dan menghemat waktu Anda saat menulis skrip yang berisi API atau file yang dapat dieksekusi.
+
+Buat variabel lingkungan untuk menyimpan Project ID Anda:
+
+export PROJECT_ID=$(gcloud config get-value project)
+Disalin
+Buat variabel lingkungan untuk menyimpan Zona Anda:
+
+export ZONE=$(gcloud config get-value compute/zone)
+Disalin
+Untuk memverifikasi bahwa variabel Anda sudah ditetapkan dengan benar, jalankan perintah berikut:
+
+echo -e "PROJECT ID: $PROJECT_ID\nZONE: $ZONE"
+Disalin
+Jika variabel ditetapkan dengan benar, perintah echo akan menampilkan Project ID dan Zona Anda.
+
+-- Untuk membuat VM Anda, jalankan perintah berikut:
+gcloud compute instances create gcelab2 --machine-type e2-medium --zone $ZONE
+
+gcloud config list
+gcloud config list --all
+
+gcloud components list
+
+
+gcloud compute instances list
+gcloud compute instances list --filter="name=('gcelab2')"
+
+gcloud compute firewall-rules list
+gcloud compute firewall-rules list --filter="network='default'"
+
+Buat daftar aturan firewall untuk jaringan default di mana aturan izin cocok dengan aturan ICMP:
+
+gcloud compute firewall-rules list --filter="NETWORK:'default' AND ALLOW:'icmp'"
+
+
+-- SSH
+gcloud compute ssh gcelab2 --zone $ZONE
+
+-- port 80
+gcloud compute instances add-tags gcelab2 --tags http-server,https-server
+gcloud compute firewall-rules create default-allow-http --direction=INGRESS --priority=1000 --network=default --action=ALLOW --rules=tcp:80 --source-ranges=0.0.0.0/0 --target-tags=http-server
+gcloud compute firewall-rules list --filter=ALLOW:'80'
+
+curl http://$(gcloud compute instances list --filter=name:gcelab2 --format='value(34.38.179.147)')
+
+curl http://34.38.179.147
+
+-- log
+gcloud logging logs list
+gcloud logging logs list --filter="compute"
+gcloud logging read "resource.type=gce_instance" --limit 5
+gcloud logging read "resource.type=gce_instance AND labels.instance_name='gcelab2'" --limit 5
+
+-- Nginx
+sudo apt-get update
+sudo apt-get install -y nginx
+ps auwx | grep nginx
+
+
+gcloud compute instances create gcelab2 --machine-type e2-medium --zone us-east1-d
+
+ssh
+gcloud compute ssh gcelab2 --zone us-east1-d 
+
+==============================================================================
+In the left Navigation menu, click APIs & Services > Library.
+"App Engine Admin API"
+
+git clone https://github.com/GoogleCloudPlatform/python-docs-samples.git
+cd python-docs-samples/appengine/standard_python3/hello_world
+dev_appserver.py app.yaml
+
+gcloud app browse
+Deployed service [default] to [https://qwiklabs-gcp-00-b0d3a1de89a1.uc.r.appspot.com]
+
+
+====================================================
+
+gcloud config set compute/region us-east1
+mkdir gcf_hello_world
+cd gcf_hello_world
+nano index.js
+
+/**
+* Background Cloud Function to be triggered by Pub/Sub.
+* This function is exported by index.js, and executed when
+* the trigger topic receives a message.
+*
+* @param {object} data The event payload.
+* @param {object} context The event metadata.
+*/
+exports.helloWorld = (data, context) => {
+const pubSubMessage = data;
+const name = pubSubMessage.data
+    ? Buffer.from(pubSubMessage.data, 'base64').toString() : "Hello World";
+
+console.log(`My Cloud Function: ${name}`);
+};
+
+gsutil mb -p qwiklabs-gcp-00-e633b4a7417d gs://qwiklabs-gcp-00-e633b4a7417d
+
+gcloud services disable cloudfunctions.googleapis.com
+gcloud services enable cloudfunctions.googleapis.com
+
+gcloud projects add-iam-policy-binding qwiklabs-gcp-00-e633b4a7417d \
+--member="serviceAccount:qwiklabs-gcp-00-e633b4a7417d@appspot.gserviceaccount.com" \
+--role="roles/artifactregistry.reader"
+
+gcloud functions deploy helloWorld \
+  --stage-bucket qwiklabs-gcp-00-e633b4a7417d \
+  --trigger-topic hello_world \
+  --runtime nodejs20
+
+gcloud functions describe helloWorld
+
+DATA=$(printf 'Hello World!'|base64) && gcloud functions call helloWorld --data '{"data":"'$DATA'"}'
+
+
+gcloud functions logs read helloWorld
+
+===============================================================================
+Google Kubernetes Engine: Qwik Start
+https://www.cloudskillsboost.google/course_templates/153/labs/469878
+
+gcloud config set compute/region us-central1
+gcloud config set compute/zone us-central1-a
+
+gcloud container clusters create --machine-type=e2-medium --zone=us-central1-a lab-cluster
+
+gcloud container clusters get-credentials lab-cluster
+
+
+kubectl create deployment hello-server --image=gcr.io/google-samples/hello-app:1.0
+
+kubectl expose deployment hello-server --type=LoadBalancer --port 8080
+kubectl get service
+
+Hapus
+gcloud container clusters delete lab-cluster
+
+
+gcloud compute instances get-serial-port-output [instance] --zone=us-east4-b
+
+gcloud compute instances get-serial-port-output instance-1 --zone=us-east4-b
+
+gcloud compute reset-windows-password instance-1 --zone us-east4-b --user admin
+35.221.54.32
+admin
+h;7aUmzRKWSOEri
+
+=========================================================================
+
+Buat variabel lingkungan untuk menyimpan Project ID Anda:
+
+export PROJECT_ID=$(gcloud config get-value project)
+Disalin
+Buat variabel lingkungan untuk menyimpan Zona Anda:
+
+export ZONE=$(gcloud config get-value compute/zone)
+Disalin
+Untuk memverifikasi bahwa variabel Anda sudah ditetapkan dengan benar, jalankan perintah berikut:
+
+echo -e "PROJECT ID: $PROJECT_ID\nZONE: $ZONE"
+
+======================================================================================
+Menyiapkan Load Balancer Jaringan dan HTTP
+https://www.cloudskillsboost.google/course_templates/648/labs/484535
+
+
+gcloud config set compute/region us-west1
+gcloud config set compute/zone us-west1-c
+
+www1
+  gcloud compute instances create www1 \
+    --zone=us-west1-c \
+    --tags=network-lb-tag \
+    --machine-type=e2-small \
+    --image-family=debian-11 \
+    --image-project=debian-cloud \
+    --metadata=startup-script='#!/bin/bash
+      apt-get update
+      apt-get install apache2 -y
+      service apache2 restart
+      echo "
+<h3>Server Web: www1</h3>" | tee /var/www/html/index.html'
+
+www2
+  gcloud compute instances create www2 \
+    --zone=us-west1-c \
+    --tags=network-lb-tag \
+    --machine-type=e2-small \
+    --image-family=debian-11 \
+    --image-project=debian-cloud \
+    --metadata=startup-script='#!/bin/bash
+      apt-get update
+      apt-get install apache2 -y
+      service apache2 restart
+      echo "
+<h3>Server Web: www2</h3>" | tee /var/www/html/index.html'
+
+www3
+  gcloud compute instances create www3 \
+    --zone=us-west1-c  \
+    --tags=network-lb-tag \
+    --machine-type=e2-small \
+    --image-family=debian-11 \
+    --image-project=debian-cloud \
+    --metadata=startup-script='#!/bin/bash
+      apt-get update
+      apt-get install apache2 -y
+      service apache2 restart
+      echo "
+<h3>Server Web: www3</h3>" | tee /var/www/html/index.html'
+
+Buat aturan firewall untuk mengizinkan traffic eksternal ke instance VM:
+
+gcloud compute firewall-rules create www-firewall-network-lb \
+    --target-tags network-lb-tag --allow tcp:80
+
+
+gcloud compute instances list
+
+NAME: www1
+ZONE: us-west1-c
+MACHINE_TYPE: e2-small
+PREEMPTIBLE: 
+INTERNAL_IP: 10.138.0.2
+EXTERNAL_IP: 34.168.188.226
+STATUS: RUNNING
+
+NAME: www2
+ZONE: us-west1-c
+MACHINE_TYPE: e2-small
+PREEMPTIBLE: 
+INTERNAL_IP: 10.138.0.3
+EXTERNAL_IP: 34.83.55.123
+STATUS: RUNNING
+
+NAME: www3
+ZONE: us-west1-c
+MACHINE_TYPE: e2-small
+PREEMPTIBLE: 
+INTERNAL_IP: 10.138.0.4
+EXTERNAL_IP: 34.82.221.229
+STATUS: RUNNING
+
+
+
+Buat alamat IP eksternal statis untuk load balancer:
+
+gcloud compute addresses create network-lb-ip-1 \
+  --region us-west1
+
+Tambahkan resource health check HTTP lama:
+
+gcloud compute http-health-checks create basic-check
+
+
+Tambahkan kumpulan target dalam region yang sama dengan instance Anda. Jalankan perintah berikut untuk membuat kumpulan target dan menggunakan health check, yang diperlukan agar layanan dapat berfungsi:
+
+gcloud compute target-pools create www-pool \
+  --region us-west1 --http-health-check basic-check
+
+Tambahkan instance ke kumpulan tersebut:
+
+gcloud compute target-pools add-instances www-pool \
+    --instances www1,www2,www3
+Disalin
+Tambahkan aturan penerusan:
+
+gcloud compute forwarding-rules create www-rule \
+    --region  us-west1 \
+    --ports 80 \
+    --address network-lb-ip-1 \
+    --target-pool www-pool
+
+
+Masukkan perintah berikut untuk melihat alamat IP eksternal dari aturan penerusan www-rule yang digunakan oleh load balancer:
+
+gcloud compute forwarding-rules describe www-rule --region us-west1
+Disalin
+Akses alamat IP eksternal
+
+IPADDRESS=$(gcloud compute forwarding-rules describe www-rule --region us-west1 --format="json" | jq -r .IPAddress)
+Disalin
+Tampilkan alamat IP eksternal
+
+echo $IPADDRESS
+35.230.114.239
+Gunakan perintah curl untuk mengakses alamat IP eksternal, dan ganti IP_ADDRESS dengan alamat IP eksternal dari perintah sebelumnya:
+
+while true; do curl -m1 $IPADDRESS; done
+Disalin
+Respons dari perintah curl secara acak berbeda di antara tiga instance tersebut. Jika respons di awal tidak berhasil, tunggu sekitar 30 detik agar konfigurasi dimuat sepenuhnya dan instance Anda dianggap responsif sebelum mencoba lagi.
+
+Gunakan Ctrl + C untuk menghentikan perintah yang berjalan.
+
+
+
+
+Tugas 5. Membuat load balancer HTTP
+
+-- Template load balancer
+gcloud compute instance-templates create lb-backend-template \
+   --region=us-west1 \
+   --network=default \
+   --subnet=default \
+   --tags=allow-health-check \
+   --machine-type=e2-medium \
+   --image-family=debian-11 \
+   --image-project=debian-cloud \
+   --metadata=startup-script='#!/bin/bash
+     apt-get update
+     apt-get install apache2 -y
+     a2ensite default-ssl
+     a2enmod ssl
+     vm_hostname="$(curl -H "Metadata-Flavor:Google" \
+     http://169.254.169.254/computeMetadata/v1/instance/name)"
+     echo "Page served from: $vm_hostname" | \
+     tee /var/www/html/index.html
+     systemctl restart apache2'
+
+-- Buat group instance
+gcloud compute instance-groups managed create lb-backend-group \
+   --template=lb-backend-template --size=2 --zone=us-west1-c
+
+-- Firewall
+gcloud compute firewall-rules create fw-allow-health-check \
+  --network=default \
+  --action=allow \
+  --direction=ingress \
+  --source-ranges=130.211.0.0/22,35.191.0.0/16 \
+  --target-tags=allow-health-check \
+  --rules=tcp:80
+
+
+-- Siapkan IP external static global
+gcloud compute addresses create lb-ipv4-1 \
+  --ip-version=IPV4 \
+  --global
+
+
+-- Catat alamat ip yang dicadangkan
+gcloud compute addresses describe lb-ipv4-1 \
+  --format="get(address)" \
+  --global
+
+34.110.169.100
+
+
+-- Buat helty check
+gcloud compute health-checks create http http-basic-check \
+  --port 80
+
+
+-- Buat layanan backend
+gcloud compute backend-services create web-backend-service \
+  --protocol=HTTP \
+  --port-name=http \
+  --health-checks=http-basic-check \
+  --global
+
+-- Tambahkan grup instance sebagai backend ke layanan backend:
+
+gcloud compute backend-services add-backend web-backend-service \
+  --instance-group=lb-backend-group \
+  --instance-group-zone=us-west1-c \
+  --global
+
+
+-- Buat peta URL untuk mengarahkan permintaan masuk ke layanan backend default:
+
+gcloud compute url-maps create web-map-http \
+    --default-service web-backend-service
+
+Catatan: Peta URL adalah resource konfigurasi Google Cloud yang digunakan untuk mengarahkan permintaan ke layanan backend atau bucket backend. Misalnya, dengan load balancer HTTP(S) eksternal, Anda dapat menggunakan satu peta URL untuk mengarahkan permintaan ke berbagai tujuan berdasarkan aturan yang dikonfigurasi di peta URL:
+Permintaan untuk https://example.com/video mengarah ke satu layanan backend.
+Permintaan untuk https://example.com/audio mengarah ke layanan backend yang berbeda.
+Permintaan untuk https://example.com/images mengarah ke bucket backend Cloud Storage.
+Permintaan untuk kombinasi host dan jalur lainnya mengarah ke layanan backend default
+
+
+-- Buat proxy HTTP target untuk mengarahkan permintaan ke peta URL:
+gcloud compute target-http-proxies create http-lb-proxy \
+    --url-map web-map-http
+
+-- Buat aturan penerusan global untuk mengarahkan permintaan masuk ke proxy:
+gcloud compute forwarding-rules create http-content-rule \
+   --address=lb-ipv4-1\
+   --global \
+   --target-http-proxy=http-lb-proxy \
+   --ports=80
+
+Klik Check my progress di bawah untuk memverifikasi bahwa Anda telah membuat load balancer HTTP(S) L7.
+
+
+
+
+
+
+==========================PUDIN.MY.ID===============================================
