@@ -81,4 +81,103 @@ gcloud compute forwarding-rules create http-content-rule \
    --target-http-proxy=http-lb-proxy \
    --ports=80
 
+========================================== PORT 8083 ==========================================
+
+
+Jadi Port 8083
+
+1. Ubah startup script NGINX
+Perbarui startup script untuk mengkonfigurasi NGINX agar mendengarkan pada port 8083. Kamu perlu mengubah konfigurasi NGINX setelah instalasi di skrip startup.
+
+gcloud compute instance-templates create lb-backend-template \
+   --region=us-east1 \
+   --network=default \
+   --subnet=default \
+   --tags=allow-health-check \
+   --machine-type=e2-medium \
+   --image-family=debian-11 \
+   --image-project=debian-cloud \
+   --metadata=startup-script='#!/bin/bash
+     apt-get update
+     apt-get install nginx -y
+     sed -i "s/listen 80 default_server;/listen 8083 default_server;/" /etc/nginx/sites-available/default
+     sed -i "s/listen \[::\]:80 default_server;/listen \[::\]:8083 default_server;/" /etc/nginx/sites-available/default
+     vm_hostname="$(curl -H "Metadata-Flavor:Google" \
+     http://169.254.169.254/computeMetadata/v1/instance/name)"
+     echo "Page served from: $vm_hostname" | \
+     tee /var/www/html/index.html
+     systemctl restart nginx'
+
+2. Buat grup instance
+Tidak ada perubahan yang diperlukan di sini karena template sudah diperbarui.
+
+gcloud compute instance-groups managed create lb-backend-group \
+   --template=lb-backend-template --size=2 --zone=us-east1-d
+
+3. Aturan firewall
+Tambahkan aturan firewall untuk mengizinkan lalu lintas pada port 8083.
+
+gcloud compute firewall-rules create grant-tcp-rule-476 \
+  --network=default \
+  --action=allow \
+  --direction=ingress \
+  --source-ranges=130.211.0.0/22,35.191.0.0/16 \
+  --target-tags=allow-health-check \
+  --rules=tcp:8083
+
+
+4. Siapkan IP external static global
+Tidak ada perubahan yang diperlukan di sini.
+
+gcloud compute addresses create lb-ipv4-1 \
+  --ip-version=IPV4 \
+  --global
+
+gcloud compute addresses describe lb-ipv4-1 \
+  --format="get(address)" \
+  --global
+
+5. Buat pemeriksaan kesehatan
+Ubah pemeriksaan kesehatan untuk menggunakan port 8083.
+
+gcloud compute health-checks create http http-basic-check \
+  --port 8083
+
+6. Buat layanan backend
+Ubah layanan backend untuk menggunakan port 8083.
+
+gcloud compute backend-services create web-backend-service \
+  --protocol=HTTP \
+  --port-name=http \
+  --health-checks=http-basic-check \
+  --global
+
+7. Tambahkan grup instance sebagai backend ke layanan backend
+Tidak ada perubahan yang diperlukan di sini.
+
+gcloud compute backend-services add-backend web-backend-service \
+  --instance-group=lb-backend-group \
+  --instance-group-zone=us-east1-d \
+  --global
+
+8. Buat peta URL
+Tidak ada perubahan yang diperlukan di sini.
+
+gcloud compute url-maps create web-map-http \
+    --default-service web-backend-service
+
+9. Buat proxy HTTP target
+Tidak ada perubahan yang diperlukan di sini.
+
+gcloud compute target-http-proxies create http-lb-proxy \
+    --url-map web-map-http
+10. Buat aturan penerusan global
+Ubah aturan penerusan untuk menggunakan port 8083.
+
+gcloud compute forwarding-rules create http-content-rule \
+   --address=lb-ipv4-1 \
+   --global \
+   --target-http-proxy=http-lb-proxy \
+   --ports=8083
+
 ==========================PUDIN.MY.ID===============================================
