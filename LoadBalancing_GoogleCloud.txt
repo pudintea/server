@@ -183,6 +183,8 @@ gcloud compute forwarding-rules create http-content-rule \
 
 
 =========================================== BISA DIGUNAKAN =================================================================
+-- https://github.com/quiccklabs/Labs_solutions/blob/abfb97e25e85694d40b10bc608c148a295eea078/Implement%20Load%20Balancing%20on%20Compute%20Engine%20Challenge%20Lab/quicklab.md
+-- https://www.youtube.com/watch?v=gwZEJw_Ssmw
 
 export INSTANCE_NAME=
 export ZONE=
