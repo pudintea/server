@@ -6,7 +6,7 @@ Paket OpenSSH secara default sudah terinstall pada sistem operasi linux dan mac,
 
 <h2>1. Generate SSH Key</h2>
 <pre>
-  <code>$ ssh-keygen -t rsa -b 4096 -C "Sysadmin"</code>
+  <code>ssh-keygen -t rsa -b 4096 -C "Sysadmin"</code>
 </pre>
 <ul>
   <li>parameter  "-t rsa" akan menghasilkan kunci dengan format RSA</li>
