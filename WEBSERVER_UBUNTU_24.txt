@@ -1,0 +1,42 @@
+WEBSERVER UBUNTU 24.04
+
+APACHE
+------
+> sudo apt install apache2
+> sudo ufw allow "Apache Full"
+> sudo a2enmod rewrite
+> sudo a2enmod ssl
+> nano /etc/apach2/site-available/nama file virtualisasi.conf
+
+        <Directory /var/www/html/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+        </Directory>
+
+        ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+        <Directory "/usr/lib/cgi-bin">
+                AllowOverride None
+                Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+                Order allow,deny
+                Allow from all
+        </Directory>
+
+> sudo systemctl restart apache2
+> sudo apache2ctl configtest
+> sudo systemctl reload apache2
+
+SSL
+------
+Step 1 — Installing Certbot
+> sudo apt install certbot python3-certbot-apache
+> sudo apache2ctl configtest
+> sudo systemctl reload apache2
+> sudo certbot --apache
+
+SELENGKAPNYA BACA DI : https://github.com/pudintea/server/blob/main/Let's-Encrypt-Apache-Ubuntu-20.04.txt
+
+
+
+
