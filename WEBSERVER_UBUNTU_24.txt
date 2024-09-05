@@ -94,7 +94,13 @@ jadi begini :
 - memory_limit = 512M
 - max_execution_time = 60
 
+MARIADB
+--------
+> sudo apt install mariadb-server
+> sudo systemctl status mariadb
+> sudo systemctl enable mariadb
+> sudo mysql_secure_installation
 
 
 
-
+--------------------pudin.my.id----------------
