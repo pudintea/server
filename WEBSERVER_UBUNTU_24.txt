@@ -60,6 +60,27 @@ Install common PHP extensions.
 > sudo apt install -y  php-mysql php-mbstring php-bcmath php-zip php-gd php-curl php-xml
 > sudo apt-cache search php | grep "^php8.3"
 
+Install PHP-FPM
+> sudo apt install php-fpm -y
+> php-fpm8.3 -v
+> ls /etc/php/8.3/
+> cd /etc/php/8.3/fpm/pool.d/
+> sudo nano www.conf
+- [www]
+
+- user = www-data
+- group = www-data
+
+- listen = /run/php/php8.3-fpm.sock
+
+- pm = dynamic
+- pm.max_children = 5
+- pm.start_servers = 2
+- pm.min_spare_servers = 1
+- pm.max_spare_servers = 3
+
+> sudo systemctl restart php8.3-fpm
+
 Konfigurasi Apache dengan Beberapa PHP
 > sudo a2enmod actions fcgid alias proxy_fcgi
 
