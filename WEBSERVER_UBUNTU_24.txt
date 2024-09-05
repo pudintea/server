@@ -9,7 +9,7 @@ WEBSERVER UBUNTU 24.04
 
 APACHE
 ------
-> sudo apt install apache2 libapache2-mod-fcgid
+> sudo apt install apache2 libapache2-mod-fcgid -y
 > sudo ufw allow "Apache Full"
 > sudo a2enmod rewrite
 > sudo a2enmod ssl
@@ -96,7 +96,7 @@ jadi begini :
 
 MARIADB
 --------
-> sudo apt install mariadb-server
+> sudo apt install mariadb-server -y
 > sudo systemctl status mariadb
 > sudo systemctl enable mariadb
 > sudo mysql_secure_installation
