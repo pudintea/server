@@ -1,0 +1,56 @@
+Refrensi : https://www.linode.com/docs/guides/securing-apache2-with-modsecurity/#setting-up-the-owasp-modsecurity-core-rule-set
+Kode konfigurasi :
+--------------------------
+> sudo apt install libapache2-mod-security2 git -y
+
+> sudo a2enmod security2
+> sudo a2enmod headers
+> sudo systemctl restart apache2
+
+/etc/apache2/mods-enabled/security2.conf
+> sudo cp /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
+> nano /etc/modsecurity/modsecurity.conf
+- change the value for SecRuleEngine from DetectionOnly to On
+SecRuleEngine On
+SecAuditLogParts ABCEFHJKZ
+
+> sudo mv /usr/share/modsecurity-crs /usr/share/modsecurity-crs-asliiii
+> sudo git clone https://github.com/coreruleset/coreruleset /usr/share/modsecurity-crs
+
+> sudo cp /usr/share/modsecurity-crs/crs-setup.conf.example /usr/share/modsecurity-crs/crs-setup.conf
+> sudo cp /usr/share/modsecurity-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf.example /usr/share/modsecurity-crs/rules/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf
+
+> nano /etc/apache2/mods-available/security2.conf
+SecDataDir /var/cache/modsecurity
+Include /usr/share/modsecurity-crs/crs-setup.conf
+Include /usr/share/modsecurity-crs/rules/*.conf
+
+> nano /etc/apache2/sites-enabled/example.com.conf
+
+ErrorLog ${APACHE_LOG_DIR}/error.log
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+#tambahkan ini
+SecRuleEngine On
+
+sudo apache2ctl -t
+sudo systemctl restart apache2
+
+Testing ModSecurity
+> curl http://<SERVER-IP/DOMAIN>/index.html?exec=/bin/bash
+https://yourdomain.com/?id=3 or 'a'='a'
+
+If ModSecurity has been configured correctly and is actively blocking attacks, the following error is returned:
+
+```output
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>403 Forbidden</title>
+</head><body>
+<h1>Forbidden</h1>
+<p>You don't have permission to access this resource.</p>
+<hr>
+<address>Apache/2.4.41 (Ubuntu) Server at 172.105.53.220 Port 80</address>
+</body></html>
+```
+
+/var/log/apache2/modsec_audit.log
