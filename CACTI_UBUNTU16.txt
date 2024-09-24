@@ -1,0 +1,19 @@
+INSTALASI
+> apt install apache2 php libapache2-mod-php snmp snmpd -y
+> apt install mysql-server -y
+> apt install rrdtool -y
+> apt install cacti cacti-spine -y
+
+KONFIGURASI SNMP
+
+
+
+Mengatasi :
+You are running MySQL in Strict Mode, which is not supported by Thold.
+
+> nano /etc/mysql/conf.d/mysql.cnf
+Tambahkan :
+[mysqld]
+sql_mode=''
+
+-----------------
