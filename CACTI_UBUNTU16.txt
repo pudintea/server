@@ -4,6 +4,10 @@ INSTALASI
 > apt install rrdtool -y
 > apt install cacti cacti-spine -y
 
+
+Lokasi File : /usr/share/cacti/site
+
+
 KONFIGURASI SNMP
 
 
