@@ -52,9 +52,11 @@ Konfigurasi Virtualhost
 
 REDIRECT (HTTP to HTTPS)
 =========================
-RewriteEngine on
-RewriteCond %{SERVER_NAME} =namadomainkamu.id
-RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+<VirtualHost *:80>
+    RewriteEngine on
+    RewriteCond %{SERVER_NAME} =namadomainkamu.id
+    RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+</VirtualHost>
 
 
 
