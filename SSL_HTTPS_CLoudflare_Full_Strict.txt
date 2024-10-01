@@ -47,7 +47,15 @@ Konfigurasi Virtualhost
     SSLCertificateFile /etc/cloudflare/namadomainanda.id.pem
     SSLCertificateKeyFile /etc/cloudflare/namadomainanda.id.key
 
-</VirtualHost
+</VirtualHost>
+
+
+REDIRECT (HTTP to HTTPS)
+=========================
+RewriteEngine on
+RewriteCond %{SERVER_NAME} =namadomainkamu.id
+RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
+
 
 
 Mengaktifkan file virtualhost
