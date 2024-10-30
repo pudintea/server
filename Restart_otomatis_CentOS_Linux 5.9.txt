@@ -1,0 +1,26 @@
+Untuk mengatur server CentOS Linux 5.9 agar melakukan restart otomatis setiap hari Senin pada pukul 05:00 pagi,
+Anda hanya perlu menyesuaikan waktu pada cron job.
+
+Berikut adalah skrip yang perlu ditambahkan:
+
+Langkah 1: Akses Cron Job
+Masuk ke server melalui SSH dan edit crontab:
+> crontab -e
+
+Tekan Insert untuk mulai mengedit.
+Jika sudah, Silahkan tekan Esc lalu tulis :wq
+
+Langkah 2: Menambahkan Cron Job
+Tambahkan baris berikut di dalam file crontab yang terbuka:
+
+0 5 * * 1 /sbin/shutdown -r now
+
+Penjelasan:
+0 5 * * 1: Cron job ini akan dijalankan setiap hari Senin pukul 05:00 pagi.
+/sbin/shutdown -r now: Perintah untuk melakukan restart server.
+
+Periksa cron job yang baru dengan:
+> crontab -l
+Dengan konfigurasi ini, server Anda akan otomatis restart setiap hari Senin pada pukul 05:00 pagi.
+
+==== SELESAI ======
