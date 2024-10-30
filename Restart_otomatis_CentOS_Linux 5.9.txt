@@ -7,6 +7,8 @@ Langkah 1: Akses Cron Job
 Masuk ke server melalui SSH dan edit crontab:
 > crontab -e
 
+Catatan: Lebih direkomendasikan untuk mengedit crontab menggunakan crontab -e karena ini memastikan bahwa pengaturan cron dimuat dengan benar setelah penyimpanan.
+
 Tekan Insert untuk mulai mengedit.
 Jika sudah, Silahkan tekan Esc lalu tulis :wq
 
