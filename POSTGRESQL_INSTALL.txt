@@ -49,6 +49,8 @@ port = 5432             # (change requires restart)
 max_connections = 100           # (change requires restart)
 
 Di folder yang sama, bukalah file pg_hba.conf dengan notepad.
+> nano /etc/postgresql/14/main/pg_hba.conf
+
 Lalu di baris terakhir tambahkan code berikut ini (ip address disesuaikan dengan ip kalian masing-masing).
 
 host all all 192.168.1.99/24 trust
