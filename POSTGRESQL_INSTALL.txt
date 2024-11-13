@@ -45,7 +45,7 @@ $> service postgresql restart
 
 BISA DIAKSESS DIMANA SAJA
 Uncomment tulisan listen_addresses dan berikan nilai ‘*’ untuk mengijinkan semua komputer jaringan bisa mengakses database kita. Sehingga tampilannya akan menjadi seperti ini :
-
+> nano /etc/postgresql/14/main/postgresql.conf
 listen_addresses = '*'      # what IP address(es) to listen on;
                     # comma-separated list of addresses;
                     # defaults to 'localhost'; use '*' for all
