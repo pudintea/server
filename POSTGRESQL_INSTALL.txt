@@ -29,7 +29,7 @@ MELIHAT PORT YANG AKTIF UBUNTU
 $> sudo lsof -i -P -n | grep LISTEN
 
 MERUBAH PASSWORD
-> sudo postgres -u postgres psql
+> sudo -u postgres psql
 > alter user postgres with password 'P4ssw0rd';
 > quit
 
