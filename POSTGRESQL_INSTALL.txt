@@ -7,6 +7,11 @@
 
 UBUNTU 22.04 LTS
 ============================
+
+> sudo apt install postgresql postgresql-contrib -y
+> sudo -i -u postgres
+
+
 Link : https://www.postgresql.org/download/linux/ubuntu/
 
 $>  sudo sh -c 'echo "deb https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
