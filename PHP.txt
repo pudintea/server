@@ -15,6 +15,9 @@ https://tecadmin.net/how-to-install-php-on-ubuntu-24-04/
 > sudo apt install php8.4-mysql
 > sudo apt install php8.4-mbstring
 
+sudo apt-get install php8.3-mysql php8.3-json php8.3-gd php8.3-mbstring php8.3-curl php8.3-cgi php8.3-xsl php8.3-zip -y
+sudo apt-get install php7.4-mysql php7.4-json php7.4-gd php7.4-mbstring php7.4-curl php7.4-cgi php7.4-xsl php7.4-zip -y
+
 
 Jika Butuh Composer :
 > php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
