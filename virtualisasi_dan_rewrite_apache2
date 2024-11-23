@@ -48,6 +48,43 @@ Tambahkan pada file virtualhost
                 Allow from all
         </Directory>
 
+        # -------------------------------- TAMBAHAN WORDPRESS ----------------------------
+        #Nonaktifkan Eksekusi PHP di Folder ini
+        <Directory /var/www/html/pudintea/wp-content>
+                Options -ExecCGI
+                php_flag engine off
+                AllowOverride None
+                Options -Indexes
+                Options All -Indexes
+                <FilesMatch "\.(jpe?g|png|gif|pdf|mp4)$">
+                        Order allow,deny
+                        Allow from all
+                </FilesMatch>
+                <FilesMatch "\.php$">
+                        Deny from all
+                </FilesMatch>
+        </Directory>
+		
+	# Lindungi file wp-config.php
+        <Files wp-config.php>
+                Order allow,deny
+                Deny from all
+        </Files>
+
+        # Lindungi file xmlrpc.php
+        <Files xmlrpc.php>
+                Order allow,deny
+                Deny from all
+        </Files>
+
+        # Batasi metode HTTP ke GET, POST, dan HEAD saja
+        <Directory /var/www/html/pudintea>
+                <LimitExcept GET POST HEAD>
+                        Deny from all
+                </LimitExcept>
+        </Directory>
+        # -------------------------------- END TAMBAHAN WORDPRESS ----------------------------
+
         # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
         # error, crit, alert, emerg.
         # It is also possible to configure the loglevel for particular
@@ -60,6 +97,7 @@ Tambahkan pada file virtualhost
 
         ErrorLog ${APACHE_LOG_DIR}/pudintea.or.id-1-error.log
         CustomLog ${APACHE_LOG_DIR}/pudintea.or.id-1-access.log combined
+
 
 ------------------------------------------------------------- END -----------------------------------------------------------------------------
 Mengaktifkan file virtualhost
