@@ -15,8 +15,11 @@ https://tecadmin.net/how-to-install-php-on-ubuntu-24-04/
 > sudo apt install php8.4-mysql
 > sudo apt install php8.4-mbstring
 
-sudo apt-get install php8.3-mysql php8.3-gd php8.3-mbstring php8.3-curl php8.3-cgi php8.3-xsl php8.3-zip -y
-sudo apt-get install php7.4-mysql php7.4-json php7.4-gd php7.4-mbstring php7.4-curl php7.4-cgi php7.4-xsl php7.4-zip -y
+> sudo apt-get install php8.3-mysql php8.3-gd php8.3-mbstring php8.3-curl php8.3-cgi php8.3-xsl php8.3-zip -y
+> sudo apt-get install php7.4-mysql php7.4-json php7.4-gd php7.4-mbstring php7.4-curl php7.4-cgi php7.4-xsl php7.4-zip -y
+
+Install PHP 8.0 (KEBUTUHAN LARAVEL)
+> sudo apt-get install php8.0 php8.0-fpm libapache2-mod-php8.0 php8.0-mbstring php8.0-cli php8.0-bcmath php8.0-xml php8.0-zip php8.0-pdo php8.0-common php8.0-tokenizer php8.0-mysql php8.0-intl php8.0-curl -y
 
 
 Jika Butuh Composer :
