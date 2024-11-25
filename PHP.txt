@@ -34,4 +34,22 @@ FPM: /etc/php/XX/fpm/php.ini
 Ingatlah untuk mengganti 'X.X' dengan versi PHP Anda. FPM umumnya digunakan oleh Nginx dan terkadang dengan Apache jika aplikasi menggunakan versi PHP non-default.
 
 
+Switch Default PHP Version for CLI
+# sudo update-alternatives --config php
+
+There are 4 choices for the alternative php (providing /usr/bin/php).
+
+  Selection    Path             Priority   Status
+------------------------------------------------------------
+* 0            /usr/bin/php8.1   81        auto mode
+  1            /usr/bin/php5.6   56        manual mode
+  2            /usr/bin/php7.4   74        manual mode
+  3            /usr/bin/php8.0   80        manual mode
+  4            /usr/bin/php8.1   81        manual mode
+
+Press  to keep the current choice[*], or type selection number: 2
+
+Output di atas menunjukkan semua versi PHP yang diinstal pada sistem Anda. Pilihan nomor 2 menetapkan PHP 7.4 sebagai versi PHP default untuk baris perintah
+
+
 ===================== PUDIN.MY.ID =====================================
