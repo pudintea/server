@@ -50,6 +50,6 @@ There are 4 choices for the alternative php (providing /usr/bin/php).
 Press  to keep the current choice[*], or type selection number: 2
 
 Output di atas menunjukkan semua versi PHP yang diinstal pada sistem Anda. Pilihan nomor 2 menetapkan PHP 7.4 sebagai versi PHP default untuk baris perintah
-
+Control + C untuk close.
 
 ===================== PUDIN.MY.ID =====================================
