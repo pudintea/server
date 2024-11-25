@@ -27,6 +27,9 @@ pilih masukan dan sesuaikan
 
 1. Allow for Same Origin (Default Action)
 Header set X-Frame-Options: "SAMEORIGIN"
+# Sembunyikan versi php
+Header always unset X-Powered-By
+Header unset X-Powered-By
 
 Listen Ports
 ===============
