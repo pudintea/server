@@ -28,6 +28,21 @@ pilih masukan dan sesuaikan
 1. Allow for Same Origin (Default Action)
 Header set X-Frame-Options: "SAMEORIGIN"
 
+Listen Ports
+===============
+> nano etc/apache/ports.conf
+Listen 80
+Listen 8080
+Listen 8081
+
+<IfModule ssl_module>
+        Listen 443
+</IfModule>
+
+<IfModule mod_gnutls.c>
+        Listen 443
+</IfModule>
+
 
 Enable SSL
 ====================
