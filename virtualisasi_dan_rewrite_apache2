@@ -17,6 +17,18 @@ Restart Apache2
 ===============
 sudo systemctl restart apache2
 
+AKTIFKAN HEADERS
+=================
+> a2enmod headers
+> service apache2 restart
+> nano /etc/apache2/conf-available/security.conf
+
+pilih masukan dan sesuaikan
+
+1. Allow for Same Origin (Default Action)
+Header set X-Frame-Options: "SAMEORIGIN"
+
+
 Enable SSL
 ====================
 sudo a2enmod ssl
