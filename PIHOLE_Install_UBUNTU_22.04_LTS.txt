@@ -66,7 +66,7 @@ Perbarui izin untuk file konfigurasi dan cloudflaredbiner untuk mengizinkan akse
 > sudo chown cloudflared:cloudflared /etc/default/cloudflared
 > sudo chown cloudflared:cloudflared /usr/local/bin/cloudflared
 
-Kemudian buat systemdskrip dengan menyalin yang berikut ke dalam /etc/systemd/system/cloudflared.service.
+Kemudian buat systemd skrip dengan menyalin yang berikut ke dalam /etc/systemd/system/cloudflared.service.
 Ini akan mengontrol jalannya layanan dan memungkinkannya berjalan saat startup:
 
 > sudo nano /etc/systemd/system/cloudflared.service
@@ -89,7 +89,7 @@ KillMode=process
 WantedBy=multi-user.target
 
 
-Aktifkan systemdlayanan untuk berjalan saat startup, lalu mulai layanan dan periksa statusnya:
+Aktifkan systemd layanan untuk berjalan saat startup, lalu mulai layanan dan periksa statusnya:
 > sudo systemctl enable cloudflared
 > sudo systemctl start cloudflared
 > sudo systemctl status cloudflared
