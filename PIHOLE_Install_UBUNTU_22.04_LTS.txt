@@ -40,5 +40,99 @@ Ganti Password Login Admin
 ==============
 # sudo pihole -a -p
 
+DOH CLOUDFLARE
+================
+Dokumentasi : https://docs.pi-hole.net/guides/dns/cloudflared/
+
+# For Debian/Ubuntu
+> wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+> sudo apt-get install ./cloudflared-linux-amd64.deb
+> cloudflared -v
+
+> sudo useradd -s /usr/sbin/nologin -r -M cloudflared
+> sudo nano /etc/default/cloudflared
+Masukan ini :
+# Commandline args for cloudflared, using Cloudflare DNS
+CLOUDFLARED_OPTS=--port 5053 --upstream https://cloudflare-dns.com/dns-query
+
+Jika Anda menjalankan cloudflared pada host yang berbeda dari pi-hole,
+Anda dapat menambahkan alamat pendengaran ke semua IP
+(untuk keamanan, ubah 0.0.0.0 ke IP mesin Anda , misalnya 192.168.1.1):
+
+# Commandline args for cloudflared, using Cloudflare DNS
+CLOUDFLARED_OPTS=--port 5053 --upstream https://1.1.1.1/dns-query --upstream https://1.0.0.1/dns-query --address 0.0.0.0
+
+Perbarui izin untuk file konfigurasi dan cloudflaredbiner untuk mengizinkan akses bagi pengguna cloudflared:
+> sudo chown cloudflared:cloudflared /etc/default/cloudflared
+> sudo chown cloudflared:cloudflared /usr/local/bin/cloudflared
+
+Kemudian buat systemdskrip dengan menyalin yang berikut ke dalam /etc/systemd/system/cloudflared.service.
+Ini akan mengontrol jalannya layanan dan memungkinkannya berjalan saat startup:
+
+> sudo nano /etc/systemd/system/cloudflared.service
+Masukan Ini :
+
+[Unit]
+Description=cloudflared DNS over HTTPS proxy
+After=syslog.target network-online.target
+
+[Service]
+Type=simple
+User=cloudflared
+EnvironmentFile=/etc/default/cloudflared
+ExecStart=/usr/local/bin/cloudflared proxy-dns $CLOUDFLARED_OPTS
+Restart=on-failure
+RestartSec=10
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+
+
+Aktifkan systemdlayanan untuk berjalan saat startup, lalu mulai layanan dan periksa statusnya:
+> sudo systemctl enable cloudflared
+> sudo systemctl start cloudflared
+> sudo systemctl status cloudflared
+Sekarang uji apakah perintah tersebut berfungsi! Jalankan digperintah berikut, respons yang akan diberikan akan mirip dengan yang di bawah ini:
+> dig @127.0.0.1 -p 5053 google.com
+
+pi@raspberrypi:~ $ dig @127.0.0.1 -p 5053 google.com
+
+; <<>> DiG 9.11.5-P4-5.1-Raspbian <<>> @127.0.0.1 -p 5053 google.com
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 12157
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+; COOKIE: 22179adb227cd67b (echoed)
+;; QUESTION SECTION:
+;google.com.                    IN      A
+
+;; ANSWER SECTION:
+google.com.             191     IN      A       172.217.22.14
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.1#5053(127.0.0.1)
+;; WHEN: Wed Dec 04 09:29:50 EET 2019
+;; MSG SIZE  rcvd: 77
+
+
+Mengonfigurasi Pi-hole
+Terakhir,
+konfigurasikan Pi-hole untuk menggunakan layanan lokal sebagai server DNScloudflared hulu dengan menentukan sebagai DNS Kustom ( IPv4 ): 127.0.0.1#5053
+
+
+
+konfigurasi DOH di MikroTik
+============================
+1. Masuk ke menu IP > DNS
+2. Tambahkan DOH server cloudflare https://cloudflare-dns.com/dns-query
+3. Tambahkan DNS Static, menu IP > DNS > Static > Add. Buat dua DNS static dengan nama cloudflare-dns.com dan address : 104.16.248.249 dan 104.16.249.249
+4. Cek apakah DOH kita bekerja atau tidak di website https://1.1.1.1/help
+
+
 
 ==================== END NAJZMI PUDINTEA ===============================
