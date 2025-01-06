@@ -124,7 +124,22 @@ Mengonfigurasi Pi-hole
 Terakhir,
 konfigurasikan Pi-hole untuk menggunakan layanan lokal sebagai server DNScloudflared hulu dengan menentukan sebagai DNS Kustom ( IPv4 ): 127.0.0.1#5053
 
+Cara Uninstalling cloudflared
+=========================
+If installed the manual way
+Courtesy of https://discourse.pi-hole.net/t/uninstall-cloudflare/21459/3
 
+> sudo systemctl stop cloudflared
+> sudo systemctl disable cloudflared
+> sudo systemctl daemon-reload
+> sudo deluser cloudflared
+> sudo rm /etc/default/cloudflared
+> sudo rm /etc/systemd/system/cloudflared.service
+> sudo rm /usr/local/bin/cloudflared
+
+If installed with cloudflare service install
+> sudo cloudflared service uninstall
+> sudo systemctl daemon-reload
 
 konfigurasi DOH di MikroTik
 ============================
