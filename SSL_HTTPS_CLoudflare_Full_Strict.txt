@@ -16,9 +16,11 @@ Login Cloudflare > Masuk ke domain yang dimaksud
 SSL/TLS > Origin Server > Create Sertifikat
 
 Silahkan buat keys nya di Coudflare, lalu buat dan simpan di kedua file ini
-# nano /etc/cloudflare/namadomainanda.id.pem
-# nano /etc/cloudflare/namadomainanda.id.key
+> nano /etc/cloudflare/namadomainanda.id.pem
+> nano /etc/cloudflare/namadomainanda.id.key
 
+> chmod +x /etc/cloudflare/namadomainanda.id.pem
+> chmod +x /etc/cloudflare/namadomainanda.id.key
 
 Konfigurasi Virtualhost
 =========================
