@@ -1,0 +1,8 @@
+
+> nano include/config.php
+
+$url_path = '/cacti'; // Ganti ini dengan URL path yang benar jika perlu
+
+
+
+============ PUDIN.MY.ID ====================
