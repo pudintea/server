@@ -28,8 +28,9 @@ Konfigurasi Virtualhost
     ServerAdmin webmaster@example.com
     ServerName namadomainanda.id
     DocumentRoot /var/www/html/site/
-    ErrorLog /var/log/apache2/ssl-namadomainanda.id-error.log
-    CustomLog /home/ypia/log/mrtg/ssl-namadomainanda.id-access.log combined
+
+    ErrorLog ${APACHE_LOG_DIR}/namadomainanda.id-error.log
+    CustomLog ${APACHE_LOG_DIR}/namadomainanda.id-access.log combined
 
      <Directory /var/www/html/site/>
                 Options Indexes FollowSymLinks MultiViews
