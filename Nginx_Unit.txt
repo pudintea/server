@@ -1,0 +1,12 @@
+Disini saya menggunakan Ubuntu 24.04 Noble Numbat.
+Dokumentasi lengkap Nginx Unit bisa dilihat di https://unit.nginx.org/ dan repo Githubnya di https://github.com/nginx/unit/.
+
+Install PHP
+Ini task standar ya, install dulu PHP dan Composer sebagaimana biasanya. Tapi tidak perlu install php-fpm karena kita tidak perlu itu di Nginx Unit.
+
+
+
+
+
+
+================ PUDIN.MY.ID ==================
