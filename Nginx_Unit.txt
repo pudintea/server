@@ -151,7 +151,9 @@ Ada 3 key utama pada config di atas:
 listeners untuk mendefinisikan request domain dan port yang akan dipantau oleh unit. Pada json di atas kita mendaftarkan port 80 dari domain apapun (*) yang masuk. Request kemudian diserahkan ke bagian routes untuk diproses lebih lanjut
 routes untuk mendefinisikan rute request ke program yang sesuai. Pada json di atas kita sudah mendaftarkan satu kondisi, bila request masuk dari domain localhost, maka action-nya arahkan ke applications/myapp
 applications untuk mendefinisikan aplikasi yang akan melayani request yang sudah dirutekan ke aplikasi yang dimaksud. Pada bagian routes kita mengarahkan request ke aplikasi myapp.
-Setelah konfigurasi json disimpan di dalam file unit.config.json, jalankan perintah berikut ini untuk memasang konfigurasi ke unit
+Setelah konfigurasi json disimpan di dalam file unit.config.json,
+
+jalankan perintah berikut ini untuk memasang konfigurasi ke unit
 
 # Pastikan posisi terminal ada di dalam folder yang berisi unit.config.json
 sudo curl -X PUT --data-binary @unit.config.json --unix-socket /var/run/control.unit.sock localhost/config
