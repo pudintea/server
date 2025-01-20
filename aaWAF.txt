@@ -1,0 +1,8 @@
+
+> URL=https://node.aapanel.com/cloudwaf_en/scripts/install_cloudwaf_en.sh && if [ -f /usr/bin/curl ];then curl -sSO "$URL" ;else wget -O install_cloudwaf_en.sh "$URL";fi;bash install_cloudwaf_en.sh
+
+
+
+
+
+============== PUDIN.MY.ID ======================
