@@ -25,7 +25,8 @@ $> sudo systemctl start docker && sudo systemctl enable docker
 Install
 > bash -c "$(curl -fsSLk https://waf.chaitin.com/release/latest/setup.sh)"
 
-
+Reste Password
+> docker exec safeline-mgt resetadmin
 
 
 =============== PUDIN.MY.ID ====================
