@@ -1,0 +1,7 @@
+
+Install
+> bash -c "$(curl -fsSLk https://waf.chaitin.com/release/latest/setup.sh)"
+
+
+
+=============== PUDIN.MY.ID ====================
