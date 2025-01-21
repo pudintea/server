@@ -1,6 +1,9 @@
+Docs
+> https://docs.waf.chaitin.com/en/tutorials/install
 
 Install
 > bash -c "$(curl -fsSLk https://waf.chaitin.com/release/latest/setup.sh)"
+
 
 
 
