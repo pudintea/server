@@ -40,6 +40,9 @@ Ganti Password Login Admin
 > sudo pihole -a -p
 > sudo pihole setpassword
 
+IP
+http://000.000.000.000/admin/settings/system
+
 DOH CLOUDFLARE
 ================
 Dokumentasi : https://docs.pi-hole.net/guides/dns/cloudflared/
