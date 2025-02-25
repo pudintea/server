@@ -38,7 +38,8 @@ Halaman Admin
 
 Ganti Password Login Admin
 ==============
-# sudo pihole -a -p
+> sudo pihole -a -p
+> sudo pihole setpassword
 
 DOH CLOUDFLARE
 ================
