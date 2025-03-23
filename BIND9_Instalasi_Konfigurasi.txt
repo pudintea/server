@@ -1,7 +1,7 @@
 -- Web : https://www.italazhar.com
 ======================================
 
-# mv /etc/localtime /etc/localtime-asal && cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && timedatectl set-timezone Asia/Jakarta
+> mv /etc/localtime /etc/localtime-asal && cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && timedatectl set-timezone Asia/Jakarta
 # cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
 
 - mengubah timezone asia-jakarta
@@ -9,12 +9,13 @@
 
 Perintah Install
 ===========
-# sudo apt-get install bind9 bind9utils && sudo apt install dnsutils -y
+> sudo apt-get install bind9 bind9utils && sudo apt install dnsutils -y
 # sudo apt install dnsutils
 
 AGAR BISA DIAKSESS DARI SEMUA NETWORK
+======================================
+> nano /etc/bind/named.conf.options
 
-#nano /etc/bind/named.conf.options
 =========================
 -- Gunakan Tab, Jangan Gunakan sepasi --
 
@@ -39,18 +40,16 @@ options {
         // the all-0's placeholder.
 
          forwarders {
-
                 //Biznet
                 203.142.82.222;
                 203.142.84.222;
 
-	              // Google
-	              8.8.4.4;
-	              8.8.8.8;
+	        // Google
+	        8.8.4.4;
+	        8.8.8.8;
 
               	//DNS Cloudflar
               	1.1.1.1;
-
          };
         allow-query { any;};
         recursion yes;
