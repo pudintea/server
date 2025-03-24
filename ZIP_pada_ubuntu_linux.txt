@@ -105,6 +105,32 @@ zip archivename .* *
 Buat arsip ZIP bernama arsipmusik.zip yang berisi semua file MP3 di direktori saat ini tanpa mengompres file (sesuai ukuran aslinya).
 
 zip -0 arsipmusik *.mp3
+
+
+
+Membuat File zip
+=================
+Contohnya kamu akan membuat beberapa file menjadi file zip bernama kompres.zip:
+
+Terminal
+zip kompres.zip file1.txt file2.txt file3.txt
+
+Kompres Folder Menjadi zip
+============================
+Perlu di perhatikan cara kompres folder menjadi zip kamu butuh opsi tambahan yaitu -r sehingga zip akan membaca semua file yang ada di dalam folder.
+
+zip -r [output.zip] [nama folder]
+
+Contoh kompres folder Documents menjadi backup-documents.zip
+
+
+
+
+
+
+
+
+
 ---------------------------
 --- Kesimpulan ---
 ---------------------------
