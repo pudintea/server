@@ -205,8 +205,46 @@ Jangan lupa setelah mengedit:
 > sudo systemctl daemon-reload
 > sudo systemctl restart cloudflared-dns
 
+SCRIPT TEST
+===========
+skrip Bash sederhana untuk menguji apakah DNS filtering dari Cloudflare Families
+
+> nano cek-filter-dns.sh
+Kodenya :
+#!/bin/bash
+
+# Cek domain yang seharusnya diblokir oleh Cloudflare Family
+TEST_DOMAINS=(
+    "pornhub.com"
+    "xvideos.com"
+    "malware.testing.google.test"
+)
+
+echo "⏳ Menguji DNS Filtering Cloudflare Family (1.1.1.3)..."
+echo "==============================================="
+
+for domain in "${TEST_DOMAINS[@]}"; do
+    echo -n "🔍 Menguji $domain ... "
+    ip=$(dig @"127.0.0.1" -p 5053 +short "$domain")
+    if [[ -z "$ip" ]]; then
+        echo "✅ DIBLOKIR"
+    else
+        echo "❌ TIDAK DIBLOKIR → $ip"
+    fi
+done
+
+echo "==============================================="
+echo "Selesai."
 
 
+Cara Pakai:
+Simpan skrip sebagai cek-filter-dns.sh
+
+Berikan hak eksekusi:
+> chmod +x cek-filter-dns.sh
+
+Jalankan:
+> ./cek-filter-dns.sh
 
 
 
