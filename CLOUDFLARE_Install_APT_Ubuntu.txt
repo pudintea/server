@@ -1,0 +1,25 @@
+CATATAN Cloudflare
+===================
+Panduan lengkap dan aman untuk mengatur
+APT repository resmi Cloudflare di Ubuntu 22.04 atau 24.04 agar
+cloudflared bisa di-update otomatis lewat apt update && apt upgrade
+
+1. Tambahkan GPG Key Cloudflare
+-----------------------------
+> sudo mkdir -p /etc/apt/keyrings
+> curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | sudo tee /etc/apt/keyrings/cloudflare.asc >/dev/null
+
+2. Tambahkan APT Repository Cloudflare
+> echo "deb [signed-by=/etc/apt/keyrings/cloudflare.asc] https://pkg.cloudflare.com/ cloudflare main" | \
+  sudo tee /etc/apt/sources.list.d/cloudflare.list
+
+3. Update daftar paket dan install/upgrade cloudflared
+> sudo apt update
+> sudo apt install cloudflared -y
+
+4. Cek versi terbaru dan sumber instalasi
+> apt policy cloudflared
+
+
+
+================= CLOUDFLARED PUDIN.MY.ID =====================
