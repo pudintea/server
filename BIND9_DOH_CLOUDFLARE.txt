@@ -1,0 +1,106 @@
+Ubuntu 22.04
+================ UPDATE & UPGRADE ==============
+> sudo apt update && apt upgrade -y
+
+================ WAKTU ==========================
+- mengganti waktu server localtime jakarta
+> mv /etc/localtime /etc/localtime-asal && cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && timedatectl set-timezone Asia/Jakarta
+
+
+Install BIND9
+================
+> sudo apt update
+> sudo apt install bind9 bind9-utils -y
+
+Install cloudflared
+====================
+> wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+> sudo dpkg -i cloudflared-linux-amd64.deb
+
+Buat service systemd agar otomatis : Copy paste sampe EOF
+===========================================================
+sudo tee /etc/systemd/system/cloudflared-dns.service > /dev/null <<EOF
+[Unit]
+Description=cloudflared DNS over HTTPS
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/cloudflared proxy-dns --address 127.0.0.1 --port 5053 --upstream https://1.1.1.1/dns-query
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+> sudo systemctl daemon-reexec
+> sudo systemctl enable --now cloudflared-dns
+
+
+Konfigurasi BIND agar forward ke DoH di 127.0.0.1#5053
+=======================================================
+Edit file:
+> sudo nano /etc/bind/named.conf.options
+
+Tambahkan:
+
+acl goodclients {
+        0.0.0.0/0;
+        localhost;
+        localnets;
+};
+options {
+    directory "/var/cache/bind";
+    recursion yes;
+    allow-query { goodclients; };
+
+    forwarders {
+        127.0.0.1 port 5053;
+    };
+
+    forward only;
+    dnssec-validation auto;
+    auth-nxdomain no;
+    listen-on { any; };
+};
+
+
+Restart BIND:
+===============
+> sudo systemctl restart bind9
+
+Verifikasi
+==========
+> dig @127.0.0.1 google.com
+
+
+TEST
+=====
+Buka Browser dari komputer client yang menggunakan server DNS Resolver tersebut
+Aksess ke : https://one.one.one.one/help/
+
+Kalau Hasilnya :
+Debug Information
+Connected to 1.1.1.1	Yes
+Using DNS over HTTPS (DoH)	Yes
+Using DNS over TLS (DoT)	No
+Using DNS over WARP	No
+AS Name	Cloudflare
+AS Number	13335
+Cloudflare Data Center	CGK
+Connectivity to Resolver IP Addresses
+1.1.1.1	Yes
+1.0.0.1	Yes
+2606:4700:4700::1111	No
+2606:4700:4700::1001	No
+
+Sudah sesuai.
+
+Penjelasanya :
+✅ Yang menunjukkan DoH sudah aktif:
+Connected to 1.1.1.1: Yes → Anda berhasil tersambung ke server DNS Cloudflare.
+Using DNS over HTTPS (DoH): Yes → Ini yang paling penting, artinya semua permintaan DNS Anda dienkripsi via protokol HTTPS.
+Cloudflare Data Center: CGK → Anda terkoneksi ke datacenter Cloudflare terdekat, yaitu Jakarta (CGK), ini bagus untuk kecepatan.
+AS Name: Cloudflare dan AS Number: 13335 → Mengonfirmasi koneksi melalui jaringan milik Cloudflare.
+
+
+================ BIND9 PUDIN.MY.ID =====================
