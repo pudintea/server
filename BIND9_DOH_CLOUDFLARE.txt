@@ -172,4 +172,28 @@ Cek versi terbaru dan sumber instalasi
 > apt policy cloudflared
 
 
+SHARE
+Link : https://developers.cloudflare.com/1.1.1.1/setup/
+#dns #cloudflare #doh
+IP DNS RESOLVER DARI CLOUDFLARE
+
+Use 1.1.1.1 resolver
+1.1.1.1
+1.0.0.1
+
+Block malware with 1.1.1.1 for Families
+1.1.1.2
+1.0.0.2
+
+Block malware and adult content with 1.1.1.1 for Families
+1.1.1.3
+1.0.0.3
+
+DOH
+Blokir malware = https://security.cloudflare-dns.com/dns-query
+Blokir malware + adult = https://family.cloudflare-dns.com/dns-query
+
+
+
+
 ================ BIND9 PUDIN.MY.ID =====================
