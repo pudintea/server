@@ -103,4 +103,73 @@ Cloudflare Data Center: CGK → Anda terkoneksi ke datacenter Cloudflare terdeka
 AS Name: Cloudflare dan AS Number: 13335 → Mengonfirmasi koneksi melalui jaringan milik Cloudflare.
 
 
+CLOUDFLARED
+=======
+
+Cek versi dan jalur instalasi
+------------------------------
+> cloudflared --version
+> which cloudflared
+Biasanya akan terinstal di: /usr/bin/cloudflared
+
+Menjalankan sebagai service systemd
+------------------------------------
+Jika Anda mengikuti contoh sebelumnya dan membuat service manual:
+
+Lihat status:
+> sudo systemctl status cloudflared-dns
+
+Mulai atau restart service:
+> sudo systemctl start cloudflared-dns
+> sudo systemctl restart cloudflared-dns
+
+Hentikan service:
+> sudo systemctl stop cloudflared-dns
+Enable saat boot:
+> sudo systemctl enable cloudflared-dns
+
+
+
+Cara update cloudflared
+========================
+Karena cloudflared Anda instal dari .deb manual (bukan apt), maka proses update tidak otomatis. Untuk memperbarui:
+
+Langkah update manual:
+> wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+> sudo dpkg -i cloudflared-linux-amd64.deb
+
+Atau hapus dulu lalu install ulang:
+> sudo rm /usr/bin/cloudflared
+> wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+> sudo dpkg -i cloudflared-linux-amd64.deb
+
+Testing koneksi DoH
+Gunakan dig untuk memastikan bahwa DNS sudah diforward melalui cloudflared:
+> dig @127.0.0.1 -p 5053 google.com
+
+
+
+CATATAN Cloudflare
+===================
+Panduan lengkap dan aman untuk mengatur
+APT repository resmi Cloudflare di Ubuntu 22.04 atau 24.04 agar
+cloudflared bisa di-update otomatis lewat apt update && apt upgrade
+
+Tambahkan GPG Key Cloudflare
+-----------------------------
+> sudo mkdir -p /etc/apt/keyrings
+> curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | sudo tee /etc/apt/keyrings/cloudflare.asc >/dev/null
+
+Tambahkan APT Repository Cloudflare
+> echo "deb [signed-by=/etc/apt/keyrings/cloudflare.asc] https://pkg.cloudflare.com/ cloudflare main" | \
+  sudo tee /etc/apt/sources.list.d/cloudflare.list
+
+Update daftar paket dan install/upgrade cloudflared
+> sudo apt update
+> sudo apt install cloudflared -y
+
+Cek versi terbaru dan sumber instalasi
+> apt policy cloudflared
+
+
 ================ BIND9 PUDIN.MY.ID =====================
