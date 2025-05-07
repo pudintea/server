@@ -96,7 +96,7 @@ Connectivity to Resolver IP Addresses
 Sudah sesuai.
 
 Penjelasanya :
-✅ Yang menunjukkan DoH sudah aktif:
+Yang menunjukkan DoH sudah aktif:
 Connected to 1.1.1.1: Yes → Anda berhasil tersambung ke server DNS Cloudflare.
 Using DNS over HTTPS (DoH): Yes → Ini yang paling penting, artinya semua permintaan DNS Anda dienkripsi via protokol HTTPS.
 Cloudflare Data Center: CGK → Anda terkoneksi ke datacenter Cloudflare terdekat, yaitu Jakarta (CGK), ini bagus untuk kecepatan.
@@ -192,6 +192,22 @@ Block malware and adult content with 1.1.1.1 for Families
 DOH
 Blokir malware = https://security.cloudflare-dns.com/dns-query
 Blokir malware + adult = https://family.cloudflare-dns.com/dns-query
+
+
+GANTI DOH KE MODE FAMILY
+=======================
+> nano /etc/systemd/system/cloudflared-dns.service
+# ExecStart=/usr/bin/cloudflared proxy-dns --address 127.0.0.1 --port 5053 --upstream https://1.1.1.1/dns-query
+ExecStart=/usr/bin/cloudflared proxy-dns --address 127.0.0.1 --port 5053 --upstream https://family.cloudflare-dns.com/dns-query
+
+Restart setelah edit
+Jangan lupa setelah mengedit:
+> sudo systemctl daemon-reload
+> sudo systemctl restart cloudflared-dns
+
+
+
+
 
 
 
