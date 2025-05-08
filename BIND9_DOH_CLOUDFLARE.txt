@@ -63,10 +63,47 @@ options {
     listen-on { any; };
 };
 
+================================================
+JIKA DNS INGIN DIGUNAKAN UNTUK IP TERTENTU SAJA
+=================================================
+Kode Lengkapnya :
+acl allowedclients {
+    10.10.10.0/24;
+    20.20.20.0/24;
+    30.30.30.0/24;
+    localhost;
+    localnets;
+};
+
+options {
+    directory "/var/cache/bind";
+
+    recursion yes;
+    allow-query { allowedclients; };
+    allow-recursion { allowedclients; };
+
+    forwarders {
+        127.0.0.1 port 5053;
+    };
+
+    dnssec-validation auto;
+    forward only;
+    auth-nxdomain no;
+    listen-on { any; };
+    listen-on-v6 { any; };
+};
+
+
 
 Restart BIND:
 ===============
+> sudo named-checkconf
 > sudo systemctl restart bind9
+
+Cek log untuk memastikan tidak ada error:
+=========================================
+> journalctl -xeu bind9
+
 
 Verifikasi
 ==========
