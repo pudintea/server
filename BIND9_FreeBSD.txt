@@ -12,6 +12,9 @@ Masuk sebagai root:
 > su -
 Lalu masukkan password root saat diminta.
 
+Cek BIND versi lain (jika perlu):
+> pkg search bind9
+
 
 Install
 > pkg install bind918
