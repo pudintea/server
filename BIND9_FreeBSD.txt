@@ -1,0 +1,99 @@
+BIND9 FreeBSD
+
+Menjadi Superuser dengan su
+============================
+Agar user biasa bisa menjadi root dengan perintah su, user tersebut harus masuk ke grup wheel.
+
+Cek dan tambahkan user ke grup wheel:
+> pw groupmod wheel -m namauser
+Ganti namauser dengan username kamu.
+
+Masuk sebagai root:
+> su -
+Lalu masukkan password root saat diminta.
+
+
+Install
+> pkg install bind918
+
+> nano /etc/rc.conf
+named_enable="YES"
+
+> mv /usr/local/etc/namedb/named.conf /usr/local/etc/namedb/named.conf.asal
+> nano /usr/local/etc/namedb/named.conf
+
+Contoh konfigurasi minimal untuk resolver:
+options {
+    directory "/usr/local/etc/namedb/working";
+    listen-on { 127.0.0.1; };  // Bisa diganti dengan IP LAN server kamu
+    allow-query { any; };
+    recursion yes;
+    forwarders {
+        1.1.1.1;
+        8.8.8.8;
+    };
+    dnssec-validation auto;
+};
+
+logging {
+    channel default_log {
+        file "/var/log/named.log";
+        severity info;
+        print-time yes;
+    };
+    category default { default_log; };
+};
+
+============================
+VERSI SEMUA BISA RESOLVE
+============================
+acl goodclients {
+        0.0.0.0/0;
+        localhost;
+        localnets;
+};
+options {
+    directory "/usr/local/etc/namedb/working";
+    listen-on { goodclients; };
+    allow-query { any; };
+    recursion yes;
+    forwarders {
+        1.1.1.1;
+        8.8.8.8;
+    };
+    dnssec-validation auto;
+};
+
+logging {
+    channel default_log {
+        file "/var/log/named.log";
+        severity info;
+        print-time yes;
+    };
+    category default { default_log; };
+};
+
+
+Buat Folder dan Set Permission
+===============================
+> mkdir -p /usr/local/etc/namedb/working
+> touch /var/log/named.log
+> chown bind:bind /var/log/named.log
+
+START dan RESTART
+==================
+> service named start
+> service named restart
+
+
+
+
+
+
+
+
+
+
+
+
+=============== BIND9 FreeBSD ===================
