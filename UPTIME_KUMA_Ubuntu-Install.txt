@@ -4,6 +4,8 @@ UPTIME KUMA DI UBUNTU
 : https://t.me/pudin_ira
 : www.pdn.my.id
 
+Doc : https://github.com/louislam/uptime-kuma/wiki/Systemd-Unit-File
+
 PERSIAPAN
 -----------------------------------------------------------------------------------------------------------------------
 # apt-get update
