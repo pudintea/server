@@ -86,4 +86,53 @@ IPADDRESS_SERVER:8888
 
 Run npm install -g npm@10.8.0 to update!
 
+
+
+=============================
+      DOCKER 
+=============================
+> nano docker-compose.yml
+
+version: "3"
+
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    ports:
+      - "3001:3001"
+    restart: always
+    volumes:
+      - ./data-kuma:/app/data
+
+
+Penjelasan
+------------
+restart: always sudah disisipkan dengan benar.
+Port 3001:3001 akan tetap digunakan seperti sebelumnya.
+Volume ./data-kuma:/app/data menyimpan data agar tidak hilang saat container dihentikan atau server reboot.
+
+Penjelasan restart: always
+---------------------------
+always artinya kontainer akan:
+1. Otomatis dimulai ulang ketika gagal
+2. Otomatis dijalankan ketika Docker service restart (termasuk saat reboot komputer/server)
+
+Jika kamu menggunakan:
+restart: unless-stopped → Kontainer akan tetap auto start kecuali dihentikan manual (docker stop)
+restart: on-failure → Hanya restart jika exit code ≠ 0
+
+
+Mengaktifkan dan menonaktifkan
+==============================
+> docker-compose down
+> docker-compose up -d
+
+Docker otomatis aktif saat server menyala ulang
+================================================
+> sudo systemctl enable docker
+
+
+
+
 ==================================== UPTIME.WEB.ID =====================================
