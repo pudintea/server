@@ -1,0 +1,80 @@
+MINI-OS
+DEBIAN
+=======
+Download : https://minios.dev/
+
+
+> su : toor
+> apt update && apt upgrade -y
+
+
+Waktu
+======
+Klik kanan pada jam, pilih propertis
+TimeZone : Asia/Jakarta
+
+Mengganti waktu server localtime jakarta
+> mv /etc/localtime /etc/localtime-asal && cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+
+
+Aktifkan SSH
+=============
+> systemctl status ssh
+> systemctl start ssh
+> systemctl enable ssh
+> systemctl restart sshd
+
+> nano /etc/ssh/sshd_config
+
+
+BIND9
+=====
+> apt install bind9 && apt install dnsutils -y
+> cd /etc/bind
+> systemctl restart bind9.service
+> mv /etc/bind/named.conf.options /etc/bind/named.conf.options.asli
+> nano /etc/bind/named.conf.options
+
+acl goodclients {
+	0.0.0.0/0;
+	localhost;
+	localnets;
+};
+options {
+	directory "/var/cache/bind";
+	recursion yes;
+	allow-query { goodclients; };
+         forwarders {
+                //Biznet
+                203.142.82.222;
+                203.142.84.222;
+
+	        // Google
+	        8.8.4.4;
+	        8.8.8.8;
+
+              	//DNS Cloudflar
+              	1.1.1.1;
+         };
+        dnssec-validation auto;
+        auth-nxdomain no;    # conform to RFC1035
+        listen-on-v6 { any; };
+};
+
+> systemctl restart bind9.service
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+============================ PUDIN.MY.ID MINI-OS ===================================
