@@ -64,11 +64,29 @@ options {
 > systemctl restart bind9.service
 
 
+INSTALL NODE JS
+=================
+> cd ~
+> apt-get install curl -y
+> apt-get install git -y
+> curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
+> sudo bash nodesource_setup.sh
+> apt-get install nodejs -y
+> node -v
+> npm -v
 
 
+INSTALL UPTIME KUMA
+=====================
 
+INSTALL DI NODEJS :
+> git clone https://github.com/louislam/uptime-kuma.git
+> cd uptime-kuma
+> npm run setup
 
-
+Test Run
+> node server/server.js
+IPADDRESS_SERVER:3001 (default)
 
 
 
