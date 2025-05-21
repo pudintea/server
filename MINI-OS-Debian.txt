@@ -89,7 +89,65 @@ Test Run
 IPADDRESS_SERVER:3001 (default)
 
 
+Systemd Unit File
+==================
+Doc : https://github.com/louislam/uptime-kuma/wiki/Systemd-Unit-File
 
+> sudo chown -R ypia:ypia /home/ypia/monitoring/uptime-kuma
+> nano /etc/systemd/system/uptime-kuma.service
+
+[Unit]
+Description=Uptime-Kuma - A free and open source uptime monitoring solution
+Documentation=https://github.com/louislam/uptime-kuma
+After=network.target
+
+[Service]
+Type=simple
+User=uptime
+WorkingDirectory=/home/ypia/monitoring/uptime-kuma
+ExecStart=/usr/bin/npm run start-server
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
+=================
+SARAN CHAT GPT
+====================
+[Unit]
+Description=Uptime-Kuma - A free and open source uptime monitoring solution
+Documentation=https://github.com/louislam/uptime-kuma
+After=network.target
+
+[Service]
+Type=simple
+User=ypia
+WorkingDirectory=/home/ypia/monitoring/uptime-kuma
+ExecStart=/usr/bin/npm run start-server
+Restart=on-failure
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
+
+
+Jalankan dan Aktifkan Autostart
+================================
+> sudo systemctl daemon-reexec
+> sudo systemctl daemon-reload
+> sudo systemctl enable uptime-kuma
+> sudo systemctl enable --now uptime-kuma
+> sudo systemctl start uptime-kuma
+
+
+Lihat status
+> sudo systemctl status uptime-kuma
+
+Cek Reboot
+==========
+> sudo reboot
+> sudo systemctl status uptime-kuma
 
 
 
