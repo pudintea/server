@@ -78,6 +78,9 @@ INSTALL NODE JS
 
 INSTALL UPTIME KUMA
 =====================
+> adduser uptime
+> cd /home/uptime
+> mkdir monitoring
 
 INSTALL DI NODEJS :
 > git clone https://github.com/louislam/uptime-kuma.git
@@ -93,7 +96,7 @@ Systemd Unit File
 ==================
 Doc : https://github.com/louislam/uptime-kuma/wiki/Systemd-Unit-File
 
-> sudo chown -R ypia:ypia /home/ypia/monitoring/uptime-kuma
+> sudo chown -R uptime:uptime /home/uptime/monitoring/uptime-kuma
 > nano /etc/systemd/system/uptime-kuma.service
 
 [Unit]
@@ -104,7 +107,7 @@ After=network.target
 [Service]
 Type=simple
 User=uptime
-WorkingDirectory=/home/ypia/monitoring/uptime-kuma
+WorkingDirectory=/home/uptime/monitoring/uptime-kuma
 ExecStart=/usr/bin/npm run start-server
 Restart=on-failure
 
@@ -121,8 +124,8 @@ After=network.target
 
 [Service]
 Type=simple
-User=ypia
-WorkingDirectory=/home/ypia/monitoring/uptime-kuma
+User=uptime
+WorkingDirectory=/home/uptime/monitoring/uptime-kuma
 ExecStart=/usr/bin/npm run start-server
 Restart=on-failure
 Environment=PATH=/usr/bin:/usr/local/bin
