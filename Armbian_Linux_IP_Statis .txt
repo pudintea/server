@@ -1,9 +1,13 @@
 Link : https://github.com/ophub/amlogic-s9xxx-armbian/releases/
 
-- mengganti waktu server localtime jakarta
-# mv /etc/localtime /etc/localtime-asal && cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+# mengganti waktu server localtime jakarta
+> mv /etc/localtime /etc/localtime-asal && cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+
+# mengubah timezone asia-jakarta
+> timedatectl set-timezone Asia/Jakarta
 
 Konfigurasi IP Statis di Armbian Ubuntu/Debian Based
+======================================================
 Armbian adalah OS linux yang berbasis Debian/Ubuntu, oleh karena itu untuk cara konfigurasi IP Address di armbian tidak jauh berbeda dari kedua sistem operasi linux tersebut.
 Caranya kita tinggal ubah konfigurasi internetnya di direktori /etc/netplan.
 
