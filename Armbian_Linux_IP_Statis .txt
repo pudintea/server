@@ -1,3 +1,5 @@
+Link : https://github.com/ophub/amlogic-s9xxx-armbian/releases/
+
 
 Konfigurasi IP Statis di Armbian Ubuntu/Debian Based
 Armbian adalah OS linux yang berbasis Debian/Ubuntu, oleh karena itu untuk cara konfigurasi IP Address di armbian tidak jauh berbeda dari kedua sistem operasi linux tersebut.
@@ -7,6 +9,7 @@ Caranya kita tinggal ubah konfigurasi internetnya di direktori /etc/netplan.
 Hardware Yang Digunakan
 Perangkat : STB HG680P
 OS : Armbian 24.11.0 (Noble)
+Link cek : https://github.com/ophub/amlogic-s9xxx-armbian/releases/
 
 > sudo apt update && apt upgrade -y
 
