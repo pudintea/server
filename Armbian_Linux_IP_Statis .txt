@@ -15,6 +15,8 @@ Caranya kita tinggal ubah konfigurasi internetnya di direktori /etc/netplan.
 Hardware Yang Digunakan
 Perangkat : STB HG680P
 OS : Armbian 24.11.0 (Noble)
+
+STB HG680P dan B860H, Arsitekturnya s905x
 Link cek : https://github.com/ophub/amlogic-s9xxx-armbian/releases/
 
 > sudo apt update && apt upgrade -y
