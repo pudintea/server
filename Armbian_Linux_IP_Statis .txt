@@ -1,0 +1,53 @@
+
+Konfigurasi IP Statis di Armbian Ubuntu/Debian Based
+Armbian adalah OS linux yang berbasis Debian/Ubuntu, oleh karena itu untuk cara konfigurasi IP Address di armbian tidak jauh berbeda dari kedua sistem operasi linux tersebut.
+Caranya kita tinggal ubah konfigurasi internetnya di direktori /etc/netplan.
+
+
+Hardware Yang Digunakan
+Perangkat : STB HG680P
+OS : Armbian 24.11.0 (Noble)
+
+> sudo apt update && apt upgrade -y
+
+> sudo apt install -y net-tools
+> ifconfig
+
+
+Mengubah Konfigurasi Melalui Netplan
+====================================
+> sudo nano /etc/netplan/00-default-use-network-manager.yaml
+
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    eth0:
+      dhcp4: no
+      addresses:
+        - 10.10.13.6/24  # IP statis
+      routes:
+        - to: 0.0.0.0/0
+          via: 10.10.13.1  # IP Gateway
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 8.8.4.4
+
+Pastikan Anda cek type renderer yang dipakai oleh Armbian. contoh di atas menggunakan NetworkManager.
+Jika type renderer armbian milik Anda adalah Networkd, konfigurasinya sama saja. hanya beda di restart service.
+
+
+
+Mengapply Perubahan Konfigurasi
+===============================
+> sudo netplan apply
+> sudo systemctl restart NetworkManager
+
+Cek lagi menggunakan perintah ifconfig dan pastikan ip address yang terlihat sama dengan yang tadi dikonfigurasikan.
+
+
+
+
+======================== PUDIN SAEPUDIN ============
+pudin.alazhar@gmail.com
