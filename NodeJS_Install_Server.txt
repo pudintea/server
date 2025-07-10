@@ -25,6 +25,7 @@ $> cd ~
 $> apt-get install curl -y
 $> apt-get install git -y
 $> curl -sL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh
+$> curl -sL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
 $> sudo bash nodesource_setup.sh
 $> apt-get install nodejs -y
 $> node -v
