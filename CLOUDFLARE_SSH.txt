@@ -1,0 +1,17 @@
+DOWNLOAD DAN INSTALL untuk windows
+===================================
+https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.exe
+https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.msi
+
+
+PUTTY
+======
+namadomain : ss.pudin.com
+proxy
+cloudflared.exe access ssh --hostname %host
+
+
+
+
+
+====================== PUDIN SAEPUDIN ============================================
