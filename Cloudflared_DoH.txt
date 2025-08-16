@@ -5,6 +5,12 @@ DOC
 =====
 Link : https://docs.pi-hole.net/guides/dns/cloudflared/
 
+# mengganti waktu server localtime jakarta
+> mv /etc/localtime /etc/localtime-asal && cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && timedatectl set-timezone Asia/Jakarta
+
+# mengubah timezone asia-jakarta
+> timedatectl set-timezone Asia/Jakarta 
+
 Installing cloudflared
 ======================
 # For Debian/Ubuntu
