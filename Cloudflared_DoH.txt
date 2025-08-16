@@ -25,9 +25,34 @@ Create a cloudflared user to run the daemon:
 
 Proceed to create a configuration file for cloudflared:
 > sudo nano /etc/default/cloudflared
+Jika Anda menjalankan Cloudflared pada host yang berbeda dari pi-hole,
+Anda dapat menambahkan alamat pendengaran ke semua IP (untuk keamanan, ubah 0.0.0.0 ke IP mesin Anda , misalnya 192.168.1.1):
 Masukan :
 # Commandline args for cloudflared, using Cloudflare DNS
 CLOUDFLARED_OPTS=--port 5053 --upstream https://1.1.1.1/dns-query --upstream https://1.0.0.1/dns-query --address 0.0.0.0
+
+ATAU =====
+
+# /etc/default/cloudflared
+# Jalankan proxy-dns
+CLOUDFLARED_OPTS="proxy-dns \
+  --address 127.0.0.1 \
+  --port 5053 \
+  --upstream https://1.1.1.1/dns-query \
+  --upstream https://1.0.0.1/dns-query"
+
+# Kalau mau pakai Family DNS (malware+adult filtering)
+# CLOUDFLARED_OPTS="proxy-dns --address 127.0.0.1 --port 5053 --upstream https://family.cloudflare-dns.com/dns-query"
+
+CLOUDFLARED_OPTS="proxy-dns \
+  --address 127.0.0.1 \
+  --port 5053 \
+  --upstream https://family.cloudflare-dns.com/dns-query \
+  --upstream https://1.1.1.1/dns-query \
+  --upstream https://1.0.0.1/dns-query"
+
+*( Gunakan Salah Satu CLOUDFLARED_OPT diatas ya, jangan semuanya).
+
 
 Update the permissions for the configuration file and cloudflared binary to allow access for the cloudflared user:
 > sudo chown cloudflared:cloudflared /etc/default/cloudflared
