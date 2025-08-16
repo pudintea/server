@@ -104,14 +104,19 @@ options {
     recursion yes;
     allow-query { goodclients; };
 
+    # Forward semua ke cloudflared DoH
     forwarders {
-        127.0.0.1#5053;
+        127.0.0.1 port 5053;
     };
-
     forward only;
+
     dnssec-validation auto;
     auth-nxdomain no;
     listen-on { any; };
+    listen-on-v6 { any; };
+
+    # Statistik untuk monitoring
+    statistics-file "/var/cache/bind/named.stats";
 };
 
 
