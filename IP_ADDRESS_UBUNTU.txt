@@ -1,0 +1,24 @@
+IP ADDRESS UBUNTU
+==================
+
+Silahkan di sesuaikan :
+> cd /etc/netplan/
+> nano /etc/netplan/50-cloud-init.yaml
+> nano /etc/netplan/01-netcfg.yamlfile
+
+Untuk menerapkan perubahan Netplan baru, jalankan:
+> sudo netplan apply
+
+*) Tanpa menjalankan ini, ketika server di restart pun tidak akan berubah.
+
+
+
+
+Atau, jika Anda mengalami beberapa masalah, jalankan:
+> sudo netplan --debug apply
+
+Konfirmasikan alamat IP statis baru Anda dengan menggunakan ip a perintah:
+> ip a
+
+
+//================ Pudin Saepudin 
