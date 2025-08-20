@@ -1,0 +1,48 @@
+Panduan Penggunaan Editor Nano:
+================================
+
+1. Membuka File:
+Untuk membuka atau membuat file baru, ketik nano nama_file di terminal. 
+Jika file sudah ada, nano akan membukanya. Jika belum ada, nano akan membuat file baru dengan nama tersebut. 
+
+2. Navigasi:
+Gunakan tombol panah untuk berpindah di dalam file. 
+Ctrl + A: Pindah ke awal baris. 
+Ctrl + E: Pindah ke akhir baris. 
+Ctrl + F: Maju satu karakter. 
+Ctrl + B: Mundur satu karakter. 
+Ctrl + N: Baris berikutnya. 
+Ctrl + P: Baris sebelumnya. 
+
+3. Edit File:
+Nano adalah editor tanpa mode, jadi Anda bisa langsung mengetik dan mengedit teks. 
+Untuk memilih teks, gunakan Alt+A (atau Esc kemudian A pada beberapa sistem). 
+Alt + 6: Menyalin teks yang dipilih. 
+Ctrl + K: Memotong (menghapus) teks yang dipilih. 
+Ctrl + U: Menempel teks. 
+
+4. Menyimpan dan Keluar:
+Ctrl + O: Menyimpan perubahan.
+Ctrl + X: Keluar dari nano.
+Jika ada perubahan yang belum disimpan, nano akan menanyakan apakah Anda ingin menyimpannya sebelum keluar.
+
+5. Pencarian:
+Ctrl + W: Mencari teks dalam file. 
+Ctrl + \\ (Ctrl+Shift+-): Mencari dan mengganti teks.
+
+6. Bantuan:
+Ctrl + G: Menampilkan bantuan.
+
+7. Fitur Lain:
+Ctrl + R: Membaca (membuka) file lain ke dalam file yang sedang diedit. 
+Ctrl + T: Membuka browser file untuk memilih file yang akan dibuka. 
+Alt + U: Membatalkan perubahan terakhir. 
+Alt + E: Mengulang perubahan yang dibatalkan. 
+Ctrl + R: Membagi jendela editor secara horizontal. 
+Ctrl + V: Membagi jendela editor secara vertikal. 
+Ctrl + Panah: Navigasi antar jendela yang terbagi.
+
+
+
+
+==================== Pudin Saepudin : italazhar.com
