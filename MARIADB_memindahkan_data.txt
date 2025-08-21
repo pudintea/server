@@ -1,0 +1,44 @@
+
+Untuk memindahkan data server MariaDB ke folder tertentu
+==========================================================
+Anda perlu mengubah direktori data (datadir) MariaDB dan memindahkan data ke lokasi baru.
+Langkah-langkahnya melibatkan penghentian layanan MariaDB,
+memodifikasi file konfigurasi, menyalin data, dan memulai ulang layanan.
+
+Berikut adalah langkah-langkah detailnya:
+1. Cek Lokasi Direktori Data Saat Ini:
+Login ke MariaDB sebagai pengguna root.
+Jalankan perintah SQL: SELECT @@datadir; untuk melihat lokasi direktori data saat ini. 
+
+2. Hentikan Layanan MariaDB:
+Gunakan perintah systemctl stop mariadb (atau service mariadb stop pada beberapa sistem) untuk menghentikan layanan MariaDB. 
+
+3. Buat Direktori Data Baru:
+Buat direktori baru di lokasi yang Anda inginkan, misalnya /data/mariadb-data/mysql.
+Pastikan direktori ini memiliki izin yang benar untuk user dan group MariaDB (biasanya mysql:mysql). 
+
+4. Salin Data ke Direktori Baru:
+Gunakan perintah rsync -avzh /var/lib/mysql/ /data/mariadb-data/mysql/ (sesuaikan dengan lokasi direktori data lama dan baru Anda) untuk menyalin semua data dan struktur direktori. 
+
+5. Modifikasi File Konfigurasi MariaDB:
+Buka file konfigurasi MariaDB (biasanya /etc/my.cnf atau /etc/mysql/my.cnf).
+Cari baris yang mengatur datadir dan ubah nilainya ke lokasi direktori data baru Anda.
+Simpan perubahan pada file konfigurasi. 
+
+6. Perbarui Konfigurasi AppArmor (Jika Digunakan):
+Jika Anda menggunakan AppArmor, tambahkan aturan baru untuk memungkinkan akses ke direktori data baru. 
+Contoh: ` /data/mariadb-data/ r, /data/mariadb-data/// rwk,` pada file /etc/apparmor.d/tunables/alias. 
+
+7. Mulai Ulang Layanan MariaDB:
+Gunakan perintah systemctl start mariadb (atau service mariadb start) untuk memulai kembali layanan MariaDB. 
+
+8. Verifikasi Lokasi Direktori Data:
+Login ke MariaDB sebagai pengguna root.
+Jalankan perintah SELECT @@datadir; untuk memastikan bahwa datadir telah berubah ke lokasi baru. 
+
+9. Uji Akses Database:
+Jalankan perintah SHOW DATABASES;, USE nama_database;, SHOW TABLES;, dan SELECT * FROM nama_tabel; untuk memastikan semua database dan tabel dapat diakses dengan normal. 
+
+Dengan mengikuti langkah-langkah ini, Anda berhasil memindahkan direktori data MariaDB ke lokasi yang diinginkan. 
+
+====== Pudin Saepudin : italazhar.com
