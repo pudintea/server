@@ -10,20 +10,50 @@ Berikut adalah langkah-langkah detailnya:
 Login ke MariaDB sebagai pengguna root.
 Jalankan perintah SQL: SELECT @@datadir; untuk melihat lokasi direktori data saat ini. 
 
+MariaDB [(none)]> SELECT @@datadir;
++-----------------+
+| @@datadir       |
++-----------------+
+| /var/lib/mysql/ |
++-----------------+
+1 row in set (0.001 sec)
+
+
 2. Hentikan Layanan MariaDB:
-Gunakan perintah systemctl stop mariadb (atau service mariadb stop pada beberapa sistem) untuk menghentikan layanan MariaDB. 
+Gunakan perintah systemctl stop mariadb (atau service mariadb stop pada beberapa sistem) untuk menghentikan layanan MariaDB.
+> systemctl status mariadb
+> systemctl stop mariadb
 
 3. Buat Direktori Data Baru:
 Buat direktori baru di lokasi yang Anda inginkan, misalnya /data/mariadb-data/mysql.
-Pastikan direktori ini memiliki izin yang benar untuk user dan group MariaDB (biasanya mysql:mysql). 
+Pastikan direktori ini memiliki izin yang benar untuk user dan group MariaDB (biasanya mysql:mysql).
+
+
 
 4. Salin Data ke Direktori Baru:
-Gunakan perintah rsync -avzh /var/lib/mysql/ /data/mariadb-data/mysql/ (sesuaikan dengan lokasi direktori data lama dan baru Anda) untuk menyalin semua data dan struktur direktori. 
+Gunakan perintah rsync -avzh /var/lib/mysql/ /data/mariadb-data/mysql/ (sesuaikan dengan lokasi direktori data lama dan baru Anda) untuk menyalin semua data dan struktur direktori.
+> rsync -avzh /var/lib/mysql/ /data/mariadb-data/mysql/
 
 5. Modifikasi File Konfigurasi MariaDB:
-Buka file konfigurasi MariaDB (biasanya /etc/my.cnf atau /etc/mysql/my.cnf).
+Buka file konfigurasi MariaDB (biasanya /etc/mysql/mariadb.conf.d/50-server.cnf).
 Cari baris yang mengatur datadir dan ubah nilainya ke lokasi direktori data baru Anda.
-Simpan perubahan pada file konfigurasi. 
+Simpan perubahan pada file konfigurasi.
+> sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+[mysqld]
+
+#
+# * Basic Settings
+#
+
+#user                    = mysql
+pid-file                = /run/mysqld/mysqld.pid
+basedir                 = /usr
+#datadir                 = /var/lib/mysql
+#tmpdir                  = /tmp
+
+Cari bagian [mysqld] dan tambahkan atau ubah baris berikut: 
+Kode
+datadir = /data/mariadb-data/mysql (Silahkan sesuaikan)
 
 6. Perbarui Konfigurasi AppArmor (Jika Digunakan):
 Jika Anda menggunakan AppArmor, tambahkan aturan baru untuk memungkinkan akses ke direktori data baru. 
