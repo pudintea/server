@@ -29,6 +29,10 @@ Jika Anda menjalankan Cloudflared pada host yang berbeda dari pi-hole,
 Anda dapat menambahkan alamat pendengaran ke semua IP (untuk keamanan, ubah 0.0.0.0 ke IP mesin Anda , misalnya 192.168.1.1):
 Masukan :
 # Commandline args for cloudflared, using Cloudflare DNS
+CLOUDFLARED_OPTS=--port 5053 --upstream https://family.cloudflare-dns.com/dns-query --upstream https://1.1.1.1/dns-query --upstream https://1.0.0.1/dns-query --address 127.0.0.1
+
+
+# Commandline args for cloudflared, using Cloudflare DNS
 CLOUDFLARED_OPTS=--port 5053 --upstream https://1.1.1.1/dns-query --upstream https://1.0.0.1/dns-query --address 0.0.0.0
 
 ATAU =====
