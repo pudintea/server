@@ -26,10 +26,10 @@ Installing cloudflared
 Configuring cloudflared to run on startup
 =========================================
 Create a cloudflared user to run the daemon:
-> sudo useradd -s /usr/sbin/nologin -r -M cloudflared
+> sudo useradd -s /usr/sbin/nologin -r -M cloudflaredoh
 
 Proceed to create a configuration file for cloudflared:
-> sudo nano /etc/default/cloudflared
+> sudo nano /etc/default/cloudflaredoh
 Jika Anda menjalankan Cloudflared pada host yang berbeda dari pi-hole,
 Anda dapat menambahkan alamat pendengaran ke semua IP (untuk keamanan, ubah 0.0.0.0 ke IP mesin Anda , misalnya 192.168.1.1):
 Masukan :
@@ -64,12 +64,12 @@ CLOUDFLARED_OPTS="proxy-dns \
 
 
 Update the permissions for the configuration file and cloudflared binary to allow access for the cloudflared user:
-> sudo chown cloudflared:cloudflared /etc/default/cloudflared
-> sudo chown cloudflared:cloudflared /usr/local/bin/cloudflared
+> sudo chown cloudflaredoh:cloudflaredoh /etc/default/cloudflaredoh
+> sudo chown cloudflaredoh:cloudflaredoh /usr/local/bin/cloudflaredoh
 
 Then create the systemd script by copying the following into /etc/systemd/system/cloudflared.service.
 This will control the running of the service and allow it to run on startup:
-> sudo nano /etc/systemd/system/cloudflared.service
+> sudo nano /etc/systemd/system/cloudflaredoh.service
 Masukan :
 [Unit]
 Description=cloudflared DNS over HTTPS proxy
@@ -77,8 +77,8 @@ After=syslog.target network-online.target
 
 [Service]
 Type=simple
-User=cloudflared
-EnvironmentFile=/etc/default/cloudflared
+User=cloudflaredoh
+EnvironmentFile=/etc/default/cloudflaredoh
 ExecStart=/usr/local/bin/cloudflared proxy-dns $CLOUDFLARED_OPTS
 Restart=on-failure
 RestartSec=10
@@ -90,10 +90,10 @@ WantedBy=multi-user.target
 
 Enable the systemd service to run on startup,
 then start the service and check its status:
-> sudo systemctl enable cloudflared
-> sudo systemctl start cloudflared
-> sudo systemctl status cloudflared
-> sudo systemctl restart cloudflared
+> sudo systemctl enable cloudflaredoh
+> sudo systemctl start cloudflaredoh
+> sudo systemctl status cloudflaredoh
+> sudo systemctl restart cloudflaredoh
 
 
 TEST
