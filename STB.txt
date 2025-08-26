@@ -1,0 +1,28 @@
+DOWNLOAD DAN INSTALL untuk windows
+===================================
+https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.exe
+https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.msi
+
+
+PUTTY
+======
+namadomain : ss.serversaya.com Port
+proxy:
+cloudflared.exe access ssh --hostname %host
+
+CMD
+====
+Buka folder C:\Users\NAMAUSERNYA\.ssh\Buat 1 buah file dengan nama config (tanpa ext) edit pake notepad
+seusikan kode di bawah ini :
+
+HOST ss.italazhar.com hostname2 hostname3 (jika ada)
+ProxyCommand C:\Program Files (x86)\cloudflared\cloudflared.exe access ssh --hostname %h
+
+Buka commend prompt
+> ssh root@ss.italazhar.com
+
+harusnya bisa lagin.
+
+
+
+================== Pudin Saepudin : italazhar.com
