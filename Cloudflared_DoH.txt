@@ -181,5 +181,61 @@ options {
 };
 
 
+MENGHAPUS
+=============
+Kalau kamu sudah pernah buat systemd unit file untuk cloudflared, dan sekarang mau menghapusnya (supaya tidak jalan lagi di Ubuntu), langkahnya seperti ini:
+
+🔹 1. Stop service
+> sudo systemctl stop cloudflared
+
+🔹 2. Disable autostart
+> sudo systemctl disable cloudflared
+
+🔹 3. Hapus file unit
+sudo rm /etc/systemd/system/cloudflared.service
+
+🔹 4. Hapus environment file (opsional)
+
+Kalau kamu tidak butuh lagi settingan default-nya:
+
+> sudo rm /etc/default/cloudflared
+
+🔹 5. Reload systemd
+
+Supaya systemd tidak lagi mengenali service tersebut:
+
+> sudo systemctl daemon-reload
+> sudo systemctl reset-failed
+
+🔹 6. (Opsional) Hapus binary cloudflared
+
+Kalau kamu tidak mau pakai sama sekali lagi:
+
+> sudo rm /usr/local/bin/cloudflared
+
+
+✅ Setelah itu, cloudflared sudah benar-benar tidak aktif lagi.
+Kalau mau cek apakah masih ada service aktif:
+
+> systemctl list-unit-files | grep cloudflared
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ======== Pudin Saepudin : italazhar.com
