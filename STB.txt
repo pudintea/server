@@ -24,5 +24,22 @@ Buka commend prompt
 harusnya bisa lagin.
 
 
+=====================================================
+MARIADB
+
+Perbaikan Instalasi Database MariaDB
+Karena pada langkah sebelumnya MariaDB tidak terpasang dengan sempurna, maka kita perlu melakukan instalasi ulang secara manual.
+Hal ini bisa terjadi karena sistem kehabisan memori saat proses compile, gangguan koneksi, atau error dependensi.
+Untuk memperbaikinya, kita bisa jalankan skrip mysql.sh yang berada di direktori /www/server/panel/install
+> cd /www/server/panel/install
+
+Kemudian kita jalankan instalasi manual melalui terminal.
+Perintah ini akan memulai proses instalasi MariaDB 10.11 secara langsung, sekaligus menampilkan detail prosesnya jika terjadi error.
+Setelah selesai, cek ulang di App Store apakah MariaDB sudah muncul di daftar "Installed".
+
+> bash mysql.sh install mariadb_10.11
+
+Setelah kurang lebih 5 jam proses berjalan, akhirnya instalasi MariaDB berhasil diselesaikan menggunakan metode bash compile langsung dari terminal.
+Proses ini memang memakan waktu cukup lama karena dilakukan pada perangkat dengan sumber daya terbatas.
 
 ================== Pudin Saepudin : italazhar.com
