@@ -1,0 +1,13 @@
+Buka terminal.
+Masukan perintah dibawah ini:
+> sudo apt update
+> sudo apt install openssh-server
+> sudo systemctl enable --now ssh
+> sudo systemctl start ssh
+
+Lihat status.
+> sudo systemctl status ssh
+
+
+
+=========== Pudin Saepudin : italazhar.com
