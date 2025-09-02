@@ -25,6 +25,7 @@ harusnya bisa lagin.
 
 
 =====================================================
+Link : https://www.awanservers.com/cara-install-aapanel-di-armbian-stb-hg680p-lengkap-untuk-pemula/
 MARIADB
 
 Perbaikan Instalasi Database MariaDB
