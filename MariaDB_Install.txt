@@ -30,6 +30,18 @@ Check the status of the MariaDB service and the installed version to confirm the
 You should see output indicating that the MariaDB service is active and running, and the mariadb --version command should confirm MariaDB 10.11.x is installed.
 
 
+MOODLE, MARIADB 10.11
+======================
+> CREATE DATABASE `db_moodle` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+> CREATE USER 'user_moodle'@'localhost' IDENTIFIED BY 'rahasia';
+> GRANT ALL PRIVILEGES ON `db_moodle`.* TO 'user_moodle'@'localhost';
+
+-- 2. Berikan hak akses sesuai kebutuhan Moodle
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE TEMPORARY TABLES, DROP, INDEX, ALTER, REFERENCES, LOCK TABLES
+ON `db_moodle`.* TO 'user_moodle'@'localhost';
+
+
+
 Langkah-langkah Umum (Linux, contoh Ubuntu)
 Perbarui Sistem & Tambahkan Repositori: Buka terminal, perbarui sistem, lalu tambahkan repositori MariaDB dan kunci penandatanganan resminya.
 > sudo apt-get update
