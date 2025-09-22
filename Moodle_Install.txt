@@ -1,0 +1,58 @@
+
+================ UPDATE & UPGRADE ==============
+> sudo apt update && apt upgrade -y
+
+================ WAKTU ==========================
+- mengganti waktu server localtime jakarta
+> mv /etc/localtime /etc/localtime-asal && cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && timedatectl set-timezone Asia/Jakarta
+
+- mengubah timezone asia-jakarta
+> timedatectl set-timezone Asia/Jakarta
+
+ZIP
+====
+> apt install unzip && apt install zip -y
+
+
+=================
+PHP FPM INSTALL
+=================
+> sudo apt install software-properties-common -y
+> sudo add-apt-repository ppa:ondrej/php -y
+> sudo apt update
+> sudo apt install php8.3-fpm php8.3-mysql php8.3-gd php8.3-mbstring php8.3-curl php8.3-cgi php8.3-xsl php8.3-zip php8.3-opcache php8.3-intl php8.3-bcmath php8.3-imagick php8.3-cli php8.3-xml php8.3-common php8.3-soap -y
+> sudo apt install php8.4-fpm php8.4-mysql php8.4-gd php8.4-mbstring php8.4-curl php8.4-cgi php8.4-xsl php8.4-zip php8.4-opcache php8.4-intl php8.4-bcmath php8.4-imagick php8.4-cli php8.4-xml php8.4-common php8.4-soap -y
+> sudo systemctl status php8.3-fpm
+
+Untuk PostgreeSQL
+> sudo apt install php8.3-pgsql -y
+
+Jika belum running
+> sudo systemctl enable php8.3-fpm
+> sudo systemctl start php8.3-fpm
+> sudo a2dismod php8.3
+
+Aktifkan Modul Proxy dan PHP-FPM
+> sudo a2enconf php8.3-fpm
+
+Restart PHP FPM
+================
+> sudo systemctl restart php8.3-fpm
+> sudo systemctl restart php8.4-fpm
+
+Config PHP
+============
+> nano /etc/php/8.3/fpm/php.ini
+Cari dan ubah: (RAM 8GB, 4 Core)
+memory_limit = 2048M
+max_execution_time = 160
+max_input_time = 160
+max_input_vars = 5000
+
+
+
+
+
+
+
+Pudin Saepudin : italazhar.com
