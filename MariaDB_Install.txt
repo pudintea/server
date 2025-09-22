@@ -40,6 +40,9 @@ MOODLE, MARIADB 10.11
 GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE TEMPORARY TABLES, DROP, INDEX, ALTER, REFERENCES, LOCK TABLES
 ON `db_moodle`.* TO 'user_moodle'@'localhost';
 
+-- BACKUP
+mysqldump -u root -p db_moodle > db_moodle-fresh.sql
+
 
 
 Langkah-langkah Umum (Linux, contoh Ubuntu)
