@@ -1,4 +1,4 @@
-Oke, saya jelaskan ya. Di Windows 10 dan Windows 11, **Windows Defender Firewall** secara default memblokir beberapa koneksi masuk, termasuk **ICMP (ping)** dan **File and Printer Sharing**. Kalau Anda ingin membolehkan **ping** dan **printer sharing**, ada dua cara: melalui **Control Panel (GUI)** dan melalui **Command Prompt / PowerShell**.
+Di Windows 10 dan Windows 11, **Windows Defender Firewall** secara default memblokir beberapa koneksi masuk, termasuk **ICMP (ping)** dan **File and Printer Sharing**. Kalau Anda ingin membolehkan **ping** dan **printer sharing**, ada dua cara: melalui **Control Panel (GUI)** dan melalui **Command Prompt / PowerShell**.
 
 ---
 
@@ -60,9 +60,5 @@ Ini akan mengaktifkan semua rule yang terkait dengan printer sharing.
 * **Printer Sharing** → aktifkan rule di grup **File and Printer Sharing**.
 * Bisa dilakukan lewat GUI (`wf.msc`) atau cepat via CMD/PowerShell dengan `netsh`.
 
----
-
-Mau saya bikinkan langkah **PowerShell otomatis** (script sekali jalan untuk enable ping + printer sharing) biar lebih praktis?
-
----
+-----
 Pudin Saepudin : italazhar.com
