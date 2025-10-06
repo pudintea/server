@@ -1,0 +1,95 @@
+TOMCAT 10
+Link : https://www.fosstechnix.com/how-to-install-tomcat-on-ubuntu-24-04-lts/
+
+Prerequisites
+AWS Account with Ubuntu 24.04 LTS EC2 Instance.
+Java Development Kit (JDK) installed.
+
+Step #1:Install Java on Ubuntu 24.04 LTS
+========================================
+To install Tomcat you should have Java installed. Tomcat relies on Java to function.
+
+First update the package repository.
+
+> sudo apt update
+How to Install Tomcat on Ubuntu 24.04 LTS 1
+
+Install Openjdk (Java).
+> sudo apt install openjdk-17-jdk
+
+Step #2:Create a Tomcat User
+=============================
+Untuk alasan keamanan, sebaiknya jangan menjalankan Tomcat sebagai pengguna root. Mari kita buat pengguna dan grup khusus.
+> sudo useradd -m -U -d /opt/tomcat -s /bin/false tomcat
+
+Perintah ini membuat pengguna bernama “tomcat” dengan direktori home di /opt/tomcat. The /bin/salah shell mencegah akses login.
+
+
+Step #3:Install Tomcat on Ubuntu 24.04 LTS
+============================================
+Now lets install Tomcat. First navigate to the Tomcat official website and download the latest version of Tomcat 10. You can use wget for this purpose.
+> sudo wget https://www-eu.apache.org/dist/tomcat/tomcat-10/v10.1.24/bin/apache-tomcat-10.1.24.tar.gz -P /tmp
+
+How to Install Tomcat on Ubuntu 24.04 LTS 4
+extract it to the /opt/tomcat directory.
+> sudo tar -xvf /tmp/apache-tomcat-10.1.24.tar.gz -C /opt/tomcat
+
+Step #4:Update Permissions of Tomcat
+====================================
+Change ownership of the Tomcat directory to the tomcat user and group:
+
+> sudo chown -R tomcat:tomcat /opt/tomcat
+
+
+Step #5:Configure Tomcat as a Service
+=====================================
+File unit systemd memberi tahu systemd cara mengelola layanan. Buat file bernama tomcat.service di bawah /dll/systemd/sistem direktori menggunakan text editor.
+
+navigate to the /etc/systemd/system.
+> cd /etc/systemd/system
+
+How to Install Tomcat on Ubuntu 24.04 LTS 7
+Create a tomcat.service file using nano command.
+> sudo nano tomcat.service
+
+How to Install Tomcat on Ubuntu 24.04 LTS 8
+add the following content into it.
+[Unit]
+Description=Tomcat Server
+After=network.target
+
+[Service]
+Type=forking
+User=tomcat
+Group=tomcat
+Environment="JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64"
+WorkingDirectory=/opt/tomcat/apache-tomcat-10.1.24
+ExecStart=/opt/tomcat/apache-tomcat-10.1.24/bin/startup.sh
+
+[Install]
+WantedBy=multi-user.target
+
+Save and close the file.
+Adjust the JAVA_HOME environment variable path based on your OpenJDK installation location.
+
+
+Step #6:Reload systemd and Start Tomcat
+=========================================
+Reload the systemd daemon to apply the changes.
+
+sudo systemctl daemon-reload
+How to Install Tomcat on Ubuntu 24.04 LTS 10
+Start the Tomcat service.
+> sudo systemctl start tomcat
+
+How to Install Tomcat on Ubuntu 24.04 LTS 11
+Enable Tomcat to start on boot.
+> sudo systemctl enable tomcat
+
+How to Install Tomcat on Ubuntu 24.04 LTS 12
+Sekarang Anda dapat memverifikasi apakah layanan Anda berjalan dengan benar atau tidak dengan menjalankan alamat ip publik Anda dengan port 8080 yang merupakan port default untuk Tomcat di url.
+Anda harus melihat halaman selamat datang Tomcat jika semuanya diatur dengan benar.
+
+
+
+// Pudin Saepudin : italazhar.com
