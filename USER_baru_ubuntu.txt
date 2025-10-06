@@ -1,0 +1,60 @@
+
+Membuat User Baru
+===================
+> sudo adduser nama_user
+
+Ganti nama_user dengan nama user yang ingin kamu buat. Perintah ini akan:
+- Membuat user baru
+- Membuat home directory (misalnya /home/nama_user)
+- Meminta kamu mengisi password
+- Menanyakan info tambahan (boleh dikosongkan dengan menekan Enter)
+
+
+Masukkan user ke dalam grup SUDO
+=================================
+> sudo usermod -aG sudo nama_user
+
+-aG berarti "append to group"
+Dengan ini, nama_user bisa menjalankan perintah dengan sudo
+
+
+Verifikasi user ada di grup sudo
+======================================
+Login sebagai user baru, lalu jalankan:
+> groups
+
+Harusnya muncul output seperti ini:
+nama_user sudo
+
+
+Atau, kamu bisa cek dari user lain dengan:
+
+> groups nama_user
+
+🔐 (Opsional) Uji akses sudo
+Login sebagai user baru:
+su - nama_user
+
+Lalu coba:
+> sudo whoami
+
+Jika berhasil, output-nya akan:
+root
+
+🚨 Catatan
+Pastikan hanya user terpercaya yang masuk ke grup sudo, karena mereka bisa mengakses seluruh sistem.
+Kamu bisa melihat semua grup dengan getent group.
+
+
+ADD USER KE APACHE2
+===================
+> adduser nama_user
+> sudo usermod -a -G www-data nama_user
+> sudo usermod -g www-data nama_user
+
+
+
+
+
+
+==== Pudin Saepudin : italazhar.com
