@@ -162,6 +162,17 @@ Options:
   -v|vv|vvv, --verbose           Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 . . .
 
+INSTALL NODEJS
+===============
+$> cd ~
+$> apt-get install curl -y
+$> apt-get install git -y
+$> curl -sL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
+$> sudo bash nodesource_setup.sh
+$> apt-get install nodejs -y
+$> node -v
+$> npm -v
+
 
 
 
