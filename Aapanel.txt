@@ -232,7 +232,28 @@ pgsql
 Artinya instalasi berhasil! Sekarang PHP 8.3 kamu sudah bisa digunakan untuk aplikasi yang terhubung dengan PostgreSQL.
 
 
+Cara Install Ekstensi PostgreSQL di PHP 8.4 aaPanel (pgsql & pdo_pgsql)
+========================================================================
+Penjelasanya sama seperti diatas di php 8.3
 
+Install Ekstensi pgsql
+----------------------
+> cd /www/server/php/84/src/ext/pgsql
+> /www/server/php/84/bin/phpize
+> ./configure --with-php-config=/www/server/php/84/bin/php-config
+> make && make install
+
+Jika proses instalasi berhasil, kamu akan melihat output seperti ini:
+Installing shared extensions: /www/server/php/84/lib/php/extensions/no-debug-non-zts-xxxxxxxx/
+
+Install Ekstensi pdo_pgsql
+--------------------------
+> cd /www/server/php/84/src/ext/pdo_pgsql
+> /www/server/php/84/bin/phpize
+> ./configure --with-php-config=/www/server/php/84/bin/php-config
+> make && make install
+
+Selebihnya sama.
 
 
 
