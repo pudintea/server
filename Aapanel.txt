@@ -99,6 +99,7 @@ Website => URL Rewrite => Laravel5
 
 [PHP] Instal Extension PHP
 - fileinfo
+- mbstring
 
 [PHP] Pada disable function, kita aktifkan
 - putenv
