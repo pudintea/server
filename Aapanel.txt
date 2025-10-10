@@ -174,6 +174,64 @@ $> node -v
 $> npm -v
 
 
+Cara Install Ekstensi PostgreSQL di PHP 8.3 aaPanel (pgsql & pdo_pgsql)
+========================================================================
+
+Langkah 1: Pastikan PHP 8.3 Versi Compiled
+Sebelum mulai, pastikan PHP 8.3 yang kamu gunakan adalah versi compiled,
+bukan versi default dari App Store aaPanel.
+
+Langkahnya:
+
+Masuk ke menu App Store di aaPanel.
+Jika sebelumnya sudah install PHP 8.3, hapus dulu instalasinya.
+Setelah itu, install ulang PHP 8.3 (Compiled) dari App Store.
+
+Install Ekstensi pgsql
+----------------------
+> cd /www/server/php/83/src/ext/pgsql
+> /www/server/php/83/bin/phpize
+> ./configure --with-php-config=/www/server/php/83/bin/php-config
+> make && make install
+
+Jika proses instalasi berhasil, kamu akan melihat output seperti ini:
+Installing shared extensions: /www/server/php/83/lib/php/extensions/no-debug-non-zts-xxxxxxxx/
+
+Install Ekstensi pdo_pgsql
+--------------------------
+> cd /www/server/php/83/src/ext/pdo_pgsql
+> /www/server/php/83/bin/phpize
+> ./configure --with-php-config=/www/server/php/83/bin/php-config
+> make && make install
+
+
+Tambahkan ke File php.ini
+Buka file konfigurasi php.ini:
+
+> nano /www/server/php/83/etc/php.ini
+Tambahkan baris berikut di bagian paling bawah:
+
+extension=pgsql.so
+extension=pdo_pgsql.so
+
+Restart PHP dan aaPanel
+------------------------
+Restart PHP 8.3 dari aaPanel atau lewat command line:
+
+> bt restart
+Langkah 6: Cek Apakah Ekstensi Sudah Aktif
+Cek apakah ekstensi sudah aktif dengan perintah berikut:
+
+/www/server/php/83/bin/php -m | grep pgsql
+Jika hasilnya seperti ini:
+
+pdo_pgsql
+pgsql
+
+Artinya instalasi berhasil! Sekarang PHP 8.3 kamu sudah bisa digunakan untuk aplikasi yang terhubung dengan PostgreSQL.
+
+
+
 
 
 
