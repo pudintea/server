@@ -1,7 +1,7 @@
 Project Setting > Data Api : Project URL
 Project Setting > Api Keys : Api Keys, Anon
 
-
+ERROR : "error": "new row violates row-level security policy for table \"data_user\""
 SQL langsung di Supabase SQL Editor
 Masuk ke Supabase → SQL Editor → buat query baru, paste script berikut:
 -- Aktifkan RLS dulu kalau belum aktif
@@ -25,6 +25,31 @@ WITH CHECK (true);
 
 -- Policy untuk DELETE
 CREATE POLICY "Allow delete for everyone" ON data_user
+FOR DELETE
+USING (true);
+
+-- ------------------- DATA SURAT ------------------------
+-- Aktifkan RLS dulu kalau belum aktif
+ALTER TABLE data_surat ENABLE ROW LEVEL SECURITY;
+
+-- Policy untuk SELECT
+CREATE POLICY "Allow select for everyone" ON data_surat
+FOR SELECT
+USING (true);
+
+-- Policy untuk INSERT
+CREATE POLICY "Allow insert for everyone" ON data_surat
+FOR INSERT
+WITH CHECK (true);
+
+-- Policy untuk UPDATE
+CREATE POLICY "Allow update for everyone" ON data_surat
+FOR UPDATE
+USING (true)
+WITH CHECK (true);
+
+-- Policy untuk DELETE
+CREATE POLICY "Allow delete for everyone" ON data_surat
 FOR DELETE
 USING (true);
 
