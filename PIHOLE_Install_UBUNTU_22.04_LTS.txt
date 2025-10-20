@@ -36,53 +36,74 @@ Halaman Admin
 
 
 Ganti Password Login Admin
-==============
+===========================
 > sudo pihole -a -p
 > sudo pihole setpassword
 
 IP
 http://000.000.000.000/admin/settings/system
 
+
+
 DOH CLOUDFLARE
 ================
-Dokumentasi : https://docs.pi-hole.net/guides/dns/cloudflared/
 
-# For Debian/Ubuntu
-> wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
-> sudo apt-get install ./cloudflared-linux-amd64.deb
-> cloudflared -v
+Configuring cloudflared to run on startup
+=========================================
+Create a cloudflared user to run the daemon:
+> sudo useradd -s /usr/sbin/nologin -r -M cloudflaredoh
 
-> sudo useradd -s /usr/sbin/nologin -r -M cloudflared
-> sudo nano /etc/default/cloudflared
-Masukan ini :
+Proceed to create a configuration file for cloudflared:
+> sudo nano /etc/default/cloudflaredoh
+Jika Anda menjalankan Cloudflared pada host yang berbeda dari pi-hole,
+Anda dapat menambahkan alamat pendengaran ke semua IP (untuk keamanan, ubah 0.0.0.0 ke IP mesin Anda , misalnya 192.168.1.1):
+Masukan :
 # Commandline args for cloudflared, using Cloudflare DNS
-CLOUDFLARED_OPTS=--port 5053 --upstream https://cloudflare-dns.com/dns-query
+CLOUDFLARED_OPTS=--port 5053 --upstream https://family.cloudflare-dns.com/dns-query --upstream https://1.1.1.1/dns-query --upstream https://1.0.0.1/dns-query --address 127.0.0.1
 
-Jika Anda menjalankan cloudflared pada host yang berbeda dari pi-hole,
-Anda dapat menambahkan alamat pendengaran ke semua IP
-(untuk keamanan, ubah 0.0.0.0 ke IP mesin Anda , misalnya 192.168.1.1):
 
 # Commandline args for cloudflared, using Cloudflare DNS
 CLOUDFLARED_OPTS=--port 5053 --upstream https://1.1.1.1/dns-query --upstream https://1.0.0.1/dns-query --address 0.0.0.0
 
-Perbarui izin untuk file konfigurasi dan cloudflaredbiner untuk mengizinkan akses bagi pengguna cloudflared:
-> sudo chown cloudflared:cloudflared /etc/default/cloudflared
-> sudo chown cloudflared:cloudflared /usr/local/bin/cloudflared
+ATAU =====
 
-Kemudian buat systemd skrip dengan menyalin yang berikut ke dalam /etc/systemd/system/cloudflared.service.
-Ini akan mengontrol jalannya layanan dan memungkinkannya berjalan saat startup:
+# /etc/default/cloudflared
+# Jalankan proxy-dns
+CLOUDFLARED_OPTS="proxy-dns \
+  --address 127.0.0.1 \
+  --port 5053 \
+  --upstream https://1.1.1.1/dns-query \
+  --upstream https://1.0.0.1/dns-query"
 
-> sudo nano /etc/systemd/system/cloudflared.service
-Masukan Ini :
+# Kalau mau pakai Family DNS (malware+adult filtering)
+# CLOUDFLARED_OPTS="proxy-dns --address 127.0.0.1 --port 5053 --upstream https://family.cloudflare-dns.com/dns-query"
 
+CLOUDFLARED_OPTS="proxy-dns \
+  --address 127.0.0.1 \
+  --port 5053 \
+  --upstream https://family.cloudflare-dns.com/dns-query \
+  --upstream https://1.1.1.1/dns-query \
+  --upstream https://1.0.0.1/dns-query"
+
+*( Gunakan Salah Satu CLOUDFLARED_OPT diatas ya, jangan semuanya).
+
+
+Update the permissions for the configuration file and cloudflared binary to allow access for the cloudflared user:
+> sudo chown cloudflaredoh:cloudflaredoh /etc/default/cloudflaredoh
+> sudo chown cloudflaredoh:cloudflaredoh /usr/local/bin/cloudflaredoh
+
+Then create the systemd script by copying the following into /etc/systemd/system/cloudflared.service.
+This will control the running of the service and allow it to run on startup:
+> sudo nano /etc/systemd/system/cloudflaredoh.service
+Masukan :
 [Unit]
 Description=cloudflared DNS over HTTPS proxy
 After=syslog.target network-online.target
 
 [Service]
 Type=simple
-User=cloudflared
-EnvironmentFile=/etc/default/cloudflared
+User=cloudflaredoh
+EnvironmentFile=/etc/default/cloudflaredoh
 ExecStart=/usr/local/bin/cloudflared proxy-dns $CLOUDFLARED_OPTS
 Restart=on-failure
 RestartSec=10
@@ -92,13 +113,15 @@ KillMode=process
 WantedBy=multi-user.target
 
 
-Aktifkan systemd layanan untuk berjalan saat startup, lalu mulai layanan dan periksa statusnya:
-> sudo systemctl enable cloudflared
-> sudo systemctl start cloudflared
-> sudo systemctl status cloudflared
-Sekarang uji apakah perintah tersebut berfungsi! Jalankan digperintah berikut, respons yang akan diberikan akan mirip dengan yang di bawah ini:
-> dig @127.0.0.1 -p 5053 google.com
+Enable the systemd service to run on startup,
+then start the service and check its status:
+> sudo systemctl enable cloudflaredoh
+> sudo systemctl start cloudflaredoh
+> sudo systemctl status cloudflaredoh
+> sudo systemctl restart cloudflaredoh
 
+
+TEST
 pi@raspberrypi:~ $ dig @127.0.0.1 -p 5053 google.com
 
 ; <<>> DiG 9.11.5-P4-5.1-Raspbian <<>> @127.0.0.1 -p 5053 google.com
@@ -128,7 +151,7 @@ Terakhir,
 konfigurasikan Pi-hole untuk menggunakan layanan lokal sebagai server DNScloudflared hulu dengan menentukan sebagai DNS Kustom ( IPv4 ): 127.0.0.1#5053
 
 Cara Uninstalling cloudflared
-=========================
+==============================
 If installed the manual way
 Courtesy of https://discourse.pi-hole.net/t/uninstall-cloudflare/21459/3
 
@@ -177,5 +200,6 @@ Ini berisi file seperti cert.pem, config.yml, atau token tunnel — hapus jika t
 
 
 ==================== END NAJZMI PUDINTEA ===============================
+
 
 
