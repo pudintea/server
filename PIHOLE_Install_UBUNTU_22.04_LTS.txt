@@ -67,7 +67,7 @@ CLOUDFLARED_OPTS=--port 5053 --upstream https://1.1.1.1/dns-query --upstream htt
 
 ATAU =====
 
-# /etc/default/cloudflared
+# /etc/default/cloudflaredoh
 # Jalankan proxy-dns
 CLOUDFLARED_OPTS="proxy-dns \
   --address 127.0.0.1 \
@@ -200,6 +200,7 @@ Ini berisi file seperti cert.pem, config.yml, atau token tunnel — hapus jika t
 
 
 ==================== END NAJZMI PUDINTEA ===============================
+
 
 
 
