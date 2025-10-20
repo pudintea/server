@@ -153,4 +153,27 @@ konfigurasi DOH di MikroTik
 
 
 
+Langkah-Langkah Uninstall Cloudflare (cloudflared) dari Ubuntu
+==============================================================
+1. Hentikan dan nonaktifkan layanan cloudflared (jika aktif)
+> sudo systemctl stop cloudflared
+> sudo systemctl disable cloudflared
+Jika kamu tidak pernah menjalankannya sebagai service, langkah ini tetap aman dijalankan. 
+
+2. Hapus paket cloudflared
+> sudo apt remove --purge cloudflared
+Opsi --purge penting: ini menghapus file konfigurasi yang ditinggalkan oleh paket.
+
+3. Hapus direktori konfigurasi manual (jika ada)
+Meski --purge sudah menghapus konfigurasi sistem, kamu mungkin punya file di home directory:
+> rm -rf ~/.cloudflared/
+Ini berisi file seperti cert.pem, config.yml, atau token tunnel — hapus jika tidak dibutuhkan. 
+
+
+
+
+
+
+
 ==================== END NAJZMI PUDINTEA ===============================
+
