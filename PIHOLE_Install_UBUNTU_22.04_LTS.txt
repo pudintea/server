@@ -169,11 +169,13 @@ Meski --purge sudah menghapus konfigurasi sistem, kamu mungkin punya file di hom
 > rm -rf ~/.cloudflared/
 Ini berisi file seperti cert.pem, config.yml, atau token tunnel — hapus jika tidak dibutuhkan. 
 
-
+4. Hapus Daemon
+> cloudflared service uninstall
 
 
 
 
 
 ==================== END NAJZMI PUDINTEA ===============================
+
 
