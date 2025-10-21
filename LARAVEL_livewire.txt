@@ -16,9 +16,18 @@ dex.nix
 > composer require livewire/livewire
 
 > composer require laravel/ui
-
 > php artisan ui bootstrap --auth
 
 > npm install && npm run dev
+
+> php artisan key:generate
+> php artisan migrate
+> php artisan serve
+
+
+
+
+
+
 
 ============= Pudin Saepudin : italazhar.com
