@@ -65,16 +65,17 @@ server {
 }
 
 CLOUDFLARE
-----------
+-------------
 server {
-    listen 80;
-    server_name cbt.al-azhar.sch.id;  # Ganti sesuai domainmu
+    listen 8080;
+    server_name _;  # Ganti sesuai domainmu
 
-    root /var/www/moodle;  # Ganti sesuai path Moodle kamu
+    root /var/www/public_html/moodle;  # Ganti sesuai path Moodle kamu
     index index.php index.html index.htm;
 
-    access_log /var/log/nginx/moodle_access.log;
-    error_log /var/log/nginx/moodle_error.log;
+    #log files
+    access_log  /var/log/nginx/pdn-moodle-nginx_access.log;
+    error_log   /var/log/nginx/pdn-moodle-nginx_error.log;
 
     # Moodle requires these for clean URLs
     location / {
@@ -120,6 +121,7 @@ server {
         deny all;
     }
 }
+
 
 cek konfigurasi
 # nginx -t
