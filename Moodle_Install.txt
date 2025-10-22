@@ -68,30 +68,37 @@ CLOUDFLARE
 -------------
 server {
     listen 8080;
-    server_name _;  # Ganti sesuai domainmu
+    server_name cbt.italazhar.com; #domain ditentukan
 
-    root /var/www/public_html/moodle;  # Ganti sesuai path Moodle kamu
+    root /var/www/public_html/italazhar.com/moodle;
     index index.php index.html index.htm;
 
-    #log files
-    access_log  /var/log/nginx/pdn-moodle-nginx_access.log;
-    error_log   /var/log/nginx/pdn-moodle-nginx_error.log;
+    access_log /var/log/nginx/italazhar-moodle-nginx_access.log;
+    error_log /var/log/nginx/italazhar-moodle-nginx_error.log;
 
-    # Moodle requires these for clean URLs
+    # Hanya definisikan $https sekali
+    set $pdnhttps off;
+    if ($http_x_forwarded_proto = "https") {
+        set $pdnhttps on;
+    }
+
     location / {
         try_files $uri $uri/ /index.php?q=$uri&$args;
     }
 
     location ~ [^/]\.php(/|$) {
         fastcgi_split_path_info ^(.+\.php)(/.*)$;
-        fastcgi_pass unix:/run/php/php8.4-fpm.sock;  # Sesuaikan dengan PHP versi kamu
+        fastcgi_pass unix:/run/php/php8.4-fpm.sock;  # sesuaikan dengan php-fpm socket kamu
         fastcgi_index index.php;
+
         include fastcgi_params;
 
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         fastcgi_param PATH_INFO $fastcgi_path_info;
 
-        # Untuk Cloudflare real IP (agar dapat IP asli user)
+        fastcgi_param HTTPS $pdnhttps;
+
+        # Jika perlu, real IP Cloudflare
         real_ip_header CF-Connecting-IP;
         set_real_ip_from 103.21.244.0/22;
         set_real_ip_from 103.22.200.0/22;
@@ -116,11 +123,11 @@ server {
         log_not_found off;
     }
 
-    # Deny access to .htaccess and files starting with . (hidden files)
     location ~ /\. {
         deny all;
     }
 }
+
 
 
 cek konfigurasi
@@ -231,6 +238,35 @@ Perbarui Sistem & Tambahkan Repositori: Buka terminal, perbarui sistem, lalu tam
 > sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] https://mariadb.mirror.liquidtelecom.com/repo/10.6/ubuntu focal main'
 
 Ganti 10.6 dengan versi terbaru yang Anda inginkan, dan focal dengan rilis Ubuntu Anda.
+
+
+========================
+CONFIG MOODLE
+=========================
+
+// Cara yang lebih baik (rekomendasi):
+$protocol = 'http://';
+if (
+    (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
+    (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
+    (isset($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off')
+) {
+    $protocol = 'https://';
+}
+
+$host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'];
+
+$CFG->wwwroot   = $protocol . $host;
+
+
+Tambah di config.php
+---------------------
+if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+    $_SERVER['HTTPS'] = 'on';
+}
+
+$CFG->wwwroot = 'https://cbt.italazhar.com';
+
 
 
 
