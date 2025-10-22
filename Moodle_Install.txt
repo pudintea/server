@@ -14,6 +14,69 @@ ZIP
 > apt install unzip && apt install zip -y
 
 
+------------------------------------
+NGINX
+-------------------------------------
+1. Instal Nginx.
+# apt-get install nginx -y
+# ufw allow 'Nginx Full'
+# systemctl enable nginx
+# systemctl start nginx
+# systemctl status nginx
+# cp /etc/nginx/sites-available/default /etc/nginx/sites-available/ASLI-default
+- atau
+# mv /etc/nginx/sites-available/default /etc/nginx/sites-available/ASLI-default
+# nano /etc/nginx/sites-available/default
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root /var/www/html;
+        index index.html index.htm index.nginx-debian.html;
+        server_name _;
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}
+
+UBAH MENJADI BEGINI
+
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root /var/www/html;
+        index index.php index.html index.htm index.nginx-debian.html;
+        server_name _;
+		
+		#log files
+        access_log  /var/log/nginx/default-nginx_access.log;
+        error_log   /var/log/nginx/default-nginx_error.log;
+		
+        location / {
+                try_files $uri $uri/ =404;
+        }
+        location ~ [^/]\.php(/|$) {
+                fastcgi_split_path_info  ^(.+\.php)(/.+)$;
+                fastcgi_index            index.php;
+                fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+                include fastcgi_params;
+                fastcgi_param   PATH_INFO  $fastcgi_path_info;
+                fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
+       }
+}
+
+cek konfigurasi
+# nginx -t
+
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+# service nginx restart
+
+untuk mengecek user apa yang menjalankan nginx, bisa menggunakan kode ini.
+Kode Sumber
+# ps -eo user,comm | grep nginx
+
+
 =================
 PHP FPM INSTALL
 =================
