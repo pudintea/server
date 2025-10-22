@@ -113,7 +113,65 @@ max_input_time = 160
 max_input_vars = 5000
 
 
+==========================================
+MARIADB
+==========================================
 
+VERSI : MariaDB 10.11.0
+Moodle : https://download.moodle.org/releases/latest/
+
+To install MariaDB 10.11 on Debian 13, it is recommended to use the official MariaDB APT repository to ensure you get the specific version and future updates.
+1. Update System and Install Prerequisites:
+
+> sudo apt update && sudo apt -y upgrade
+> sudo apt install software-properties-common dirmngr apt-transport-https curl -y
+
+2. Add MariaDB APT Repository:
+Download and run the MariaDB repository setup script to add the repository and its GPG key to your system.
+Specify the desired version (10.11 in this case).
+> curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash -s -- --mariadb-server-version=10.11
+
+3. Update Package Cache and Install MariaDB:
+After adding the repository, update your package list and then install the MariaDB server and client packages.
+> sudo apt update
+> sudo apt install mariadb-server mariadb-client -y
+
+4. Secure MariaDB Installation:
+Run the mariadb-secure-installation script to improve the security of your MariaDB server.
+This script will guide you through setting the root password, removing anonymous users, disallowing remote root login, and removing the test database.
+> sudo mariadb-secure-installation
+
+5. Verify Installation:
+Check the status of the MariaDB service and the installed version to confirm the installation was successful.
+> sudo systemctl status mariadb
+> mariadb --version
+
+You should see output indicating that the MariaDB service is active and running, and the mariadb --version command should confirm MariaDB 10.11.x is installed.
+
+
+MOODLE, MARIADB 10.11
+======================
+> CREATE DATABASE `db_moodle` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+> CREATE USER 'user_moodle'@'localhost' IDENTIFIED BY 'rahasia';
+> GRANT ALL PRIVILEGES ON `db_moodle`.* TO 'user_moodle'@'localhost';
+
+-- 2. Berikan hak akses sesuai kebutuhan Moodle
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, CREATE TEMPORARY TABLES, DROP, INDEX, ALTER, REFERENCES, LOCK TABLES
+ON `db_moodle`.* TO 'user_moodle'@'localhost';
+
+-- BACKUP
+mysqldump -u root -p db_moodle > db_moodle-fresh.sql
+
+
+
+Langkah-langkah Umum (Linux, contoh Ubuntu)
+Perbarui Sistem & Tambahkan Repositori: Buka terminal, perbarui sistem, lalu tambahkan repositori MariaDB dan kunci penandatanganan resminya.
+> sudo apt-get update
+> sudo apt-get install software-properties-common
+> sudo apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
+> sudo add-apt-repository 'deb [arch=amd64,arm64,ppc64el] https://mariadb.mirror.liquidtelecom.com/repo/10.6/ubuntu focal main'
+
+Ganti 10.6 dengan versi terbaru yang Anda inginkan, dan focal dengan rilis Ubuntu Anda.
 
 
 
