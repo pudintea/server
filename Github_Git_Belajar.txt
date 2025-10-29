@@ -1,5 +1,7 @@
 ============== START NAJZMI PUDINTEA ====================
 
+: Credential Manager > Windows Credentials
+
 Mendaftar di Github
 ==================
 Persiapkan email aktif
