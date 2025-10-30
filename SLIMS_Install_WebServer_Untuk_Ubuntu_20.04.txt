@@ -123,4 +123,41 @@ Buat databases dengan type = utf8_unicode_ci
 Selesaikan instalasi seperti biasa dan jangan lupa hapus folder install
 
 
-=====================================================================
+Nov 2025
+==========
+- Apache web server version 2.4;
+- MySQL version 5.7 and or MariaDB version 10.3 or later version;
+- PHP version 8.3;
+- PHP GD enabled;
+- PHP gettext enabled;
+- PHP mbstring;
+- phpMyAdmin and or Adminer (optional).
+
+> sudo apt install php8.3-fpm php8.3-mysql php8.3-mbstring php8.3-curl php8.3-cgi php8.3-xsl php8.3-zip php8.3-opcache php8.3-intl php8.3-bcmath php8.3-imagick php8.3-cli php8.3-xml php8.3-common php8.3-gd php8.3-gettext php8.3-mbstring -y
+
+==========================
+PHP FPM INSTALL
+==========================
+> sudo apt install software-properties-common -y
+> sudo add-apt-repository ppa:ondrej/php -y
+> sudo apt update
+> sudo apt install php8.3-fpm php8.3-mysql php8.3-gd php8.3-mbstring php8.3-curl php8.3-cgi php8.3-xsl php8.3-zip php8.3-opcache php8.3-intl php8.3-bcmath php8.3-imagick php8.3-cli php8.3-xml php8.3-common -y
+> sudo systemctl status php8.3-fpm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================Pudin Saepudin : italazhzr.com =====================================
