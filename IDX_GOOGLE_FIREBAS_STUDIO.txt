@@ -1,0 +1,31 @@
+==========
+Link : https://studio.firebase.google.com
+
+  packages = [
+    pkgs.php82
+    pkgs.php82Packages.composer
+    pkgs.nodejs_20
+  ];
+
+# PHP 8.3, NODEJS 22
+
+  packages = [
+    pkgs.php83
+    pkgs.php83Packages.composer
+    pkgs.nodejs_23
+  ];
+
+# MariaDB
+services.mysql = {
+  enable = true;
+  package = pkgs.mariadb;
+};
+
+# MySql
+services.mysql = {
+  enable = true;
+  package = pkgs.mysql80; # atau pkgs.mariadb
+};
+
+
+========= PUDIN SAEPUDIN
