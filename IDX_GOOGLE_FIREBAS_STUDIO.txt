@@ -27,5 +27,21 @@ services.mysql = {
   package = pkgs.mysql80; # atau pkgs.mariadb
 };
 
+============================================================
+  # PHP 8.3, NODEJS 22
+  packages = [
+    pkgs.php83
+    pkgs.php83Packages.composer
+    pkgs.nodejs_22
+  ];
+  # MariaDB
+  services.mysql = {
+    enable = true;
+    package = pkgs.mariadb;
+  };
+
+
+
+
 
 ========= PUDIN SAEPUDIN
