@@ -32,6 +32,82 @@ sudo chown -R $USER:$USER ~/.pm2
 
 
 
+MENJALANKAN NEXT JS
+============================
+
+1. Pastikan aplikasi dibuild dulu
+
+Next.js production hanya bisa dijalankan setelah di-build.
+> npm install
+> npm run build
+
+2. Jalankan menggunakan PM2 (cara paling sederhana)
+Karena di package.json kamu sudah ada script:
+"start": "next start"
+
+Maka cara termudah menjalankan PM2 adalah:
+> pm2 start npm --name "frontend" -- start
+
+Selesai. Aplikasi berjalan di PM2.
+Default port = 3000
+
+
+3. Cara yang lebih rapi: menggunakan ecosystem.config.js
+
+Buat file:
+ecosystem.config.js
+
+Isi dengan:
+module.exports = {
+  apps: [
+    {
+      name: "frontend",
+      script: "npm",
+      args: "start",
+      env: {
+        NODE_ENV: "production",
+        PORT: 3000
+      }
+    }
+  ]
+};
+
+Jalankan:
+> pm2 start ecosystem.config.js
+
+4. Melihat status / log / restart
+✔ Lihat status
+> pm2 status
+
+✔ Lihat log aplikasi
+> pm2 logs frontend
+
+✔ Restart
+> pm2 restart frontend
+
+
+Opsi Lebih Optimal (Sangat Direkomendasikan): Standalone Mode
+Untuk Next.js versi baru (13–16), mode standalone membuat output build lebih kecil dan cepat.
+Edit next.config.js kamu:
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  turbopack: { root: '.' },
+  output: 'standalone'
+}
+module.exports = nextConfig
+
+Build ulang:
+> npm run build
+
+Jalankan dengan PM2:
+> pm2 start .next/standalone/server.js --name "frontend"
+
+
+
+
+
+
 
 
 =========== Pudin Saepudin.
