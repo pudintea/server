@@ -32,6 +32,42 @@ sudo chown -R $USER:$USER ~/.pm2
 
 
 
+PERINTAH STANDAR MENJALANKAN PM2
+================================
+Jika masih gagal → cara pasti berhasil
+Jalankan build standar + next start tanpa standalone mode:
+
+Perintah PM2 lengkap
+> pm2 start npm --name frontend -- start --env PORT=3001
+
+Catatan penting:
+npm start akan menjalankan next start
+PORT=3001 harus diset sebagai environment variable
+PM2 akan menjalankan script dengan NODE_ENV=production secara default jika sudah diset
+
+Lebih rapi — pakai command environment explicit
+> pm2 start npm \
+  --name frontend \
+  -- start \
+  --env NODE_ENV=production \
+  --env PORT=3001
+
+Atau, jika pakai single line export:
+> PORT=3001 NODE_ENV=production pm2 start npm --name frontend -- start
+
+Cek status dan log:
+> pm2 status frontend
+> pm2 logs frontend
+
+
+Update build:
+==============
+Setiap kali ada perubahan:
+> rm -rf .next
+> npm run build
+> pm2 restart frontend
+
+
 MENJALANKAN NEXT JS
 ============================
 
