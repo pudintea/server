@@ -1,0 +1,37 @@
+Pastikan Node.js & npm Terinstall (versi LTS)
+=============================================
+Install Node.js (metode resmi NodeSource) — paling direkomendasikan
+> curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+> sudo apt-get install -y nodejs
+
+
+Install PM2 secara global
+==========================
+Cara terbaik adalah install global via npm agar bisa dipakai oleh semua aplikasi:
+> sudo npm install -g pm2
+
+Cek versi:
+> pm2 -v
+
+
+Pastikan restart otomatis setelah server reboot
+> pm2 startup
+> pm2 save
+
+
+Install PM2 di dalam project (optional)
+========================================
+Tidak wajib, tapi beberapa developer suka meng-lock versi PM2:
+> npm install pm2 --save-dev
+
+
+(Opsional tapi Direkomendasikan) Jalankan PM2 tanpa sudo
+==========================================================
+Agar PM2 lebih aman dan tidak berjalan sebagai root, lakukan:
+sudo chown -R $USER:$USER ~/.pm2
+
+
+
+
+
+=========== Pudin Saepudin.
