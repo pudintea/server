@@ -104,10 +104,44 @@ Jalankan dengan PM2:
 > pm2 start .next/standalone/server.js --name "frontend"
 
 
+===========================================================================
+next.config.js:
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  reactStrictMode: true,
+  output: 'standalone'
+};
+module.exports = nextConfig;
 
+module.exports = {
+  apps: [
+    {
+      name: "frontend",
+      script: ".next/standalone/server.js", // Jalankan file standalone langsung
+      cwd: "/home/udicky/arsip_digital/frontend", // root project
+      instances: 1, // fork mode, bisa diganti "max" untuk cluster
+      exec_mode: "fork",
+      autorestart: true, // restart otomatis jika crash
+      watch: false, // jangan pakai watch di production
+      env: {
+        NODE_ENV: "production",
+        PORT: 3001 // port aplikasi
+      },
+      error_file: "/home/udicky/arsip_digital/frontend/.pm2/logs/frontend-error.log",
+      out_file: "/home/udicky/arsip_digital/frontend/.pm2/logs/frontend-out.log",
+      log_date_format: "YYYY-MM-DD HH:mm:ss"
+    }
+  ]
+};
 
+Start/Jalankan PM2 dengan config baru
+> pm2 start ecosystem.config.js
 
-
+TINDAKAN
+-----------
+> pm2 stop frontend
+> rm -rf .next
+> npm run build
 
 
 =========== Pudin Saepudin.
