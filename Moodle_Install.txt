@@ -39,7 +39,7 @@ server {
 }
 
 UBAH MENJADI BEGINI
-
+======================
 server {
         listen 80 default_server;
         listen [::]:80 default_server;
@@ -63,6 +63,44 @@ server {
                 fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;
        }
 }
+
+NGINX YANG SAYA GUNAKAN
+=======================
+
+server {
+    listen 8081;
+    server_name _;
+
+    root /var/www/public_html/moodle/moodle;
+    index index.php;
+
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    location ~ [^/]\.php(/|$) {
+        fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+        fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
+        fastcgi_index index.php;
+        include fastcgi_params;
+
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param PATH_TRANSLATED $document_root$fastcgi_path_info;
+    }
+
+    location /dataroot/ {
+        internal;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+
+
 
 CLOUDFLARE
 -------------
