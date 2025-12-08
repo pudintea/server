@@ -1,0 +1,61 @@
+Untuk mengetahui versi PHP yang akan di-install (sebelum kamu benar-benar menginstalnya) di Ubuntu, kamu bisa gunakan perintah apt-cache atau apt show.
+
+Berikut beberapa cara yang paling umum:
+
+✅ 1. Cek versi PHP default dari repository
+apt-cache policy php
+
+
+Atau:
+
+apt-cache show php
+
+
+Hasilnya akan menunjukkan paket php metapackage yang biasanya mengarah ke versi default pada repo Ubuntu.
+
+✅ 2. Cek detail paket PHP (versi lengkap)
+apt show php
+
+
+Keluaran akan berisi:
+
+Version: → ini adalah versi PHP yang akan diinstall bila kamu menjalankan sudo apt install php
+
+dependencies → biasanya mengarah ke php7.4, php8.1, dll.
+
+✅ 3. Cek versi PHP spesifik (misalnya php7.*)
+apt-cache search php7
+
+
+atau
+
+apt-cache policy php7.4
+
+
+Kalau versi tersebut tersedia di repo, akan muncul informasinya.
+
+📌 Contoh output (Ubuntu 20.04)
+
+Jika kamu jalankan:
+
+apt show php
+
+
+Akan muncul kira-kira:
+
+Package: php
+Version: 2:7.4+75
+Depends: php7.4
+
+
+Artinya default adalah PHP 7.4.
+
+⚠️ Jika kamu menggunakan PPA seperti Ondřej Surý
+
+Repo tersebut dapat mengubah versi default. Untuk melihat versi PHP dalam PPA:
+
+apt-cache policy php | grep sury
+
+
+
+==========================================================================================
