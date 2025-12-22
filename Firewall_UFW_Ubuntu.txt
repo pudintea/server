@@ -115,5 +115,9 @@ tambah
 -A ufw-before-input -p icmp --icmp-type echo-request -j DROP
 
 
+=====  ALLOW PORT 8443  =====
+
+> sudo ufw allow from 192.168.206.64/27 to any port 8443
+
 
 ===============================END=========================================
