@@ -24,9 +24,9 @@ CEK CONFIG
 
 ADD USER UBUNTU
 ===============
-> adduser ypia
-> sudo usermod -a -G www-data ypia
-> sudo usermod -g www-data ypia
+> adduser upudin
+> sudo usermod -a -G www-data upudin
+> sudo usermod -g www-data upudin
 
 ==================
 PHP FPM INSTALL
@@ -72,7 +72,6 @@ cek status
 Downloading and Installing COMPOSER
 ===================================
 Doc : https://www.digitalocean.com/community/tutorials/how-to-install-composer-on-ubuntu-22-04-quickstart
-
 
 > cd ~
 > curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
@@ -132,7 +131,7 @@ NODE JS
 $> cd ~
 $> apt-get install curl -y
 $> apt-get install git -y
-$> curl -sL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
+$> curl -sL https://deb.nodesource.com/setup_24.x -o nodesource_setup.sh
 $> sudo bash nodesource_setup.sh
 $> apt-get install nodejs -y
 $> node -v
@@ -186,7 +185,6 @@ server {
 > sudo ln -s /etc/nginx/sites-available/app_jadwal /etc/nginx/sites-enabled/
 > nginx -t
 > sudo systemctl restart nginx
-
 
 
 
