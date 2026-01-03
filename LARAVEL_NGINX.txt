@@ -1,0 +1,194 @@
+LARAVEL
+==========================
+
+> sudo apt install nginx -y
+> sudo systemctl enable nginx
+
+> sudo ufw allow 'Nginx HTTP'
+> sudo ufw allow 'Nginx HTTPS'
+> sudo ufw allow 'Nginx Full'
+
+STATUS
+> sudo systemctl status nginx
+> sudo systemctl restart nginx
+> sudo systemctl reload nginx
+
+
+> cd /var/www
+> mkdir your_app_website
+> sudo chmod -R 755 /var/www/your_app_website
+
+CEK CONFIG
+> nginx -t
+> sudo systemctl restart nginx
+
+ADD USER UBUNTU
+===============
+> adduser ypia
+> sudo usermod -a -G www-data ypia
+> sudo usermod -g www-data ypia
+
+==================
+PHP FPM INSTALL
+==================
+> sudo apt install software-properties-common -y
+> sudo add-apt-repository ppa:ondrej/php -y
+> sudo apt update
+> sudo apt install php8.3-fpm php8.3-mysql php8.3-gd php8.3-mbstring php8.3-curl php8.3-cgi php8.3-xsl php8.3-zip php8.3-opcache php8.3-intl php8.3-bcmath php8.3-imagick php8.3-cli php8.3-xml php8.3-common -y
+> sudo apt install php8.4-fpm php8.4-mysql php8.4-gd php8.4-mbstring php8.4-curl php8.4-cgi php8.4-xsl php8.4-zip php8.4-opcache php8.4-intl php8.4-bcmath php8.4-imagick php8.4-cli php8.4-xml php8.4-common -y
+> sudo systemctl status php8.3-fpm
+> sudo systemctl status php8.4-fpm
+
+Untuk PostgreeSQL
+> sudo apt install php8.3-pgsql -y
+
+Jika belum running
+> sudo systemctl enable php8.3-fpm
+> sudo systemctl start php8.3-fpm
+> sudo a2dismod php8.3
+
+Aktifkan Modul Proxy dan PHP-FPM
+> sudo a2enconf php8.3-fpm
+> sudo a2enconf php8.4-fpm
+
+RESTART
+> sudo systemctl restart nginx
+
+
+Aktifkan OPCache
+================
+Aktifkan OPCache (opcache.enable=1 di php.ini)
+> nano /etc/php/8.3/fpm/php.ini  //paling bawah posisinya
+
+Restart PHP FPM
+================
+> sudo systemctl restart php8.3-fpm
+> sudo systemctl restart php8.4-fpm
+cek status
+> sudo systemctl status php8.3-fpm
+
+
+
+Downloading and Installing COMPOSER
+===================================
+Doc : https://www.digitalocean.com/community/tutorials/how-to-install-composer-on-ubuntu-22-04-quickstart
+
+
+> cd ~
+> curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
+
+> HASH=`curl -sS https://composer.github.io/installer.sig`
+> echo $HASH
+
+> php -r "if (hash_file('SHA384', '/tmp/composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+OUTPUT :
+Installer verified
+
+Jika output mengatakan Installer corrupt, Anda perlu mengunduh skrip instalasi lagi dan memeriksa ulang apakah Anda menggunakan hash yang benar.
+Kemudian, ulangi proses verifikasi. Jika Anda memiliki penginstal yang terverifikasi, Anda dapat melanjutkan.
+
+Untuk menginstal composersecara global, gunakan perintah berikut yang akan mengunduh dan menginstal Composer sebagai perintah di seluruh sistem bernama composer, di bawah /usr/local/bin:
+> sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+Output
+All settings correct for using Composer
+Downloading...
+
+Composer (version 2.3.5) successfully installed to: /usr/local/bin/composer
+Use it: php /usr/local/bin/composer
+
+TEST
+> composer
+
+Output
+   ______
+  / ____/___  ____ ___  ____  ____  ________  _____
+ / /   / __ \/ __ `__ \/ __ \/ __ \/ ___/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ (__  )  __/ /
+\____/\____/_/ /_/ /_/ .___/\____/____/\___/_/
+                    /_/
+Composer version 2.3.5 2022-04-13 16:43:00
+
+Usage:
+  command [options] [arguments]
+
+Options:
+  -h, --help                     Display help for the given command. When no command is given display help for the list command
+  -q, --quiet                    Do not output any message
+  -V, --version                  Display this application version
+      --ansi|--no-ansi           Force (or disable --no-ansi) ANSI output
+  -n, --no-interaction           Do not ask any interactive question
+      --profile                  Display timing and memory usage information
+      --no-plugins               Whether to disable plugins.
+      --no-scripts               Skips the execution of all scripts defined in composer.json file.
+  -d, --working-dir=WORKING-DIR  If specified, use the given directory as working directory.
+      --no-cache                 Prevent use of the cache
+  -v|vv|vvv, --verbose           Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+. . .
+
+
+NODE JS
+=====================================================================
+$> cd ~
+$> apt-get install curl -y
+$> apt-get install git -y
+$> curl -sL https://deb.nodesource.com/setup_22.x -o nodesource_setup.sh
+$> sudo bash nodesource_setup.sh
+$> apt-get install nodejs -y
+$> node -v
+$> npm -v
+
+
+
+
+===========================================
+========= CONFIG NGINX ===================
+===========================================
+> cd /var/www
+> ln -s /home/ypia public
+
+> sudo nano /etc/nginx/sites-available/app_jadwal
+
+server {
+    listen 8080;
+    server_name _;
+    root /var/www/public/app_jadwal;
+
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Content-Type-Options "nosniff";
+
+    index index.html index.php;
+
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.3-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+
+> sudo ln -s /etc/nginx/sites-available/app_jadwal /etc/nginx/sites-enabled/
+> nginx -t
+> sudo systemctl restart nginx
+
+
+
+
+
+=========== Pudin Saepudin : italazhar.com
