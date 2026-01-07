@@ -1,0 +1,270 @@
+
+==============================
+Nginx + Prometheus + Grafana
+==============================
+
+Simulasi menggunakan 2 server
+1. Server Reverse proxy
+2. Server Monitoring
+
+========================================
+=== Di server NGINX Reverse Proxy ======
+========================================
+Cek dulu di /etc/nginx/nginx.conf:
+> grep conf.d /etc/nginx/nginx.conf
+
+Kalau ada baris seperti ini:
+include /etc/nginx/conf.d/*.conf;
+Artinya semua file .conf di folder itu otomatis dibaca nginx.
+
+Cara Membuat status.conf (LANGKAH DEMI LANGKAH)
+1. Buat file baru
+> sudo nano /etc/nginx/conf.d/status.conf
+
+2. Isi file status.conf
+JANGAN taruh di http {}, karena conf.d sudah otomatis berada di dalam http.
+
+Isi persis seperti ini:
+server {
+    listen 127.0.0.1:8080;
+
+    location /nginx_status {
+        stub_status;
+        allow 127.0.0.1;
+        deny all;
+    }
+}
+
+Penjelasan:
+127.0.0.1 → hanya bisa diakses dari lokal
+stub_status → endpoint metrics nginx
+Aman dari publik
+
+3. Test & Reload Nginx
+> sudo nginx -t
+
+Kalau berhasil hasilnya:
+syntax is ok
+test is successful
+
+Reload:
+> sudo systemctl reload nginx
+
+4. Verifikasi PASTI BERHASIL
+> curl http://127.0.0.1:8080/nginx_status
+
+
+Output harus seperti:
+Active connections: 1
+server accepts handled requests
+ 12345 12345 67890
+Reading: 0 Writing: 1 Waiting: 0
+
+Kalau ini muncul → CONFIG SUDAH BENAR 100%
+
+
+
+========================================
+Install Nginx Prometheus Exporter
+========================================
+
+> cd /opt
+> wget https://github.com/nginx/nginx-prometheus-exporter/releases/download/v1.5.1/nginx-prometheus-exporter_1.5.1_linux_amd64.tar.gz
+Extract:
+> tar -xvf nginx-prometheus-exporter_1.5.1_linux_amd64.tar.gz
+
+Pindahkan binary:
+> sudo mv nginx-prometheus-exporter /usr/local/bin/nginx-exporter
+> sudo chmod +x /usr/local/bin/nginx-exporter
+
+
+Test:
+> nginx-exporter --version
+
+Output contoh:
+nginx-prometheus-exporter version 1.5.1
+Kalau muncul → AMAN
+
+Jalankan manual dulu (TEST)
+nginx-exporter \
+  -nginx.scrape-uri=http://127.0.0.1:8080/nginx_status
+
+
+================================================================
+STEP SELANJUTNYA: BUAT SYSTEMD SERVICE (WAJIB)
+================================================================
+Supaya exporter jalan otomatis & tidak mati, kita buat service.
+
+Buat service file
+> sudo nano /etc/systemd/system/nginx-exporter.service
+
+
+Isi (pakai format flag baru):
+
+[Unit]
+Description=Nginx Prometheus Exporter
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/nginx-exporter \
+  --nginx.scrape-uri=http://127.0.0.1:8080/nginx_status
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+
+Enable & start
+sudo systemctl daemon-reload
+sudo systemctl enable nginx-exporter
+sudo systemctl start nginx-exporter
+
+
+Cek status:
+systemctl status nginx-exporter
+
+
+Harus:
+Active: active (running)
+
+Test Metrics
+> curl http://127.0.0.1:9113/metrics
+
+
+Cari baris:
+nginx_http_requests_total
+
+Kalau ADA → EXPORTER SUDAH BERHASIL 100%
+
+
+Firewall (PENTING)
+=======================
+Exporter listen di port 9113.
+Izinkan hanya server monitoring.
+
+sudo ufw allow from 10.0.0.20 to any port 9113
+sudo ufw allow from 192.168.13.32/27 to any port 9113
+sudo ufw allow from 192.168.206.64/27 to any port 9113
+
+
+=================================================
+========= SERVER MONITORING =====================
+=================================================
+
+1 Install Prometheus
+> useradd --no-create-home --shell /bin/false prometheus
+> mkdir /etc/prometheus /var/lib/prometheus
+
+https://prometheus.io/download/
+> wget https://github.com/prometheus/prometheus/releases/download/v3.9.0-rc.0/prometheus-3.9.0-rc.0.linux-amd64.tar.gz
+> tar -xvf prometheus-3.9.0-rc.0.linux-amd64.tar.gz
+> cd prometheus-3.9.0-rc.0.linux-amd64
+> sudo cp prometheus /usr/local/bin/
+> sudo cp promtool /usr/local/bin/
+// > sudo cp prometheus.yml /etc/prometheus/
+> sudo chown prometheus:prometheus /usr/local/bin/prometheus
+
+
+Config Prometheus (/etc/prometheus/prometheus.yml)
+> nano /etc/prometheus/prometheus.yml
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "nginx_reverse_proxy"
+    static_configs:
+      - targets:
+          - "10.0.0.10:9113"
+
+
+Direktori storage ada:
+> sudo mkdir -p /var/lib/prometheus
+> sudo chown -R root:root /var/lib/prometheus
+> sudo chmod 755 /var/lib/prometheus
+
+SYSTEM D
+> sudo nano /etc/systemd/system/prometheus.service
+[Unit]
+Description=Prometheus
+After=network-online.target
+
+[Service]
+User=root
+ExecStart=/usr/local/bin/prometheus \
+  --config.file=/etc/prometheus/prometheus.yml \
+  --storage.tsdb.path=/var/lib/prometheus
+
+[Install]
+WantedBy=multi-user.target
+
+Start:
+> sudo systemctl daemon-reload
+> sudo systemctl enable prometheus
+> sudo systemctl start prometheus
+> sudo systemctl status prometheus
+
+Akses:
+Verifikasi cepat
+Health check:
+> curl http://localhost:9090/-/healthy
+Output harus:
+Prometheus is Healthy.
+
+UI:
+http://192.168.13.37:9090
+
+
+*) Jika ada kegagalan atau kesusahan, bisa gunakan versi stabil
+Gunakan versi Prometheus v2.47.0 (stabil) yang paling kompatibel dengan Nginx exporter.
+wget https://github.com/prometheus/prometheus/releases/download/v2.47.0/prometheus-2.47.0.linux-amd64.tar.gz
+
+
+GRAFANA
+==============
+https://grafana.com/grafana/download?edition=oss&pg=get&platform=linux&plcmt=selfmanaged-box1-cta1
+
+> sudo apt-get install -y adduser libfontconfig1 musl
+> wget https://dl.grafana.com/grafana/release/12.3.1/grafana_12.3.1_20271043721_linux_amd64.deb
+> sudo dpkg -i grafana_12.3.1_20271043721_linux_amd64.deb
+
+Kalau muncul error dependency:
+> sudo apt --fix-broken install -y
+
+
+> sudo systemctl daemon-reload
+> sudo systemctl enable grafana-server
+> sudo systemctl start grafana-server
+> sudo systemctl status grafana-server
+
+
+Buka browser:
+http://IP_MONITORING_SERVER:3000
+
+
+Login default:
+user: admin
+password: admin
+
+Setelah login cari menu
+Connection => Add Data Source => Prometheus => Masukan di Server URL : http://localhost:9090
+
+DASHBOARD
+kode grafik reequest per hari
+increase(nginx_http_requests_total[1d])
+
+Kode request per jam
+increase(nginx_http_requests_total{instance="192.168.13.36:9113"}[1h])
+
+Aktive Connection
+nginx_connections_active{instance="192.168.13.36:9113"}
+
+Connection Writing Waiting Reading
+
+nginx_connections_writing{instance="192.168.13.36:9113"}
+nginx_connections_waiting{instance="192.168.13.36:9113"}
+nginx_connections_reading{instance="192.168.13.36:9113"}
+
+
+
+======== PUDIN SAEPUDIN, italazhar.com
