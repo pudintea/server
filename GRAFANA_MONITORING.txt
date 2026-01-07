@@ -266,5 +266,43 @@ nginx_connections_waiting{instance="192.168.13.36:9113"}
 nginx_connections_reading{instance="192.168.13.36:9113"}
 
 
+JSON DAHBOARD
+==============
+{
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "graphTooltip": 0,
+  "panels": [
+    {
+      "type": "timeseries",
+      "title": "Panel KIRI (duplikat saya)",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "id": 1,
+      "datasource": null,
+      "targets": []
+    },
+    {
+      "type": "timeseries",
+      "title": "Panel KANAN (duplikat saya)",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "id": 2,
+      "datasource": null,
+      "targets": []
+    }
+  ],
+  "schemaVersion": 42,
+  "title": "TEMPLATE – 2 Panel per Baris",
+  "uid": "template-2-col",
+  "version": 1,
+  "timezone": "Asia/Jakarta"
+}
+
+
+
+
+
+
 
 ======== PUDIN SAEPUDIN, italazhar.com
