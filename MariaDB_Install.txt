@@ -56,5 +56,42 @@ Ganti 10.6 dengan versi terbaru yang Anda inginkan, dan focal dengan rilis Ubunt
 
 
 
+AKSESS SETARA USER ROOT
+===================================
+Login sebagai root MariaDB
+> sudo mariadb
+atau
+> mysql -u root -p
+
+Buat User
+> CREATE USER 'upudin'@'localhost' IDENTIFIED BY 'rahasia';
+
+Beri privilege setara root
+> GRANT ALL PRIVILEGES ON *.* TO 'upudin'@'localhost' WITH GRANT OPTION;
+
+Artinya:
+ALL PRIVILEGES → semua hak
+*.* → semua database & tabel
+WITH GRANT OPTION → bisa memberi privilege ke user lain (ini yang bikin setara root)
+
+Reload privilege
+> FLUSH PRIVILEGES;
+Verifikasi
+> SHOW GRANTS FOR 'upudin'@'localhost';
+
+Hasil yang benar akan mirip:
+> GRANT ALL PRIVILEGES ON *.* TO 'upudin'@'localhost' WITH GRANT OPTION
+
+
+Alternatif Lebih Aman (Disarankan)
+===================================
+Kalau tujuanmu hanya admin database tapi bukan super-root, gunakan:
+GRANT ALL PRIVILEGES ON *.* TO 'upudin'@'localhost';
+
+
+
+
+
+
 
 == Pudin Saepudin : italazhar.com
