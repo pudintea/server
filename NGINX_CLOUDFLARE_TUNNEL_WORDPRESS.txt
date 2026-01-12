@@ -1,0 +1,94 @@
+
+NGINX
+===================
+server {
+    listen 80;
+    server_name pudin.eu.org www.pudin.eu.org;
+
+    root /var/www/html;
+    index index.php index.html index.htm;
+    charset utf-8;
+
+    # Header keamanan
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-XSS-Protection "1; mode=block";
+    add_header X-Content-Type-Options "nosniff";
+
+    # Handle permalinks WordPress
+    location / {
+        try_files $uri $uri/ /index.php?$args;
+    }
+
+    # Block access to sensitive files in uploads
+    location ~* /wp-content/uploads/.*\.(php|phar|phtml|pl|py|cgi|sh)$ {
+        deny all;
+        access_log off;
+        log_not_found off;
+    }
+
+    location ~* /wp-content/uploads/.*\.php\.(jpg|jpeg|png|gif|webp)$ {
+        deny all;
+    }
+
+    # Secure SVG files
+    location ~* /wp-content/uploads/.*\.svg$ {
+        default_type image/svg+xml;
+        add_header Content-Security-Policy "script-src 'none'";
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
+
+    # PHP-FPM handler
+    location ~ \.php$ {
+        include fastcgi_params;
+        fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+
+        # Penting: beri tahu WordPress request sudah HTTPS
+        fastcgi_param HTTPS $http_x_forwarded_proto;
+    }
+
+    # Block hidden files except .well-known
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+
+
+WP CONFIG
+=============
+// Paksa HTTPS jika request datang dari Zero Trust Tunnel
+if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+    $_SERVER['HTTPS'] = 'on';
+}
+
+// URL WordPress pakai HTTPS
+define('WP_HOME', 'https://pudin.eu.org');
+define('WP_SITEURL', 'https://pudin.eu.org');
+
+// Paksa WordPress update file langsung
+define('FS_METHOD', 'direct');
+
+
+ERROR UPDATE
+==================
+Cara memperbaiki permission WordPress
+Asumsikan WordPress ada di /var/www/html dan user PHP-FPM adalah www-data (Ubuntu/Debian default).
+
+Perintah:
+# Set owner ke www-data
+> sudo chown -R www-data:www-data /var/www/html
+
+# Folder: 755, file: 644
+> sudo find /var/www/html -type d -exec chmod 755 {} \;
+> sudo find /var/www/html -type f -exec chmod 644 {} \;
+
+
+
+
+
+============== Pudin Saepudin, italazhar.com
