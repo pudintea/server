@@ -43,4 +43,74 @@ Setelah selesai, cek ulang di App Store apakah MariaDB sudah muncul di daftar "I
 Setelah kurang lebih 5 jam proses berjalan, akhirnya instalasi MariaDB berhasil diselesaikan menggunakan metode bash compile langsung dari terminal.
 Proses ini memang memakan waktu cukup lama karena dilakukan pada perangkat dengan sumber daya terbatas.
 
+
+
+Tips Penting
+================
+Cek arsitektur server:
+> uname -m
+x86_64 → amd64
+
+IP ADDRESS
+================
+Edit file Netplan
+Edit file netplan yang ada (biasanya Armbian):
+> sudo nano /etc/netplan/00-network-manager-all.yaml
+Masukan :
+network:
+  version: 2
+  renderer: NetworkManager
+  ethernets:
+    eth0:
+      dhcp4: no
+      addresses:
+        - 192.168.55.2/30
+      gateway4: 192.168.55.1
+      nameservers:
+        addresses:
+          - 203.142.82.222
+          - 8.8.8.8
+          - 1.1.1.1
+
+Terapkan konfigurasi (AMAN via SSH)
+> sudo netplan try
+Jika koneksi tetap jalan, ketik Enter untuk konfirmasi
+Jika salah, otomatis rollback
+Atau langsung:
+> sudo netplan apply
+
+
+INSTALL MANUAL CLOUDFLARE
+===============================================
+Download Cloudflared
+> wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64.deb
+
+Install paket
+> sudo dpkg -i cloudflared-linux-arm64.deb
+
+Jika ada error dependency:
+> sudo apt --fix-broken install
+
+Verifikasi
+> cloudflared --version
+
+Jalankan Tunnel
+Gunakan token dari Cloudflare Zero Trust:
+> cloudflared tunnel run --token <TOKEN>
+
+Jalankan sebagai Service (Recommended)
+> sudo cloudflared service install
+> sudo systemctl enable cloudflared
+> sudo systemctl start cloudflared
+
+Cek status:
+> systemctl status cloudflared
+
+
+
+
+
+
+
+
 ================== Pudin Saepudin : italazhar.com
