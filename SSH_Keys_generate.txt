@@ -1,0 +1,37 @@
+GENERATE SSH KEY DI SERVER UBUNTU
+=================================
+> ssh-keygen -t rsa -b 4096 -C "SysAdmin"
+
+Tekan ENTER semua kalau pemula.
+Hasilnya:
+/home/user/.ssh/id_rsa
+/home/user/.ssh/id_rsa.pub
+
+CEK SSH KEY SUDAH ADA ATAU BELUM
+Jalankan:
+> ls ~/.ssh
+
+Kalau muncul:
+id_rsa  id_rsa.pub  authorized_keys
+berarti key sudah ada.
+
+📌 MELIHAT ISI PUBLIC KEY
+Untuk copy:
+> cat ~/.ssh/id_rsa.pub
+
+❗ PENTING (WAJIB DIINGAT)
+❌ JANGAN PERNAH
+- Copy id_rsa
+- Kirim private key ke orang lain
+- Upload ke GitHub
+
+
+✅ HANYA
+- id_rsa.pub yang boleh di-copy
+
+
+
+
+
+
+=============== PUDIN SAEPUDIN, italazhar.com
