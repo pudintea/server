@@ -30,8 +30,102 @@ Untuk copy:
 - id_rsa.pub yang boleh di-copy
 
 
+================= MEREMOTE DARI KOMPUTER PAKE PUTTY ===================
+
+PERSIAPAN DI SERVER (Ubuntu)
+=============================
+Pastikan public key ada di authorized_keys
+Di server, jalankan:
+> mkdir -p ~/.ssh
+> chmod 700 ~/.ssh
+
+Tambahkan public key ke authorized_keys:
+> cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+
+Atur permission:
+> chmod 600 ~/.ssh/authorized_keys
+
+*) Sampai sini server sudah siap menerima login via SSH key
 
 
+Ambil PRIVATE KEY dari server
+=============================
+HATI-HATI
+Private key ini akan dipakai di komputer kamu. Jangan sebarkan.
+Tampilkan private key:
+> cat ~/.ssh/id_rsa
 
+Copy SEMUA ISI, mulai dari:
+
+-----BEGIN OPENSSH PRIVATE KEY-----
+...
+-----END OPENSSH PRIVATE KEY-----
+*) Simpan dulu di Notepad (sementara).
+
+KONFIGURASI DI KOMPUTER WINDOWS (PuTTY)
+=======================================
+Buka PuTTYgen
+Jalankan PuTTYgen
+Klik Load
+Ubah filter ke:
+All Files (*.*)
+Setelah key terbaca → klik Save private key
+
+Simpan sebagai (contoh) :
+server-ubuntu.ppk
+Ini file yang akan dipakai PuTTY
+
+SETUP PUTTY
+============
+5️⃣ Isi Konfigurasi PuTTY
+
+Buka PuTTY:
+🧩 Session
+Host Name:
+user@IP_SERVER
+contoh:
+root@192.168.1.10
+
+Port: 22
+Connection type: SSH
+🔐 SSH → Auth
+
+Masuk ke:
+Connection → SSH → Auth
+Klik Browse:
+Pilih file .ppk tadi
+
+💾 Simpan Session (PENTING)
+Kembali ke Session:
+Isi Saved Sessions:
+Ubuntu-Server
+
+Klik Save
+6️⃣ LOGIN 🚀
+Klik Open
+✔️ Jika berhasil:
+TIDAK diminta password
+Langsung masuk ke server
+🎉 SELESAI
+
+
+AGAR TIDAK MINTA LAGI USERNAME SERVER DI PUTTY
+==============================================
+Set Username (INI BAGIAN PENTING)
+Masuk ke menu kiri:
+Connection → Data
+Di bagian:
+Auto-login username
+
+Isi dengan:
+username_server
+
+Contoh:
+root
+atau
+ubuntu
+
+
+Selesai,
 
 =============== PUDIN SAEPUDIN, italazhar.com
