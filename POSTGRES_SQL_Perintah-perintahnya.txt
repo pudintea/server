@@ -165,3 +165,65 @@ Sekian artikel mengenai instalasi dan konfigurasi postgreSQL dan terima kasih :)
 
 
 
+> sudo nano /etc/postgresql/17/main/pg_hba.conf
+*) Sesuaikan Versinya, bisa 16, 17 Dst
+
+# PostgreSQL Client Authentication Configuration File
+# ===================================================================
+# 
+# URUTAN RULES SANGAT PENTING! PostgreSQL menggunakan rule pertama yang match
+# 
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# ===================================================================
+# LOCAL SOCKET CONNECTIONS (Unix domain socket)
+# ===================================================================
+# Database administrative login by Unix domain socket
+local   all             postgres                                peer
+local   all             all                                     peer
+
+# ===================================================================
+# USER-SPECIFIC RULES (Harus di atas rules yang lebih general!)
+# ===================================================================
+
+# USER u_jaka: Hanya bisa akses dari :
+host    all             u_pudin          192.168.0.64/27      md5
+host    all             u_pudin          192.168.8.0/23       md5
+
+# USER postgres: Hanya localhost dan network tertentu
+host    all             postgres        127.0.0.1/32            md5
+host    all             postgres        ::1/128                 md5
+host    all             postgres        192.168.6.64/27         md5
+
+# USER u_pudin: Bisa akses dari mana saja
+host    all             user_pudin      0.0.0.0/0               md5
+host    all             user_pudin      ::/0                    md5
+
+# ===================================================================
+# GENERAL RULES (Untuk user lain yang tidak disebutkan di atas)
+# ===================================================================
+
+# IPv4 local connections untuk user lain
+host    all             all             127.0.0.1/32            md5
+
+# IPv6 local connections untuk user lain  
+host    all             all             ::1/128                 md5
+
+# Network connections untuk user lain (sesuaikan kebutuhan)
+host    all             all             192.168.3.0/24          md5
+host    all             all             192.168.6.64/24         md5
+
+# ===================================================================
+# REPLICATION CONNECTIONS
+# ===================================================================
+local   replication     all                                     peer
+host    replication     all             127.0.0.1/32            md5
+host    replication     all             ::1/128                 md5
+host    replication     all             192.168.3.0/24          md5
+host    replication     all             192.168.6.64/27         md5
+host    replication     all             192.168.8.0/23          md5
+
+
+
+
+=== PUDIN SAEPUDIN, italazhar.com
