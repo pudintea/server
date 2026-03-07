@@ -3,6 +3,10 @@ DOWNLOAD DAN INSTALL untuk windows
 https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.exe
 https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.msi
 
+Sinkronisasi waktu server
+==========================
+> timedatectl set-ntp true
+
 
 PUTTY
 ======
