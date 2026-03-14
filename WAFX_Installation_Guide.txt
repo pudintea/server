@@ -1,0 +1,38 @@
+Link : https://wafx.indobsd.id/download.html
+
+UBUNTU
+=======
+> apt-get update
+apt-get install -y \
+libpcre3-dev libxml2-dev libxslt1-dev libgd-dev \
+libgeoip-dev libpcre2-dev libssl-dev zlib1g-dev
+
+## Download package via CLI
+> wget https://wafx.indobsd.id/download/wafx-dashboard_1.0.2-1_amd64.deb
+> wget https://wafx.indobsd.id/download/nginx-wafx_1.29.6-wafx-0.2_amd64.deb
+
+
+## Install package
+> dpkg -i nginx-wafx_1.29.6-wafx-0.2_amd64.deb
+> dpkg -i wafx-dashboard_1.0.2-1_amd64.deb
+
+
+## Verify Service Startup Status
+> systemctl is-active wafx-dashboard.service
+> systemctl is-active nginx.service
+
+> systemctl status nginx
+> systemctl status wafx-dashboard
+
+Access the Dashboard
+Open your web browser and navigate to your server's IP address on port 8080.
+
+URL Example
+http://192.168.250.10:8080/
+Default Credentials
+User: admin
+Password: wafx2025
+
+
+
+============== PUDIN SAEPUIN =====================
