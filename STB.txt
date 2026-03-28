@@ -118,7 +118,7 @@ Update the cloudflared service
 > sudo apt-get update && sudo apt-get install --only-upgrade cloudflared
 
 Restart the service:
-sudo systemctl restart cloudflared.service
+> sudo systemctl restart cloudflared.service
 
 
 
