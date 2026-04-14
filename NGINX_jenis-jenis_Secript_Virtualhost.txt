@@ -125,3 +125,48 @@ server {
   }
 }
 
+-----------------------------------------------------------------------------------------------
+# Redirect HTTP ke HTTPS
+server {
+    listen 80;
+    server_name sekolah.italazhar.net;
+
+    return 301 https://$host$request_uri;
+}
+
+# HTTPS config (punya kamu yang sudah ada)
+server {
+    listen 443 ssl;
+    server_name sekolah.italazhar.net;
+
+    ssl_certificate /etc/cloudflare/italazhar.net.pem;
+    ssl_certificate_key /etc/cloudflare/italazhar.net.key;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    root /var/www/ypia/wp-sekolah;
+    index index.php index.html;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+
+        fastcgi_pass unix:/run/php/php8.4-fpm.sock;
+
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
+
+
+
+========== Pudin Saepudin
