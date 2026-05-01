@@ -19,6 +19,8 @@ server_tokens off;
 Batasi request (anti DDoS ringan)
 ==================================
 Tambahkan didalam : http {:
+
+  server_tokens off;
   limit_req_zone $binary_remote_addr zone=one:10m rate=10r/s;
   server {
   
