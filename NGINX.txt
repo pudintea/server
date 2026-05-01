@@ -37,5 +37,54 @@ add_header Referrer-Policy "no-referrer-when-downgrade";
 
 Proteksi Tambahan Install Fail2Ban (anti brute force)
 ======================================================
+a. Install Fail2Ban (anti brute force)
+sudo apt install fail2ban -y
+
+Enable:
+> sudo systemctl enable fail2ban
+
+b. Nonaktifkan service tidak perlu
+
+Cek:
+sudo systemctl list-unit-files --type=service
 
 
+
+Buat konfigurasi Minimal local fail2ban
+=======================================
+
+> sudo nano /etc/fail2ban/jail.local
+
+ISI MINIMAL :
+[DEFAULT]
+bantime = 30m
+findtime = 10m
+maxretry = 7
+backend = systemd
+
+# Optional (lebih ketat)
+bantime.increment = true
+bantime.factor = 2
+
+[nginx-http-auth]
+enabled = true
+port = http,https
+logpath = /var/log/nginx/error.log
+
+[nginx-badbots]
+enabled = true
+port = http,https
+logpath = /var/log/nginx/access.log
+
+[nginx-req-limit]
+enabled = true
+port = http,https
+logpath = /var/log/nginx/error.log
+maxretry = 10
+
+
+RESTART
+> sudo systemctl restart fail2ban
+
+
+============ PUDIN ITALAZHAR.COM ==============
