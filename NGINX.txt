@@ -1,0 +1,41 @@
+INSTALL
+=======
+> sudo apt update && sudo apt upgrade -y
+> sudo apt install nginx -y
+> sudo systemctl status nginx
+> sudo ufw allow 'Nginx Full'
+
+
+Hardening Dasar Nginx
+=====================
+Sembunyikan versi Nginx
+Edit file:
+> sudo nano /etc/nginx/nginx.conf
+
+Tambahkan:
+server_tokens off;
+
+
+Batasi request (anti DDoS ringan)
+==================================
+Tambahkan di : http {}:
+limit_req_zone $binary_remote_addr zone=one:10m rate=10r/s;
+
+Lalu di : server {}:
+limit_req zone=one burst=20 nodelay;
+
+
+Aktifkan security headers
+==========================
+Di : server {}:
+
+add_header X-Frame-Options "SAMEORIGIN";
+add_header X-Content-Type-Options "nosniff";
+add_header X-XSS-Protection "1; mode=block";
+add_header Referrer-Policy "no-referrer-when-downgrade";
+
+
+Proteksi Tambahan Install Fail2Ban (anti brute force)
+======================================================
+
+
