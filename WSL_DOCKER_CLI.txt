@@ -1,0 +1,72 @@
+WSL (Windows Subsystem for Linux)
+=================================
+
+WSL + Docker CLI
+================
+
+Cek apakah WSL sudah ada & siap
+============================================
+Buka Command Prompt / PowerShell, lalu jalankan:
+> wsl --status
+
+Kalau BELUM ada → install dulu
+Jalankan:
+> wsl --install
+
+
+Pastikan pakai WSL 2 (penting!)
+Cek:
+> wsl -l -v
+
+Kalau belum versi 2:
+> wsl --set-version Ubuntu 2
+
+
+
+Install Docker (tanpa Docker Desktop)
+======================================
+Masih di Ubuntu:
+> sudo apt install docker.io -y
+
+Jalankan Docker
+> sudo service docker start
+
+Tes:
+> docker --version
+
+Kalau muncul versi → ✅ berhasil
+
+(Opsional tapi penting) biar nggak pakai sudo terus
+> sudo usermod -aG docker $USER
+
+Lalu restart WSL:
+exit
+wsl
+
+
+Tips penting (biar nggak error di laptop kecil)
+1. Batasi RAM WSL (opsional)
+
+Buat file di Windows:
+C:\Users\NamaKamu\.wslconfig
+Isi:
+
+[wsl2]
+memory=2GB
+processors=2
+
+2. Jangan lupa start docker tiap buka WSL
+Karena kita tidak pakai Docker Desktop:
+> sudo service docker start
+
+
+Jika ketik wsl masih error
+Install Ubuntu di WSL
+Di PowerShell / CMD, jalankan:
+> wsl --install -d Ubuntu
+
+
+
+
+
+=========== PUDIN SAEPUDIN, ITALAZHAR.COM ==============
