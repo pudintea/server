@@ -4,6 +4,9 @@ WSL (Windows Subsystem for Linux)
 WSL + Docker CLI
 ================
 
+SHUTDOWN 
+> wsl --shutdown
+
 Cek apakah WSL sudah ada & siap
 ============================================
 Buka Command Prompt / PowerShell, lalu jalankan:
@@ -65,6 +68,28 @@ Install Ubuntu di WSL
 Di PowerShell / CMD, jalankan:
 > wsl --install -d Ubuntu
 
+
+TIMESCALEDB
+============
+> nano docker-compose.yml
+services:
+  timescaledb:
+    image: timescale/timescaledb:latest-pg15
+    container_name: timescaledb
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - ts_data:/var/lib/postgresql/data
+
+volumes:
+  ts_data:
+
+> docker compose up -d
 
 
 
