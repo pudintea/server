@@ -25,6 +25,10 @@ Kalau belum versi 2:
 > wsl --set-version Ubuntu 2
 
 
+Install Ubuntu
+===============
+> wsl --install Ubuntu
+
 
 Install Docker (tanpa Docker Desktop)
 ======================================
