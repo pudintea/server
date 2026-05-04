@@ -75,4 +75,58 @@ Mengaktifkan file virtualhost
 Nonktifkan file virtualhost
 =============================
 a2dissite namadomainanda.id.conf
+
+
+======== NGINX ==============
+> nano /etc/nginx/site-available/namadomainkamu.com
+# Redirect HTTP ke HTTPS
+server {
+    listen 80;
+    server_name namadomainkamu.com www.namadomainkamu.com;
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name namadomainkamu.com www.namadomainkamu.com;
+
+    ssl_certificate /etc/cloudflare/namadomainkamu.com.pem;
+    ssl_certificate_key /etc/cloudflare/namadomainkamu.com.key;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    root /var/www/html/;
+    index index.php index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    # Handle PHP
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+
+        # Sesuaikan dengan socket atau port PHP-FPM kamu
+        fastcgi_pass unix:/run/php/php8.4-fpm.sock;
+        # atau kalau pakai TCP:
+        # fastcgi_pass 127.0.0.1:9000;
+
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    # Deny akses ke file sensitif
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
+> nginx -t
+> ln -s /etc/nginx/site-available/namadomainkamu.com /etc/nginx/site-enable/.
+> nginx -t
+> service nginx restart
+
+
 =============== END  NAJZMI_PUDINTEA =========================
