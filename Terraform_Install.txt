@@ -1,0 +1,64 @@
+1. Cek Sistem Operasi VPS
+Pertama, cek OS di VPS dengan perintah:
+> uname -a
+
+atau untuk info lebih detail:
+> cat /etc/os-release
+
+Terraform mendukung Linux, macOS, Windows, dan beberapa varian Unix.
+
+2. Download Terraform
+Kamu bisa unduh Terraform dari situs resmi Terraform by HashiCorp
+Misal, di VPS Linux:
+# Update repo
+> sudo apt update -y
+
+# Install wget atau curl jika belum ada
+> sudo apt install wget unzip -y
+
+# Download Terraform versi terbaru (ganti versi sesuai kebutuhan)
+> wget https://releases.hashicorp.com/terraform/1.6.4/terraform_1.6.4_linux_amd64.zip
+
+# Ekstrak
+> unzip terraform_1.6.4_linux_amd64.zip
+
+3. Pindahkan ke folder yang ada di PATH
+Agar bisa dijalankan dari mana saja:
+> sudo mv terraform /usr/local/bin/
+
+Cek versi untuk memastikan berhasil:
+> terraform version
+
+Kalau muncul versi Terraform, berarti sudah siap dipakai.
+
+4. Gunakan Terraform di VPS
+Sekarang kamu bisa membuat folder project, tulis file .tf dan jalankan perintah seperti:
+> terraform init
+> terraform plan
+> terraform apply
+
+============================================================================================
+
+
+Contoh Simpel: 3 Node K3s di 1 VPS pakai Docker
+Install Docker:
+> sudo apt update
+> sudo apt install docker.io -y
+> sudo systemctl enable --now docker
+
+Jalankan 3 container Ubuntu:
+docker run -dit --name k3s-master ubuntu:22.04
+docker run -dit --name k3s-worker1 ubuntu:22.04
+docker run -dit --name k3s-worker2 ubuntu:22.04
+
+Masuk ke masing-masing container:
+> docker exec -it k3s-master bash
+
+Install K3s di master dan worker seperti sebelumnya, tapi gunakan IP internal container atau network Docker.
+
+💡 Catatan penting:
+Di VPS tunggal, semua “node” berbagi resource fisik yang sama.
+Cocok untuk testing/lab, tapi tidak disarankan untuk produksi karena single point of failure.
+
+
+=== PUDIN SAEPUDIN, italazhar.com ===
