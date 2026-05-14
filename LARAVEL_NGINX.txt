@@ -186,36 +186,91 @@ Tetapi hanya kalau deploy manual/restart service saat update code.
 
 Optimasi Nginx
 Edit:
+> sudo mv /etc/nginx/nginx.conf /etc/nginx/AsLiiii-nginx.conf
 > sudo nano /etc/nginx/nginx.conf
 
-Di bagian dalam http {}:
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+error_log /var/log/nginx/error.log;
+include /etc/nginx/modules-enabled/*.conf;
 
-         sendfile on;
-         tcp_nopush on;
-         tcp_nodelay on;
-         keepalive_timeout 65;
-         types_hash_max_size 4096;
-         
-         server_tokens off;
-         
-         client_body_timeout 12;
-         client_header_timeout 12;
-         send_timeout 10;
-         
-         gzip on;
-         gzip_comp_level 5;
-         gzip_min_length 256;
-         
-         gzip_types
-         text/plain
-         text/css
-         application/json
-         application/javascript
-         text/xml
-         application/xml
-         application/xml+rss
-         text/javascript;
+events {
+        worker_connections 768;
+        # multi_accept on;
+}
 
+http {
+
+        ##
+        # Basic Settings
+        ##
+
+        sendfile on;
+        tcp_nopush on;
+        tcp_nodelay on;
+        keepalive_timeout 65;
+        types_hash_max_size 4096;
+         
+        server_tokens off;
+         
+        client_body_timeout 12;
+        client_header_timeout 12;
+        send_timeout 10;
+
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        ##
+        # SSL Settings
+        ##
+
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+        ssl_prefer_server_ciphers on;
+
+        ##
+        # Logging Settings
+        ##
+
+        access_log /var/log/nginx/access.log;
+
+        ##
+        # Gzip Settings
+        ##
+
+        gzip on;
+        gzip_comp_level 5;
+        gzip_min_length 256;
+         
+        gzip_types
+        text/plain
+        text/css
+        application/json
+        application/javascript
+        text/xml
+        application/xml
+        application/xml+rss
+        text/javascript;
+
+        limit_req_zone $binary_remote_addr zone=one:10m rate=10r/s;
+        server {
+                limit_req zone=one burst=20 nodelay;
+                add_header X-Frame-Options "SAMEORIGIN" always;
+                add_header X-Content-Type-Options "nosniff" always;
+                add_header Referrer-Policy "no-referrer-when-downgrade" always;
+
+                add_header Content-Security-Policy "default-src 'self';" always;
+                add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+        }
+
+        ##
+        # Virtual Host Configs
+        ##
+
+        include /etc/nginx/conf.d/*.conf;
+        include /etc/nginx/sites-enabled/*;
+
+}
 
 Restart Semua Service
 =====================
