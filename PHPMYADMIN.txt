@@ -1,0 +1,65 @@
+# KONFIGURASI PHPMYADMIN MULTI DATABASE
+
+Berikut contoh yang lebih realistis.
+File:
+sudo nano /etc/phpmyadmin/config.inc.php
+
+atau:
+sudo nano /var/www/html/phpmyadmin/config.inc.php
+
+Isi:
+<?php
+
+$i = 0;
+
+/*
+|--------------------------------------------------------------------------
+| DATABASE SERVER 1
+|--------------------------------------------------------------------------
+*/
+
+$i++;
+
+$cfg['Servers'][$i]['verbose'] = 'Production Database';
+$cfg['Servers'][$i]['host'] = '10.10.1.11';
+$cfg['Servers'][$i]['port'] = '3306';
+$cfg['Servers'][$i]['auth_type'] = 'cookie';
+$cfg['Servers'][$i]['compress'] = false;
+$cfg['Servers'][$i]['AllowNoPassword'] = false;
+
+/*
+|--------------------------------------------------------------------------
+| DATABASE SERVER 2
+|--------------------------------------------------------------------------
+*/
+
+$i++;
+
+$cfg['Servers'][$i]['verbose'] = 'Staging Database';
+$cfg['Servers'][$i]['host'] = '10.10.1.12';
+$cfg['Servers'][$i]['port'] = '3306';
+$cfg['Servers'][$i]['auth_type'] = 'cookie';
+$cfg['Servers'][$i]['compress'] = false;
+$cfg['Servers'][$i]['AllowNoPassword'] = false;
+
+
+
+*) Apa yang terjadi setelah konfigurasi ini?
+
+Saat buka:
+https://domain-phpmyadmin.com
+
+Muncul:
+Server:
+[ Production Database ▼ ]
+
+Username:
+Password:
+
+User tinggal pilih server.
+
+
+
+
+
+========= PUDIN SAEPUDIN, italazhar.com ==========
