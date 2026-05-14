@@ -128,4 +128,35 @@ ubuntu
 
 Selesai,
 
+
+=========== KONFIGURASI SSH SETELAH SETTING SSH_KEY =============
+*) Pastikan sudah bisa login dengan ssh_key sebelum melakukan ini.
+
+> cp /etc/ssh/sshd_config /etc/ssh/asliiiii_sshd_config
+> nano /etc/ssh/sshd_config
+
+Include /etc/ssh/sshd_config.d/*.conf
+Port 2222
+AddressFamily any
+
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+UsePAM no
+PubkeyAuthentication yes
+PermitRootLogin no
+MaxAuthTries 5
+LoginGraceTime 30
+PermitEmptyPasswords no
+
+KbdInteractiveAuthentication no
+
+X11Forwarding yes
+PrintMotd no
+UseDNS no
+
+AcceptEnv LANG LC_*
+Subsystem sftp  /usr/lib/openssh/sftp-server
+
+Selesai,
+
 =============== PUDIN SAEPUDIN, italazhar.com
