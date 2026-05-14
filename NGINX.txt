@@ -57,10 +57,19 @@ Buat konfigurasi Minimal local fail2ban
 > sudo nano /etc/fail2ban/jail.local
 
 ISI MINIMAL :
+[nginx-http-auth]
+enabled = true
+port = http,https
+logpath = /var/log/nginx/error.log
+maxretry = 5
+bantime = 3600
+
+ATAU AGAK LENGKAP :
+
 [DEFAULT]
 bantime = 30m
 findtime = 10m
-maxretry = 7
+maxretry = 5
 backend = systemd
 
 # Optional (lebih ketat)
