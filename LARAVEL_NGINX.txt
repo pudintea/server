@@ -28,7 +28,7 @@ UBAH DEFAULT
 > sudo nano /etc/nginx/sites-available/default
 Jadi :
 server {
-    listen 80;
+    listen 80 default_server;
     server_name _;
 
     root /var/www/html;
