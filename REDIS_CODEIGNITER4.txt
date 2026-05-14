@@ -1,0 +1,109 @@
+## Cara Install Redis di Ubuntu & COnfig dengan Codeigniter 4
+Install
+> sudo apt install redis-server php8.4-redis -y
+
+Enable Service
+> sudo systemctl enable redis-server
+> sudo systemctl restart redis-server
+
+Test
+> redis-cli ping
+
+Harus muncul:
+PONG
+
+======================================
+Integrasi Redis di CodeIgniter 4
+=====================================
+Edit:
+> nano app/Config/Cache.php
+
+Ubah:
+public string $handler = 'redis';
+
+Konfigurasi Redis
+Masih di file yang sama:
+public array $redis = [
+    'host'     => '127.0.0.1',
+    'password' => null,
+    'port'     => 6379,
+    'timeout'  => 0,
+    'database' => 1,
+];
+
+
+Test Cache
+Contoh:
+> cache()->save('test', 'Hello Redis', 60);
+> echo cache('test');
+
+Kalau muncul:
+Hello Redis
+
+berarti berhasil.
+
+Sangat Direkomendasikan: Pisahkan DB Redis
+Supaya session dan cache tidak bercampur.
+
+Contoh:
+Fungsi	Redis DB
+Session	0
+Cache	1
+
+Session via Redis (Sangat Recommended)
+======================================
+Edit:
+.env
+Ubah:
+sessionDriver = 'CodeIgniter\Session\Handlers\RedisHandler'
+sessionSavePath = 'tcp://127.0.0.1:6379?database=0'
+
+Ini jauh lebih cepat dibanding file session.
+
+
+Tuning Redis untuk CI4
+=======================
+Edit:
+> sudo nano /etc/redis/redis.conf
+Tambahkan:
+maxmemory 256mb
+maxmemory-policy allkeys-lru
+
+Untuk aplikasi CI4 normal:
+
+256MB sudah cukup
+bahkan traffic lumayan tinggi
+
+
+Bagaimana Kalau Redis Restart?
+===============================
+Session login bisa hilang.
+
+Karena Redis default:
+memory-based
+
+Tapi:
+restart server jarang
+Redis sangat stabil
+
+Untuk aplikasi web normal ini bukan masalah besar.
+Kalau ingin lebih aman:
+> aktifkan persistence Redis
+
+Edit:
+> sudo nano /etc/redis/redis.conf
+
+Pastikan:
+appendonly yes
+
+Restart:
+> sudo systemctl restart redis-server
+
+
+
+
+
+
+
+
+==== Pudin Saepudin, italazhar.com
