@@ -59,7 +59,11 @@ Password:
 User tinggal pilih server.
 
 
+## Nonaktifkan fitur yang tidak dipakai
+Di phpMyAdmin config:
+$cfg['AllowArbitraryServer'] = false;
 
+Jangan izinkan arbitrary host kalau tidak perlu.
 
 
 ========= PUDIN SAEPUDIN, italazhar.com ==========
