@@ -129,6 +129,29 @@ ubuntu
 Selesai,
 
 
+===== BUAT SSHKEY MENGGUNAKAN PUTTY PUTTYGEN =======
+Pastikan kamu menggunakan user yang ingin di set ssh keynya, misal mau set user userpudin
+kalau kamu di root, silahkan pindah dulu,
+> su - userpudin
+
+> cd ~
+> pwd
+> mkdir -p ~/.ssh
+> nano ~/.ssh/authorized_keys
+
+Paste public key yang tadi disalin, lalu:
+Save file
+Set permission:
+
+> chmod 700 ~/.ssh
+> chmod 600 ~/.ssh/authorized_keys
+
+Contoh Public Key :
+ssh-rsa 
+sdsdsssssfsfs-CONTOH-ssnajsajhsauihsuihwjihdqwudghuqwhd
+rsa-key-20260415
+
+
 =========== KONFIGURASI SSH SETELAH SETTING SSH_KEY =============
 *) Pastikan sudah bisa login dengan ssh_key sebelum melakukan ini.
 
