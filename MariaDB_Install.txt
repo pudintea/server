@@ -1,6 +1,8 @@
 VERSI : MariaDB 10.11.0
 Moodle : https://download.moodle.org/releases/latest/
 
+# MariaDB 10.11 LTS
+====================
 To install MariaDB 10.11 on Debian 13, it is recommended to use the official MariaDB APT repository to ensure you get the specific version and future updates.
 1. Update System and Install Prerequisites:
 
@@ -28,6 +30,20 @@ Check the status of the MariaDB service and the installed version to confirm the
 > mariadb --version
 
 You should see output indicating that the MariaDB service is active and running, and the mariadb --version command should confirm MariaDB 10.11.x is installed.
+
+
+# MariaDB 11.8 LTS
+===================
+Add MariaDB APT Repository:
+> curl -LsS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash -s -- --mariadb-server-version=11.8
+> sudo apt update
+
+Install
+> sudo apt install mariadb-server mariadb-client -y
+
+> sudo mariadb-secure-installation
+> sudo systemctl status mariadb
+> mariadb --version
 
 
 MOODLE, MARIADB 10.11
@@ -61,7 +77,7 @@ AKSESS SETARA USER ROOT
 Login sebagai root MariaDB
 > sudo mariadb
 atau
-> mysql -u root -p
+> mariadb -u root -p
 
 Buat User
 > CREATE USER 'upudin'@'localhost' IDENTIFIED BY 'rahasia';
