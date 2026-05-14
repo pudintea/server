@@ -24,6 +24,53 @@ STATUS
 > sudo systemctl restart nginx
 > sudo systemctl reload nginx
 
+UBAH DEFAULT
+> sudo nano /etc/nginx/sites-available/default
+Jadi :
+server {
+    listen 80;
+    server_name _;
+
+    root /var/www/html;
+    index index.php index.html index.htm;
+
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
+    client_max_body_size 100M;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+
+        fastcgi_pass unix:/run/php/php8.4-fpm.sock;
+
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+
+        fastcgi_buffers 16 16k;
+        fastcgi_buffer_size 32k;
+    }
+
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
+Test PHP Berfungsi
+Buat file test:
+echo "<?php phpinfo(); ?>" | sudo tee /var/www/html/info.php
+
+Buka:
+http://IP_SERVER/info.php
+Kalau muncul halaman PHP berarti berhasil.
+
+Hapus lagi setelah test:
+sudo rm /var/www/html/info.php
+
 
 > cd /var/www
 > mkdir your_app_website
@@ -45,22 +92,15 @@ PHP FPM INSTALL
 > sudo apt install software-properties-common -y
 > sudo add-apt-repository ppa:ondrej/php -y
 > sudo apt update
-> sudo apt install php8.3-fpm php8.3-mysql php8.3-gd php8.3-mbstring php8.3-curl php8.3-cgi php8.3-xsl php8.3-zip php8.3-opcache php8.3-intl php8.3-bcmath php8.3-imagick php8.3-cli php8.3-xml php8.3-common -y
 > sudo apt install php8.4-fpm php8.4-mysql php8.4-gd php8.4-mbstring php8.4-curl php8.4-cgi php8.4-xsl php8.4-zip php8.4-opcache php8.4-intl php8.4-bcmath php8.4-imagick php8.4-cli php8.4-xml php8.4-common -y
-> sudo systemctl status php8.3-fpm
 > sudo systemctl status php8.4-fpm
 
 Untuk PostgreeSQL
 > sudo apt install php8.3-pgsql -y
 
 Jika belum running
-> sudo systemctl enable php8.3-fpm
-> sudo systemctl start php8.3-fpm
-> sudo a2dismod php8.3
-
-Aktifkan Modul Proxy dan PHP-FPM
-> sudo a2enconf php8.3-fpm
-> sudo a2enconf php8.4-fpm
+> sudo systemctl enable php8.4-fpm
+> sudo systemctl start php8.4-fpm
 
 ==== PHP FPM CONFIG
 > nano /etc/php/8.4/fpm/php.ini
@@ -92,6 +132,110 @@ Restart PHP FPM
 > sudo systemctl restart php8.4-fpm
 cek status
 > sudo systemctl status php8.3-fpm
+
+
+Optimasi PHP-FPM (Penting untuk Performa)
+=========================================
+Edit:
+> sudo nano /etc/php/8.4/fpm/pool.d/www.conf
+
+Cari dan ubah:
+pm = dynamic
+
+pm.max_children = 40
+pm.start_servers = 6
+pm.min_spare_servers = 4
+pm.max_spare_servers = 10
+
+pm.max_requests = 500
+
+Panduan:
+RAM 1 GB → max_children 10–15
+RAM 2 GB → 20–30
+RAM 4 GB → 40–60
+
+Kalau server Anda kecil VPS 1GB, jangan pakai 40.
+
+
+Optimasi php.ini
+===================
+Edit:
+> sudo nano /etc/php/8.4/fpm/php.ini
+
+Cari dan ubah:
+memory_limit = 256M
+upload_max_filesize = 100M
+post_max_size = 100M
+max_execution_time = 300
+max_input_vars = 5000
+cgi.fix_pathinfo=0
+
+Aktifkan dan Tuning OPcache
+===========================
+Masih di php.ini, cari:
+opcache.enable=1
+opcache.memory_consumption=256
+opcache.interned_strings_buffer=16
+opcache.max_accelerated_files=20000
+opcache.validate_timestamps=1
+opcache.revalidate_freq=2
+
+Untuk production murni:
+opcache.validate_timestamps=0
+Tetapi hanya kalau deploy manual/restart service saat update code.
+
+Optimasi Nginx
+Edit:
+> sudo nano /etc/nginx/nginx.conf
+
+Di bagian dalam http {}:
+
+         sendfile on;
+         tcp_nopush on;
+         tcp_nodelay on;
+         keepalive_timeout 65;
+         types_hash_max_size 4096;
+         
+         server_tokens off;
+         
+         client_body_timeout 12;
+         client_header_timeout 12;
+         send_timeout 10;
+         
+         gzip on;
+         gzip_comp_level 5;
+         gzip_min_length 256;
+         
+         gzip_types
+         text/plain
+         text/css
+         application/json
+         application/javascript
+         text/xml
+         application/xml
+         application/xml+rss
+         text/javascript;
+
+
+Restart Semua Service
+=====================
+> sudo systemctl restart php8.4-fpm
+> sudo systemctl restart nginx
+
+Cara Install Redis di Ubuntu 24.04
+===================================
+Install
+> sudo apt install redis-server php8.4-redis -y
+
+Enable Service
+> sudo systemctl enable redis-server
+> sudo systemctl restart redis-server
+
+Test
+> redis-cli ping
+
+Harus muncul:
+PONG
 
 
 
