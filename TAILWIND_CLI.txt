@@ -1,0 +1,29 @@
+TAILWIND CSS, TAILWIND CLI
+=======================
+1 . npm install tailwindcss @tailwindcss/cli
+
+2. File, src/input.css
+@import "tailwindcss";
+
+3. File, src/index.html
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="./css/output.css" rel="stylesheet">
+</head>
+<body>
+  <h1 class="text-3xl font-bold underline">
+    Hello world!
+  </h1>
+</body>
+</html>
+
+4. Jalankan
+npx @tailwindcss/cli -i ./src/input.css -o ./src/css/output.css --watch
+
+MINIFY
+> npx @tailwindcss/cli -i ./src/input.css -o ./src/css/tailwind.min.css --minify --watch
+
+==== PUDIN SAEPUDIN ====
