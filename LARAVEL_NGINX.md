@@ -1,32 +1,56 @@
-LARAVEL
-==========================
-================ WAKTU ==========================
-- mengganti waktu server localtime jakarta
-> mv /etc/localtime /etc/localtime-asal && cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && timedatectl set-timezone Asia/Jakarta
+# WEBSERVER LARAVEL NGINX
+## WAKTU
+Mengganti waktu server localtime jakarta
+```
+mv /etc/localtime /etc/localtime-asal && cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && timedatectl set-timezone Asia/Jakarta
+```
 
-- mengubah timezone asia-jakarta
-> timedatectl set-timezone Asia/Jakarta
+Mengubah timezone asia-jakarta
+```
+timedatectl set-timezone Asia/Jakarta
+```
+Otomatis Sinkronisasi waktu server
+```
+timedatectl set-ntp true
+```
 
-Sinkronisasi waktu server
-==========================
-> timedatectl set-ntp true
+## INSTALL NGINX
+```
+sudo apt install nginx -y
+```
+Enable Nginx
+```
+sudo systemctl enable nginx
+```
+Allow Firewall 
+```
+sudo ufw allow 'Nginx HTTP'
+```
+```
+sudo ufw allow 'Nginx HTTPS'
+```
+Allow Full
+```
+sudo ufw allow 'Nginx Full'
+```
 
+SERVICE
+```
+sudo systemctl status nginx
+```
+```
+sudo systemctl restart nginx
+```
+```
+sudo systemctl reload nginx
+```
 
-> sudo apt install nginx -y
-> sudo systemctl enable nginx
-
-> sudo ufw allow 'Nginx HTTP'
-> sudo ufw allow 'Nginx HTTPS'
-> sudo ufw allow 'Nginx Full'
-
-STATUS
-> sudo systemctl status nginx
-> sudo systemctl restart nginx
-> sudo systemctl reload nginx
-
-UBAH DEFAULT
-> sudo nano /etc/nginx/sites-available/default
+### UBAH DEFAULT NGINX
+```
+sudo nano /etc/nginx/sites-available/default
+```
 Jadi :
+```
 server {
     listen 80 default_server;
     server_name _;
@@ -59,87 +83,123 @@ server {
         deny all;
     }
 }
+```
 
 Test PHP Berfungsi
 Buat file test:
+```
 echo "<?php phpinfo(); ?>" | sudo tee /var/www/html/info.php
+```
 
 Buka:
+```
 http://IP_SERVER/info.php
+```
 Kalau muncul halaman PHP berarti berhasil.
 
 Hapus lagi setelah test:
+```
 sudo rm /var/www/html/info.php
-
-
-> cd /var/www
-> mkdir your_app_website
-> sudo chmod -R 755 /var/www/your_app_website
-
+```
+```
+cd /var/www
+```
+```
+mkdir your_app_website
+```
+```
+sudo chmod -R 755 /var/www/your_app_website
+```
 CEK CONFIG
-> nginx -t
-> sudo systemctl restart nginx
+```
+nginx -t
+```
+RESTART
+```
+sudo systemctl restart nginx
+```
 
-ADD USER UBUNTU
+### ADD USER DI UBUNTU
 ===============
-> adduser upudin
-> sudo usermod -a -G www-data upudin
-> sudo usermod -g www-data upudin
+```
+adduser upudin
+```
+```
+sudo usermod -a -G www-data upudin
+```
+```
+sudo usermod -g www-data upudin
+```
 
-==================
-PHP FPM INSTALL
-==================
-> sudo apt install software-properties-common -y
-> sudo add-apt-repository ppa:ondrej/php -y
-> sudo apt update
-> sudo apt install php8.4-fpm php8.4-mysql php8.4-gd php8.4-mbstring php8.4-curl php8.4-cgi php8.4-xsl php8.4-zip php8.4-opcache php8.4-intl php8.4-bcmath php8.4-imagick php8.4-cli php8.4-xml php8.4-common -y
-> sudo systemctl status php8.4-fpm
-
+## INSTALL PHP FPM
+```
+sudo apt install software-properties-common -y
+```
+```
+sudo add-apt-repository ppa:ondrej/php -y
+```
+```
+sudo apt update
+```
+```
+sudo apt install php8.4-fpm php8.4-mysql php8.4-gd php8.4-mbstring php8.4-curl php8.4-cgi php8.4-xsl php8.4-zip php8.4-opcache php8.4-intl php8.4-bcmath php8.4-imagick php8.4-cli php8.4-xml php8.4-common -y
+```
+```
+sudo systemctl status php8.4-fpm
+```
 Untuk PostgreeSQL
-> sudo apt install php8.3-pgsql -y
+```
+sudo apt install php8.3-pgsql -y
+```
+### Jika PHP belum running
+```
+sudo systemctl enable php8.4-fpm
+```
+```
+sudo systemctl start php8.4-fpm
+```
 
-Jika belum running
-> sudo systemctl enable php8.4-fpm
-> sudo systemctl start php8.4-fpm
-
-==== PHP FPM CONFIG
-> nano /etc/php/8.4/fpm/php.ini
+### PHP FPM CONFIG
+```
+nano /etc/php/8.4/fpm/php.ini
+```
+Ganti disable_functions dengan ini
+```
 disable_functions = exec,system,shell_exec,passthru,popen,proc_open,phpinfo
-
-Bonus hardening tambahan (opsional tapi bagus)
+```
+## Hardening tambahan (opsional tapi bagus)
 Tambahkan juga di php.ini:
 ;; Hardening tambahan
+```
 expose_php = Off
 display_errors = Off
 allow_url_fopen = Off
 allow_url_include = Off
-
+```
 Restart PHP-FPM
-> systemctl restart php8.4-fpm
+```
+systemctl restart php8.4-fpm
+```
+RESTART NGINX
+```
+sudo systemctl restart nginx
+```
 
-RESTART
-> sudo systemctl restart nginx
-
-
-Aktifkan OPCache
+### Aktifkan OPCache
 ===================
 Aktifkan OPCache (opcache.enable=1 di php.ini)
-> nano /etc/php/8.3/fpm/php.ini  //paling bawah posisinya
+```
+nano /etc/php/8.3/fpm/php.ini  //paling bawah posisinya
+```
 
-Restart PHP FPM
-================
-> sudo systemctl restart php8.3-fpm
-> sudo systemctl restart php8.4-fpm
-cek status
-> sudo systemctl status php8.3-fpm
-
-
-Optimasi PHP-FPM (Penting untuk Performa)
+### Optimasi PHP-FPM (Penting untuk Performa)
 =========================================
 Edit:
-> sudo nano /etc/php/8.4/fpm/pool.d/www.conf
-
+```
+sudo nano /etc/php/8.4/fpm/pool.d/www.conf
+```
 Cari dan ubah:
+```
 pm = dynamic
 
 pm.max_children = 40
@@ -148,7 +208,7 @@ pm.min_spare_servers = 4
 pm.max_spare_servers = 10
 
 pm.max_requests = 500
-
+```
 Panduan:
 RAM 1 GB → max_children 10–15
 RAM 2 GB → 20–30
@@ -159,36 +219,45 @@ Kalau server Anda kecil VPS 1GB, jangan pakai 40.
 
 Optimasi php.ini
 ===================
-Edit:
-> sudo nano /etc/php/8.4/fpm/php.ini
-
+Edit
+```
+sudo nano /etc/php/8.4/fpm/php.ini
+```
 Cari dan ubah:
+```
 memory_limit = 256M
 upload_max_filesize = 100M
 post_max_size = 100M
 max_execution_time = 300
 max_input_vars = 5000
 cgi.fix_pathinfo=0
-
+```
 Aktifkan dan Tuning OPcache
 ===========================
 Masih di php.ini, cari:
+```
 opcache.enable=1
 opcache.memory_consumption=256
 opcache.interned_strings_buffer=16
 opcache.max_accelerated_files=20000
 opcache.validate_timestamps=1
 opcache.revalidate_freq=2
-
+```
 Untuk production murni:
+```
 opcache.validate_timestamps=0
+```
 Tetapi hanya kalau deploy manual/restart service saat update code.
 
 Optimasi Nginx
 Edit:
-> sudo mv /etc/nginx/nginx.conf /etc/nginx/AsLiiii-nginx.conf
-> sudo nano /etc/nginx/nginx.conf
-
+```
+sudo mv /etc/nginx/nginx.conf /etc/nginx/AsLiiii-nginx.conf
+```
+```
+sudo nano /etc/nginx/nginx.conf
+```
+```
 user www-data;
 worker_processes auto;
 pid /run/nginx.pid;
@@ -271,24 +340,33 @@ http {
         include /etc/nginx/sites-enabled/*;
 
 }
-
+```
 Restart Semua Service
 =====================
-> sudo systemctl restart php8.4-fpm
-> sudo systemctl restart nginx
+```
+sudo systemctl restart php8.4-fpm
+```
+```
+sudo systemctl restart nginx
+```
 
 Cara Install Redis di Ubuntu 24.04
 ===================================
 Install
-> sudo apt install redis-server php8.4-redis -y
-
-Enable Service
-> sudo systemctl enable redis-server
-> sudo systemctl restart redis-server
-
+```
+sudo apt install redis-server php8.4-redis -y
+```
+Enable 
+```
+sudo systemctl enable redis-server
+```
+```
+sudo systemctl restart redis-server
+```
 Test
-> redis-cli ping
-
+```
+redis-cli ping
+```
 Harus muncul:
 PONG
 
@@ -297,14 +375,15 @@ PONG
 Downloading and Installing COMPOSER
 ===================================
 Doc : https://www.digitalocean.com/community/tutorials/how-to-install-composer-on-ubuntu-22-04-quickstart
-
-> cd ~
-> curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
-
-> HASH=`curl -sS https://composer.github.io/installer.sig`
-> echo $HASH
-
-> php -r "if (hash_file('SHA384', '/tmp/composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+```
+cd ~ && curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
+```
+```
+HASH=`curl -sS https://composer.github.io/installer.sig` && echo $HASH
+```
+```
+php -r "if (hash_file('SHA384', '/tmp/composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+```
 OUTPUT :
 Installer verified
 
@@ -312,8 +391,9 @@ Jika output mengatakan Installer corrupt, Anda perlu mengunduh skrip instalasi l
 Kemudian, ulangi proses verifikasi. Jika Anda memiliki penginstal yang terverifikasi, Anda dapat melanjutkan.
 
 Untuk menginstal composersecara global, gunakan perintah berikut yang akan mengunduh dan menginstal Composer sebagai perintah di seluruh sistem bernama composer, di bawah /usr/local/bin:
-> sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
-
+```
+sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+```
 Output
 All settings correct for using Composer
 Downloading...
@@ -322,8 +402,9 @@ Composer (version 2.3.5) successfully installed to: /usr/local/bin/composer
 Use it: php /usr/local/bin/composer
 
 TEST
-> composer
-
+```
+composer
+```
 Output
    ______
   / ____/___  ____ ___  ____  ____  ________  _____
