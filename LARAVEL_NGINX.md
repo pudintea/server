@@ -406,6 +406,7 @@ TEST
 composer
 ```
 Output
+```
    ______
   / ____/___  ____ ___  ____  ____  ________  _____
  / /   / __ \/ __ `__ \/ __ \/ __ \/ ___/ _ \/ ___/
@@ -413,7 +414,7 @@ Output
 \____/\____/_/ /_/ /_/ .___/\____/____/\___/_/
                     /_/
 Composer version 2.3.5 2022-04-13 16:43:00
-
+```
 Usage:
   command [options] [arguments]
 
@@ -434,26 +435,40 @@ Options:
 
 NODE JS
 =====================================================================
-$> cd ~
-$> apt-get install curl -y
-$> apt-get install git -y
-$> curl -sL https://deb.nodesource.com/setup_24.x -o nodesource_setup.sh
-$> sudo bash nodesource_setup.sh
-$> apt-get install nodejs -y
-$> node -v
-$> npm -v
+```
+cd ~ && apt-get install curl -y
+```
+```
+apt-get install git -y
+```
+```
+curl -sL https://deb.nodesource.com/setup_24.x -o nodesource_setup.sh
+```
+```
+sudo bash nodesource_setup.sh
+```
+```
+apt-get install nodejs -y
+```
+```
+node -v
+```
+```
+npm -v
+```
 
-
-
-
-===========================================
-========= CONFIG NGINX ===================
-===========================================
-> cd /var/www
-> ln -s /home/ypia public
-
-> sudo nano /etc/nginx/sites-available/app_jadwal
-
+## CONFIG NGINX
+```
+cd /var/www
+```
+```
+ln -s /home/ypia public
+```
+```
+sudo nano /etc/nginx/sites-available/app_jadwal
+```
+Masukan
+```
 server {
     listen 8080;
     server_name _;
@@ -487,12 +502,18 @@ server {
         deny all;
     }
 }
+```
+Aktifkan :
+```
+sudo ln -s /etc/nginx/sites-available/app_jadwal /etc/nginx/sites-enabled/
+```
+```
+nginx -t
+```
+```
+sudo systemctl restart nginx
+```
 
-> sudo ln -s /etc/nginx/sites-available/app_jadwal /etc/nginx/sites-enabled/
-> nginx -t
-> sudo systemctl restart nginx
 
 
-
-
-=========== Pudin Saepudin : italazhar.com
+### Pudin Saepudin : italazhar.com
