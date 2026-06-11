@@ -39,8 +39,7 @@ Tambahkan didalam : http {:
 UPDATE NGINX
 ===============
 ika menggunakan repository Ubuntu standar:
-> sudo apt update
-> sudo apt upgrade nginx -y
+> sudo apt update && sudo apt upgrade nginx -y
 
 
 Atau untuk memastikan paket terbaru:
