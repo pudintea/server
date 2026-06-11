@@ -40,7 +40,7 @@ UPDATE NGINX
 ===============
 ika menggunakan repository Ubuntu standar:
 > sudo apt update
-> sudo apt upgrade nginx
+> sudo apt upgrade nginx -y
 
 
 Atau untuk memastikan paket terbaru:
