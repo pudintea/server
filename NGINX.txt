@@ -36,6 +36,31 @@ Tambahkan didalam : http {:
   }
 
 
+UPDATE NGINX
+===============
+ika menggunakan repository Ubuntu standar:
+> sudo apt update
+> sudo apt upgrade nginx
+
+
+Atau untuk memastikan paket terbaru:
+> sudo apt update
+> sudo apt install --only-upgrade nginx
+
+
+Cek versi sebelum dan sesudah update:
+> nginx -v
+
+Contoh output:
+nginx version: nginx/1.24.0
+
+
+Restart atau Reload Nginx
+Setelah update:
+> sudo systemctl restart nginx
+
+
+
 Proteksi Tambahan Install Fail2Ban (anti brute force)
 ======================================================
 a. Install Fail2Ban (anti brute force)
