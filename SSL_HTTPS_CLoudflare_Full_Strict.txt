@@ -129,4 +129,46 @@ server {
 > service nginx restart
 
 
+=================== REWRITE =======================
+# Redirect HTTP ke HTTPS
+server {
+    listen 80;
+    server_name poin.pudin.eu.org;
+
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    server_name poin.pudin.eu.org;
+
+    ssl_certificate /etc/cloudflare/pudin.eu.org.pem;
+    ssl_certificate_key /etc/cloudflare/pudin.eu.org.key;
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+
+    root /var/www/html/public;
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.4-fpm.sock;
+
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    # Deny akses ke file sensitif
+    location ~ /\.ht {
+        deny all;
+    }
+}
+
+
+
 =============== END  NAJZMI_PUDINTEA =========================
