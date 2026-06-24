@@ -140,7 +140,7 @@ sudo ufw status
 Jika aktif, buka port 9090:
 
 ```bash
-sudo ufw allow 9090/tcp
+sudo ufw allow from 192.168.206.64/27 to any port 9090/tcp
 ```
 
 Reload:
