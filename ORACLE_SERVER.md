@@ -6,6 +6,12 @@ tetapi dokumentasi resmi Oracle sekarang menunjukkan batas baru 2 OCPU + 12 GB R
 * [Daftar dan Create Instance](https://www.youtube.com/watch?v=TAZfDdQha3U&t=364s)
 * [Firewall HTTP/HTTPS](https://www.youtube.com/watch?v=8avXWgUz6ac)
 
+## MEmbuat VCN Sebelum Install Server/Instance
+Menu > Networking > Overview > Start VCN Wizard > Isi pada VCN Name > Biarkan semuanya devault > Create > View VCN
+
+## Create Server/Instance VPS
+Menu > Compute > Instance > Create Instance Pilih OS, atur Ram dan CPU atur storage download sshkey Create
+
 ## Cara Buka Firewall Port 80/443
 Compute > Instance > Klik Name Server > Networking > Subnet > Security > Name (Default) > Security Rules
 ```
