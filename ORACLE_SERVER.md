@@ -1,4 +1,4 @@
-# Catatan KOnfigurasi Server Oracle
+# Catatan Konfigurasi Server Oracle
 Per Juli 2026, Oracle telah mengurangi alokasi Always Free Ampere A1. Sebelumnya banyak orang mengenal jatah gratisnya sebagai 4 OCPU + 24 GB RAM,
 tetapi dokumentasi resmi Oracle sekarang menunjukkan batas baru 2 OCPU + 12 GB RAM.
 
