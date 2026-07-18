@@ -127,7 +127,8 @@ CASA OS
 =========
 > curl -fsSL https://get.casaos.io | sudo bash
 
-
+Aksess IP nya,
+Buat Username dan Password.
 
 
 
