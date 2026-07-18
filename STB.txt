@@ -5,6 +5,8 @@ https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-w
 
 Sinkronisasi waktu server
 ==========================
+> mv /etc/localtime /etc/localtime-asal && cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && timedatectl set-timezone Asia/Jakarta
+> timedatectl set-timezone Asia/Jakarta
 > timedatectl set-ntp true
 
 
@@ -119,6 +121,12 @@ Update the cloudflared service
 
 Restart the service:
 > sudo systemctl restart cloudflared.service
+
+
+CASA OS
+=========
+> curl -fsSL https://get.casaos.io | sudo bash
+
 
 
 
