@@ -1,6 +1,16 @@
 MONITORING DENGAN BESZEL
 Saya menggunakan STB HG680P, Saya Install CasaOS untuk install Beszelnya,
 
+
+TUTORIAL
+- Cara Install beszel di STB HG680P : https://www.youtube.com/watch?v=Wiw6dgP9stA
+- Instalasi Agent =  https://beszel.dev/guide/hub-installation
+- Start the hub = ./beszel serve --http "0.0.0.0:8090"
+- Update the hub = ./beszel update
+
+
+
+
 # AGENT BINARY
 =============
 ## DI DASHBOARD BESZEL
@@ -127,6 +137,7 @@ Services
 > sudo systemctl daemon-reload
 > sudo systemctl enable beszel-agent.service
 > sudo systemctl start beszel-agent.service
+> sudo systemctl status beszel-agent.service
 > sudo systemctl restart beszel-agent.service
 
 
