@@ -78,10 +78,10 @@ sudo useradd \
 beszel
 
 Buat folder data
-> sudo mkdir -p /var/lib/beszel-agent
+> sudo mkdir -p /var/lib/beszel-agent && sudo chown beszel:beszel /var/lib/beszel-agent
 
 Ubah owner
-> sudo chown beszel:beszel /var/lib/beszel-agent
+> 
 
 
 TEST SEMENTARA
