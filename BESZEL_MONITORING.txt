@@ -41,7 +41,8 @@ aarch64
 gunakan arm64.
 
 Link Download
-- x86_64 = https://github.com/henrygd/beszel/releases/download/v0.18.7/beszel-agent_linux_amd64.tar.gz
+> mkdir -p /opt/beszel && cd /opt/beszel
+- x86_64  = wget https://github.com/henrygd/beszel/releases/download/v0.18.7/beszel-agent_linux_amd64.tar.gz
 - aarch64 = wget https://github.com/henrygd/beszel/releases/download/v0.18.7/beszel-agent_linux_arm64.tar.gz
 
 
@@ -57,7 +58,7 @@ Buat executable
 > chmod +x beszel-agent
 
 4. Pindahkan ke folder system
-> sudo mv beszel-agent /usr/local/bin/
+> sudo mv beszel-agent /usr/local/bin/ && cd /usr/local/bin
 Pindah :
 cd /usr/local/bin/
 
