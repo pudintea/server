@@ -134,6 +134,10 @@ git config --get user.email
 ---
 
 ## Struktur yang saya rekomendasikan
+Inisiasi FOlder
+```
+git ini
+```
 
 Misalnya:
 
