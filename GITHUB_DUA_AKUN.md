@@ -125,6 +125,12 @@ Cek dengan:
 git config --list
 ```
 
+Kemudian verifikasi:
+```
+git config --get user.name
+git config --get user.email
+```
+
 ---
 
 ## Struktur yang saya rekomendasikan
