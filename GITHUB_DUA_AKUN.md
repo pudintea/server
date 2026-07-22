@@ -164,3 +164,173 @@ Kombinasi berikut biasanya paling nyaman:
 * `git config user.name` dan `git config user.email` per repository.
 
 Konfigurasi ini membuat Anda dapat membuka proyek kantor dan pribadi secara bersamaan di GitHub Desktop tanpa perlu login/logout atau khawatir commit menggunakan identitas yang salah.
+
+
+## Memasukan Key ke Akun Github
+Tentu. Bagian ini adalah langkah untuk **mendaftarkan SSH public key ke akun GitHub** agar GitHub mengenali komputer Anda. Yang ditambahkan adalah **public key** (`.pub`), **bukan** private key.
+
+Misalnya Anda membuat key seperti ini:
+
+```bash
+ssh-keygen -t ed25519 -C "email-pribadi@example.com"
+```
+
+dan menyimpannya sebagai:
+
+```
+~/.ssh/id_ed25519_personal
+```
+
+Maka akan ada dua file:
+
+```
+~/.ssh/id_ed25519_personal       <- Private key (JANGAN dibagikan)
+~/.ssh/id_ed25519_personal.pub   <- Public key (ditambahkan ke GitHub)
+```
+
+## Langkah 1: Lihat isi file `.pub`
+
+### Windows (PowerShell)
+
+```powershell
+Get-Content $HOME\.ssh\id_ed25519_personal.pub
+```
+
+atau
+
+```powershell
+type $HOME\.ssh\id_ed25519_personal.pub
+```
+
+### macOS / Linux
+
+```bash
+cat ~/.ssh/id_ed25519_personal.pub
+```
+
+Outputnya akan terlihat seperti ini (contoh):
+
+```text
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIK8L... email-pribadi@example.com
+```
+
+Salin **seluruh isi** baris tersebut.
+
+---
+
+## Langkah 2: Login ke akun GitHub pribadi
+
+Masuk ke akun GitHub pribadi melalui browser.
+
+Kemudian buka **Settings**.
+
+---
+
+## Langkah 3: Masuk ke menu SSH Keys
+
+Di menu sebelah kiri pilih:
+
+```
+SSH and GPG keys
+```
+
+Lalu klik tombol:
+
+```
+New SSH key
+```
+
+---
+
+## Langkah 4: Isi form
+
+Contohnya:
+
+**Title**
+
+```
+Laptop ASUS
+```
+
+atau
+
+```
+Office Laptop
+```
+
+Nama ini hanya sebagai penanda agar Anda tahu key tersebut berasal dari perangkat mana.
+
+**Key type**
+
+Biarkan **Authentication Key**.
+
+**Key**
+
+Paste seluruh isi file:
+
+```
+id_ed25519_personal.pub
+```
+
+yang tadi Anda salin.
+
+Lalu klik **Add SSH key**.
+
+GitHub mungkin akan meminta Anda memasukkan password atau kode verifikasi untuk konfirmasi.
+
+---
+
+## Langkah 5: Lakukan hal yang sama untuk akun kantor
+
+Misalnya Anda punya:
+
+```
+~/.ssh/id_ed25519_work.pub
+```
+
+Jalankan:
+
+```bash
+cat ~/.ssh/id_ed25519_work.pub
+```
+
+atau di Windows:
+
+```powershell
+Get-Content $HOME\.ssh\id_ed25519_work.pub
+```
+
+Salin isinya.
+
+Kemudian login ke **akun GitHub kantor**, buka **Settings → SSH and GPG keys → New SSH key**, lalu tempel isi `id_ed25519_work.pub`.
+
+---
+
+## Cara memastikan sudah berhasil
+
+Jalankan:
+
+```bash
+ssh -T git@github-personal
+```
+
+Jika berhasil, Anda akan melihat pesan seperti:
+
+```text
+Hi username! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+Untuk akun kantor:
+
+```bash
+ssh -T git@github-work
+```
+
+Outputnya akan serupa, tetapi dengan username akun kantor.
+
+---
+
+
+
+
+## Pudin Saepudin
