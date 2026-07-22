@@ -340,7 +340,116 @@ Outputnya akan serupa, tetapi dengan username akun kantor.
 
 ---
 
+## PUSH PROJECT KE GITHUB
+Kalau konfigurasi Git dan SSH sudah selesai, alur kerja untuk menyimpan perubahan ke GitHub seperti ini.
 
+## 1. Pastikan berada di folder repository
+
+```bash
+cd "C:\Users\<nama-user>\Projects\Work\NamaProject"
+```
+
+Cek status:
+
+```bash
+git status
+```
+
+Contoh output:
+
+```text
+On branch main
+Changes not staged for commit:
+    modified: src/index.js
+```
+
+---
+
+## 2. Lihat perubahan (opsional)
+
+Untuk melihat apa yang berubah:
+
+```bash
+git diff
+```
+
+---
+
+## 3. Tambahkan perubahan ke staging
+
+Jika ingin menambahkan semua file yang berubah:
+
+```bash
+git add .
+```
+
+Atau hanya file tertentu:
+
+```bash
+git add src/index.js
+```
+
+---
+
+## 4. Commit perubahan
+
+Berikan pesan yang menjelaskan perubahan:
+
+```bash
+git commit -m "Perbaiki validasi login"
+```
+
+Contoh lain:
+
+```bash
+git commit -m "Tambah fitur export laporan"
+```
+
+---
+
+## 5. Push ke GitHub
+
+Lihat dulu branch yang sedang digunakan:
+
+```bash
+git branch
+```
+
+Misalnya hasilnya:
+
+```text
+* main
+```
+
+Maka lakukan:
+
+```bash
+git push origin main
+```
+
+Kalau branch-nya `master`:
+
+```bash
+git push origin master
+```
+
+---
+
+## 6. Pastikan berhasil
+
+Jika berhasil, biasanya akan muncul output seperti:
+
+```text
+Enumerating objects: ...
+Counting objects: ...
+Compressing objects: ...
+Writing objects: ...
+To github.com:company/project.git
+```
+
+Lalu buka repository di GitHub dan refresh halaman, commit Anda akan terlihat.
+
+---
 
 
 ## Pudin Saepudin
