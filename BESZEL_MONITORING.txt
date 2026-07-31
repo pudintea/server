@@ -113,7 +113,7 @@ ExecStart=/usr/local/bin/beszel-agent
 Environment="LISTEN=45876"
 Environment="KEY=<public key>"
 Environment="TOKEN=<token>"
-Environment="HUB_URL=<hub url>"
+Environment="HUB_URL=http://localhost:8090<SESUAIKAN>"
 # Environment="EXTRA_FILESYSTEMS=sdb"
 Restart=on-failure
 RestartSec=5
