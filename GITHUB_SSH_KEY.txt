@@ -1,0 +1,51 @@
+# GITHUB SSH KEY
+
+Masuk ke server atau user yang di khususkan
+> su - userpudin
+
+Langkah 2. Cek apakah server punya SSH key
+Jalankan:
+> ls -la ~/.ssh
+
+Kalau ada file seperti:
+id_ed25519
+id_ed25519.pub
+
+atau
+id_rsa
+id_rsa.pub
+
+berarti server sudah memiliki SSH key.
+
+Kalau tidak ada, buat key baru:
+> ssh-keygen -t ed25519 -C "server-dev"
+
+Tekan Enter beberapa kali untuk menggunakan lokasi default dan tanpa passphrase jika sesuai kebutuhan.
+
+Langkah 3. Salin public key
+Tampilkan isi public key:
+> cat ~/.ssh/id_ed25519.pub
+
+Salin seluruh hasilnya, misalnya dimulai dengan:
+ssh-ed25519 AAAAC3Nza...
+
+Langkah 4. Tambahkan ke GitHub
+Masuk ke GitHub menggunakan akun yang memiliki akses ke repository tersebut.
+Buka:
+Settings → SSH and GPG keys → New SSH key
+
+Tempelkan isi public key tadi lalu simpan.
+
+Kalau repository milik organisasi, pastikan akun GitHub yang kamu gunakan memang diberi akses ke repository tersebut.
+
+Langkah 5. Uji koneksi
+
+Jalankan:
+> ssh -T git@github.com
+
+Kalau berhasil akan muncul pesan seperti:
+Hi username! You've successfully authenticated...
+
+
+
+## PUDIN SAEPUDIN ##
