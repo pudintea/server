@@ -349,6 +349,18 @@ sudo systemctl restart php8.4-fpm
 ```
 sudo systemctl restart nginx
 ```
+## Update Repo PHP
+```
+sudo apt update --allow-releaseinfo-change-label
+```
+Kalau masih meminta persetujuan, jawab:y
+Jika tidak bisa, pake ini
+```
+sudo apt update --allow-releaseinfo-change
+```
+```
+sudo apt update
+```
 
 Cara Install Redis di Ubuntu 24.04
 ===================================
