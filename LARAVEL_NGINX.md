@@ -525,7 +525,25 @@ nginx -t
 ```
 sudo systemctl restart nginx
 ```
+## OPTIMASI
+Cek jumlah worker PHP-FPM
+Jalankan:
+```
+ps -ylC php-fpm8.4 --sort:rss
+```
+Lalu:
+```
+grep -R "pm.max_children\|pm.start_servers\|pm.min_spare_servers\|pm.max_spare_servers\|pm.max_requests" /etc/php/8.4/fpm/pool.d/
+```
+Kemudian kirim hasilnya ke AI, sebutkan ram yang kamu miliki.
 
+Kalau Anda kirimkan hasil dari 3 perintah ini:
+```
+free -h
+swapon --show
+ps aux --sort=-%mem | head -15
+```
+saya bisa bantu cek apakah RAM server Anda benar-benar bermasalah dan proses mana yang harus diatasi jika diperlukan.
 
 
 ### Pudin Saepudin : italazhar.com
