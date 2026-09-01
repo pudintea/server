@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html b:version='2'
+      class='v2'
+      expr:dir='data:blog.languageDirection'
+      xmlns='http://www.w3.org/1999/xhtml'
+      xmlns:b='http://www.google.com/2005/gml/b'
+      xmlns:data='http://www.google.com/2005/gml/data'
+      xmlns:expr='http://www.google.com/2005/gml/expr'>
+
+<head>
+
+  <meta content='width=device-width, initial-scale=1' name='viewport'/>
+
+  <title><data:blog.pageTitle/></title>
+
+  <!-- Membersihkan parameter tertentu dari URL Blogger -->
+  <script type='text/javascript'>
+  //<![CDATA[
+  if (
+    window.location.search.indexOf('?m=1') > -1 ||
+    window.location.search.indexOf('?m=0') > -1
+  ) {
+    var cleanUrl =
+      window.location.protocol +
+      '//' +
+      window.location.host +
+      window.location.pathname;
+
+    window.history.replaceState(null, null, cleanUrl);
+  }
+  //]]>
+  </script>
+
+  <b:skin><![CDATA[
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .apps-script-frame {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      margin: 0;
+      padding: 0;
+      z-index: 999999;
+      background: #ffffff;
+    }
+
+  ]]></b:skin>
+
+</head>
+
+<body>
+
+  <!-- Wajib ada untuk template Blogger -->
+  <b:section id='main'
+             showaddelement='false'>
+  </b:section>
+
+  <!-- Google Apps Script Web App -->
+  <iframe
+    class='apps-script-frame'
+    src='GANTI_DENGAN_URL_GOOGLE_APPS_SCRIPT_ANDA'
+    title='Google Apps Script'>
+  </iframe>
+
+</body>
+
+</html>
+
+
+## Pudin Saepudin
