@@ -80,4 +80,145 @@
 </html>
 
 
+
+===========================================================
+Redirect ke Versi Desktop
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html b:version='2'
+      class='v2'
+      expr:dir='data:blog.languageDirection'
+      xmlns='http://www.w3.org/1999/xhtml'
+      xmlns:b='http://www.google.com/2005/gml/b'
+      xmlns:data='http://www.google.com/2005/gml/data'
+      xmlns:expr='http://www.google.com/2005/gml/expr'>
+
+<head>
+
+  <meta content='width=device-width, initial-scale=1' name='viewport'/>
+
+  <title><data:blog.pageTitle/></title>
+
+  <!-- ========================================= -->
+  <!-- REDIRECT HP KE MODE DESKTOP BLOGGER      -->
+  <!-- ========================================= -->
+
+  <script type='text/javascript'>
+  //<![CDATA[
+
+  (function () {
+
+    var isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+      .test(navigator.userAgent);
+
+    var url = new URL(window.location.href);
+
+    /*
+     * Jika dibuka dari HP dan Blogger memberikan ?m=1,
+     * hapus parameter tersebut agar menggunakan mode desktop.
+     */
+    if (isMobile && url.searchParams.get('m') === '1') {
+
+      url.searchParams.delete('m');
+
+      window.location.replace(url.toString());
+
+    }
+
+  })();
+
+  //]]>
+  </script>
+
+
+  <!-- ========================================= -->
+  <!-- MEMBERSIHKAN PARAMETER m=1 / m=0         -->
+  <!-- ========================================= -->
+
+  <script type='text/javascript'>
+  //<![CDATA[
+
+  (function () {
+
+    var url = new URL(window.location.href);
+
+    if (
+      url.searchParams.has('m')
+    ) {
+
+      url.searchParams.delete('m');
+
+      window.history.replaceState(
+        null,
+        '',
+        url.pathname +
+        (url.searchParams.toString()
+          ? '?' + url.searchParams.toString()
+          : '') +
+        url.hash
+      );
+
+    }
+
+  })();
+
+  //]]>
+  </script>
+
+
+  <b:skin><![CDATA[
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .apps-script-frame {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      margin: 0;
+      padding: 0;
+      z-index: 999999;
+      background: #ffffff;
+    }
+
+  ]]></b:skin>
+
+</head>
+
+
+<body>
+
+  <!-- Wajib ada untuk template Blogger -->
+  <b:section id='main'
+             showaddelement='false'>
+  </b:section>
+
+
+  <!-- Google Apps Script Web App -->
+  <iframe
+    class='apps-script-frame'
+    src='GANTI_DENGAN_URL_GOOGLE_APPS_SCRIPT_ANDA'
+    title='Google Apps Script'
+    allowfullscreen='allowfullscreen'>
+  </iframe>
+
+
+</body>
+
+</html>
+
+
+
 ## Pudin Saepudin
