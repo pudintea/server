@@ -3,13 +3,28 @@ DOWNLOAD DAN INSTALL untuk windows
 https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.exe
 https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.msi
 
+https://github.com/cloudflare/cloudflared/releases
+
+MacOS
+> brew install cloudflared
+
 
 PUTTY
 ======
-namadomain : ss.pudin.com
-proxy
+Session 
+namadomain : domainssh.pudin.com
+Port : 22
+
+Connection > proxy
+Proxy Type : Local
+Proxy Hostname : domainssh.pudin.id
+Port : 80
+
+Comment to send proxy :
 cloudflared.exe access ssh --hostname %host
 
+Mac
+cloudflared access ssh --hostname %host
 
 
 
