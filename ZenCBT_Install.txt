@@ -1,43 +1,126 @@
 Install Zen CBT VPS Linux
+Ubuntu 24.04 LTS
+
+> adduser pudin
 
 1. Install PostgreSQL: Jalankan ini
-sudo apt update
-sudo apt install postgresql postgresql-contrib
-sudo systemctl start postgresql.service
-sudo -u postgres psql
-\password postgres 
+> sudo apt update
+> sudo apt install postgresql postgresql-contrib -y
+> sudo systemctl start postgresql.service
+> sudo -u postgres psql
+> \password postgres 
 masukkan password,, misalnya : mantul
+> exit
 
 2. Buat Database:
 Edit dulu konfig: 
-sudo nano /etc/postgresql/14/main/pg_hba.conf
+sudo nano /etc/postgresql/16/main/pg_hba.conf
 Pada "database administrative login", ganti "peer" menjadi "md5"
 
-Buat database, saya pakai nama zencbt, sesuaikan dengan env
-psql -U postgres -c "CREATE DATABASE zencbt;"
+Restat dulu, Buat database, saya pakai nama zencbt, sesuaikan dengan env
+> sudo systemctl restart postgresql
+> psql -U postgres -c "CREATE DATABASE zencbt;"
 
 3. Download ZenCBT (bisa pakai wget atau pakai scp)
-sudo apt install wget
-wget https://zencbt.web.id/zencbt-linux-am...
-
+> sudo apt install wget -y
+> cd /home/pudin/
+> wget https://zencbt*web*id/zencbt-linux-amd64.zip
 (wget https*://zencbt.web.*id/zencbt-linux-amd64.zip) → hapus tanda *
 
-(bikin folder baru): mkdir zencbt
-(pindahkan file): mv zencbt-linux-amd64.zip zencbt
+(bikin folder baru): 
+(pindahkan file):
+> mkdir zencbt && mv zencbt-linux-amd64.zip zencbt && cd zencbt
 
 5. Ekstrak, import database, run
-sudo apt install zip
-unzip zencbt-linux-amd64.zip
+> sudo apt install zip -y
+> unzip zencbt-linux-amd64.zip
 Import file  init_db_zencbt_x.x.x.sql ke database zencbt. (skip untuk versi 1.4.0+)
-psql -U postgres -d zencbt -f init_db_zencbt_x.x.x.sql
-(opsional) rename : mv zencbt-linux-amd64 zencbt 
-sudo chmod +x zencbt
-nano .env
-jalankan ./zencbt
+> psql -U postgres -d zencbt -f init_db_zencbt_1.x.x.sql
+> mv zencbt-linux-amd64-1.5.2 zencbt
+> sudo chmod +x zencbt
+> nano .env
+
+# Database
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=zencbt
+DB_USER=postgres
+DB_PASSWORD=SecRet123
+
+# App (isi port dan IP /Host server)
+#APP_HOST bisa dikosongkan untuk lokal, atau diisi IP server lokal
+APP_PORT=8080
+APP_HOST=
+
+OPENROUTER_API_KEY=sk-or-v1-xxxxx
+
+#NEW custom endpoint AI
+AI_BASE_URL =
+AI_API_KEY =
+#AI_MAX_TOKENS=16000
+#maksimal token yang digunakan AI, default 16000
+
+DB_TIMEZONE=Asia/Jakarta
+#WITA = isi dengan Asia/Makassar
+#WIT = isi dengan Asia/Jayapura
+
+Coba jalankan
+> ./zencbt
 
 6. cek apakah sudah bisa diakses di http://ip_vps:port
+Email         : admin@hazen.cbt
+Password      : admin1234
+Halaman admin : /admin
 
 7. Biar jalan terus, pakai service (kita bahas next).
+
+
+--------------------------------------------------------
+Bikin service (misal namanya zencbt)
+> sudo nano /etc/systemd/system/zencbt.service
+
+isikan ini
+==========================================================
+[Unit]
+Description=ZenCBT CBT Application
+After=network.target postgresql.service
+
+[Service]
+Type=simple
+User=pudin
+Group=pudin
+
+# Folder dimana binary dan .env berada
+WorkingDirectory=/home/pudin/zencbt/
+
+# Jalankan binary
+ExecStart=/home/pudin/zencbt/zencbt
+
+# Auto restart jika crash
+Restart=always
+RestartSec=5
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+
+==========================================================
+
+Reload System
+> sudo systemctl daemon-reexec
+> sudo systemctl daemon-reload
+> sudo systemctl start zencbt
+> sudo systemctl status zencbt
+
+Cara Lihat Log
+> sudo journalctl -u zencbt -f
+
+Cara restart aplikasi
+> sudo systemctl restart zencbt
+
 
 -----------------------------------------------------------------------------------------------------
 Website: https://zencbt.hazenlabz.id
