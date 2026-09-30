@@ -1,0 +1,48 @@
+Install Zen CBT VPS Linux
+
+1. Install PostgreSQL: Jalankan ini
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+sudo systemctl start postgresql.service
+sudo -u postgres psql
+\password postgres 
+masukkan password,, misalnya : mantul
+
+2. Buat Database:
+Edit dulu konfig: 
+sudo nano /etc/postgresql/14/main/pg_hba.conf
+Pada "database administrative login", ganti "peer" menjadi "md5"
+
+Buat database, saya pakai nama zencbt, sesuaikan dengan env
+psql -U postgres -c "CREATE DATABASE zencbt;"
+
+3. Download ZenCBT (bisa pakai wget atau pakai scp)
+sudo apt install wget
+wget https://zencbt.web.id/zencbt-linux-am...
+
+(wget https*://zencbt.web.*id/zencbt-linux-amd64.zip) → hapus tanda *
+
+(bikin folder baru): mkdir zencbt
+(pindahkan file): mv zencbt-linux-amd64.zip zencbt
+
+5. Ekstrak, import database, run
+sudo apt install zip
+unzip zencbt-linux-amd64.zip
+Import file  init_db_zencbt_x.x.x.sql ke database zencbt. (skip untuk versi 1.4.0+)
+psql -U postgres -d zencbt -f init_db_zencbt_x.x.x.sql
+(opsional) rename : mv zencbt-linux-amd64 zencbt 
+sudo chmod +x zencbt
+nano .env
+jalankan ./zencbt
+
+6. cek apakah sudah bisa diakses di http://ip_vps:port
+
+7. Biar jalan terus, pakai service (kita bahas next).
+
+-----------------------------------------------------------------------------------------------------
+Website: https://zencbt.hazenlabz.id
+Telegram Group: https://t.me/zencbt
+
+
+
+=== PUDIN SAEPUDIN ===
