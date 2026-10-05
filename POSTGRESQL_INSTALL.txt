@@ -6,7 +6,28 @@
 
 
 UBUNTU 22.04 LTS
-============================
+============= MINIMAL ===========
+
+1. Install PostgreSQL: Jalankan ini
+> sudo apt update
+> sudo apt install postgresql postgresql-contrib -y
+> sudo systemctl start postgresql.service
+> sudo -u postgres psql
+> \password postgres 
+masukkan password,, misalnya : passwordSecret123!
+> exit
+
+2. Buat Database:
+Edit dulu konfig: 
+> sudo nano /etc/postgresql/16/main/pg_hba.conf
+Pada "database administrative login", ganti "peer" menjadi "md5"
+local   all             postgres                                md5
+
+Restat dulu baru Buat database, saya pakai nama db_app, sesuaikan dengan .env
+> sudo systemctl restart postgresql
+> psql -U postgres -c "CREATE DATABASE db_app;"
+
+=================================
 
 > sudo apt install postgresql postgresql-contrib -y
 > sudo -i -u postgres
