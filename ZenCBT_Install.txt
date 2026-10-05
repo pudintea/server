@@ -14,7 +14,7 @@ masukkan password,, misalnya : mantul
 
 2. Buat Database:
 Edit dulu konfig: 
-sudo nano /etc/postgresql/16/main/pg_hba.conf
+> sudo nano /etc/postgresql/16/main/pg_hba.conf
 Pada "database administrative login", ganti "peer" menjadi "md5"
 
 Restat dulu, Buat database, saya pakai nama zencbt, sesuaikan dengan env
@@ -72,10 +72,7 @@ Email         : admin@hazen.cbt
 Password      : admin1234
 Halaman admin : /admin
 
-7. Biar jalan terus, pakai service (kita bahas next).
-
-
---------------------------------------------------------
+7. Biar jalan terus, pakai service.
 Bikin service (misal namanya zencbt)
 > sudo nano /etc/systemd/system/zencbt.service
 
@@ -114,6 +111,8 @@ Reload System
 > sudo systemctl daemon-reload
 > sudo systemctl start zencbt
 > sudo systemctl status zencbt
+> sudo systemctl status zencbt
+> sudo systemctl enable zencbt
 
 Cara Lihat Log
 > sudo journalctl -u zencbt -f
@@ -125,7 +124,7 @@ Cara restart aplikasi
 -----------------------------------------------------------------------------------------------------
 Website: https://zencbt.hazenlabz.id
 Telegram Group: https://t.me/zencbt
-
+Telegram: https://t.me/pudin_ira
 
 
 === PUDIN SAEPUDIN ===
