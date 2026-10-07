@@ -1,0 +1,62 @@
+# 9 Router Golang
+
+Link Download : https://github.com/luqman-v1/9router-go/releases/tag/v1.9.10
+> wget https://github.com/luqman-v1/9router-go/releases/download/v1.9.10/9router-go-linux-amd64
+> chmod +x 9router-go-linux-amd64
+
+Jalankan Sementara :
+> ./9router-go-linux-amd64
+
+Aksess : http://IP_ADDRESS:20130
+Pass : 123456 (Default)
+
+
+====== BUAT SYSTEMD =======
+
+> sudo nano /etc/systemd/system/9routergo.service
+
+isikan ini
+==========================================================
+[Unit]
+Description=9Router Golang
+After=network.target
+
+[Service]
+Type=simple
+User=pudin
+Group=pudin
+
+# Folder dimana binary dan .env berada
+WorkingDirectory=/home/pudin/9router-go/
+
+# Jalankan binary
+ExecStart=/home/pudin/9router-go/9router-go-linux-amd64
+
+# Auto restart jika crash
+Restart=always
+RestartSec=5
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
+
+
+==========================================================
+
+Reload System
+> sudo systemctl daemon-reexec
+> sudo systemctl daemon-reload
+> sudo systemctl start 9routergo
+> sudo systemctl status 9routergo
+> sudo systemctl enable 9routergo
+
+Cara Lihat Log
+> sudo journalctl -u 9routergo -f
+
+Cara restart aplikasi
+> sudo systemctl restart 9routergo
+
+=========== PUDIN SAEPUDIN ===========
