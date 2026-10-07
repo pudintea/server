@@ -27,8 +27,27 @@ Restat dulu baru Buat database, saya pakai nama db_app, sesuaikan dengan .env
 > sudo systemctl restart postgresql
 > psql -U postgres -c "CREATE DATABASE db_app;"
 
-=================================
+============== MENGATUR AKSESS ===================
+> sudo nano /etc/postgresql/16/main/postgresql.conf
+Ubah
+listen_addresses = 'localhost'
 
+ubah menjadi:
+listen_addresses = '*'
+
+Atau lebih aman, jika server memiliki IP tertentu:
+listen_addresses = '192.168.1.10'
+
+> sudo nano /etc/postgresql/16/main/pg_hba.conf
+
+local   all             postgres                                md5
+host    all             all           192.168.1.0/24            scram-sha-256
+host    all             all           0.0.0.0/0                 scram-sha-256
+
+host    all             upudin        192.168.1.0/24            scram-sha-256
+host    all             upudin        0.0.0.0/0                 scram-sha-256
+
+=====================================================
 > sudo apt install postgresql postgresql-contrib -y
 > sudo -i -u postgres
 
