@@ -59,4 +59,16 @@ Cara Lihat Log
 Cara restart aplikasi
 > sudo systemctl restart 9routergo
 
+
+============ INSTALL HERMES ================
+Saran sebelum install di 9Router sudah buat "combo & Vision Adapter"
+
+> curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
+> source ~/.bashrc
+> hermes doctor   # cek semua dependency oke
+> hermes # Untuk mulai ber komunikasi
+
+
+
+
 =========== PUDIN SAEPUDIN ===========
