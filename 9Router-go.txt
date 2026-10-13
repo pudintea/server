@@ -68,6 +68,14 @@ Saran sebelum install di 9Router sudah buat "combo & Vision Adapter"
 > hermes doctor   # cek semua dependency oke
 > hermes # Untuk mulai ber komunikasi
 
+Connect ke Telegram bot
+Satu gateway process buat Telegram (dan platform lain kalau mau).
+
+> hermes gateway setup
+# ikutin wizard: pilih Telegram, masukin Bot Token dari @BotFather
+> hermes gateway install
+> hermes gateway start
+> hermes gateway status
 
 
 
