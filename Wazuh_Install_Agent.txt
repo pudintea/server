@@ -1,0 +1,23 @@
+# WAZUH Tools Monitoring
+
+Tambahkan repository Wazuh
+Jalankan perintah berikut di Ubuntu 192.168.3.10:
+
+> sudo apt-get update
+> sudo apt-get install -y curl gnupg apt-transport-https
+
+curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH \
+  | sudo gpg --no-default-keyring \
+  --keyring /usr/share/keyrings/wazuh.gpg \
+  --import
+
+> sudo chmod 644 /usr/share/keyrings/wazuh.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" \
+  | sudo tee /etc/apt/sources.list.d/wazuh.list
+
+> sudo apt-get update
+Repository tersebut ditujukan untuk Wazuh 4.x. Sebelum instalasi, pastikan versi Manager Anda sesuai.
+
+
+===== Pudin Saepudin =====
