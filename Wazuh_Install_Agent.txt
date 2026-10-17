@@ -49,5 +49,20 @@ Periksa statusnya:
 
 Pastikan hasilnya active (running).
 
+Jika agent belum muncul di dashboard, periksa log:
+> sudo tail -n 50 /var/ossec/logs/ossec.log
+
+Langkah 3 — Verifikasi di Dashboard Wazuh
+========================================
+Buka dashboard Wazuh melalui browser, menggunakan alamat dashboard yang sudah Anda gunakan untuk server 192.168.3.5.
+
+1. Masuk ke Agents management → Summary.
+2. Cari agent bernama ubuntu-192-168-3-10.
+3. Pastikan statusnya Active.
+
+Jika statusnya Disconnected atau agent tidak muncul, lihat pesan pada log agent dan periksa apakah port serta enrollment sudah benar.
+
+
+
 
 ===== Pudin Saepudin =====
