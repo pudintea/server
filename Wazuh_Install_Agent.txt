@@ -1,6 +1,7 @@
 # WAZUH Tools Monitoring
 
 ## Tambahkan repository Wazuh
+==============================
 Jalankan perintah berikut di Ubuntu yang ingin di monitoring:
 
 > sudo apt-get update
@@ -18,6 +19,35 @@ echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4
 
 > sudo apt-get update
 Repository tersebut ditujukan untuk Wazuh 4.x. Sebelum instalasi, pastikan versi Manager Anda sesuai.
+
+Repository tersebut ditujukan untuk Wazuh 4.x. Sebelum instalasi, pastikan versi Manager Anda sesuai. 
+
+Wazuh agent
++1
+
+## Instal dan daftarkan agent
+=============================
+Jalankan:
+sudo env WAZUH_MANAGER="192.168.3.5" \
+  WAZUH_AGENT_NAME="ubuntu-192-168-3-10" \
+  apt-get install -y wazuh-agent
+
+Catatan
+- WAZUH_MANAGER="192.168.3.5" (Server Yang terinstall Wazuh)
+- WAZUH_AGENT_NAME="ubuntu-192-168-3-10" (Nama nanti yang akan muncul di summary)
+
+
+## Aktifkan agent
+==========================
+> sudo systemctl daemon-reload
+> sudo systemctl enable wazuh-agent
+> sudo systemctl start wazuh-agent
+
+Periksa statusnya:
+==================
+> sudo systemctl status wazuh-agent
+
+Pastikan hasilnya active (running).
 
 
 ===== Pudin Saepudin =====
