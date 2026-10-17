@@ -1,7 +1,7 @@
 # WAZUH Tools Monitoring
 
-Tambahkan repository Wazuh
-Jalankan perintah berikut di Ubuntu 192.168.3.10:
+## Tambahkan repository Wazuh
+Jalankan perintah berikut di Ubuntu yang ingin di monitoring:
 
 > sudo apt-get update
 > sudo apt-get install -y curl gnupg apt-transport-https
