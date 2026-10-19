@@ -1,0 +1,113 @@
+
+# Setup Fail2ban
+
+## Apache
+### Buat konfigurasi utama jail.local
+Gunakan file lokal agar konfigurasi tidak tertimpa saat Fail2ban diperbarui. 
+> sudo nano /etc/fail2ban/jail.local
+Isi dengan konfigurasi dasar berikut:
+
+[DEFAULT]
+# Pengaturan ban umum
+bantime  = 1h
+findtime = 10m
+maxretry = 5
+
+# Hindari memblokir localhost
+ignoreip = 127.0.0.1/8 ::1
+
+# Backend log
+backend = auto
+
+# SSH: aktifkan perlindungan login
+[sshd]
+enabled = true
+port = ssh
+maxretry = 5
+findtime = 10m
+bantime = 1h
+
+
+Penjelasan parameter:
+bantime = 1h: IP yang melanggar diblokir selama satu jam.
+findtime = 10m: kegagalan dihitung dalam rentang 10 menit.
+maxretry = 5: lima kegagalan dalam rentang tersebut memicu ban.
+ignoreip: IP atau jaringan tepercaya yang dikecualikan dari ban.
+Penting: jangan menambahkan seluruh jaringan kantor atau rumah ke ignoreip jika jaringan itu tidak benar-benar tepercaya. Jika SSH menggunakan port nonstandar, sesuaikan port dengan port aktualnya, misalnya 2222.
+
+### Aktifkan perlindungan Apache2
+Fail2ban menyediakan sejumlah filter Apache bawaan, tetapi setiap filter mendeteksi pola yang berbeda. Tidak semua request HTTP yang gagal adalah serangan. 
+Tambahkan bagian berikut ke jail.local jika filter yang bersangkutan tersedia di instalasi kamu:
+
+[apache-auth]
+enabled = true
+port = http,https
+
+[apache-botsearch]
+enabled = true
+port = http,https
+
+[apache-noscript]
+enabled = true
+port = http,https
+
+Fungsinya:
+apache-auth: mendeteksi pola kegagalan autentikasi HTTP yang dikenali filternya.
+apache-botsearch: mendeteksi pola pemindaian path yang mencurigakan.
+apache-noscript: mendeteksi pola permintaan ke skrip atau path tertentu yang tidak semestinya ada.
+
+Filter ini harus cocok dengan jenis log dan pola request yang benar-benar dihasilkan server. Periksa dahulu sebelum mengaktifkan semuanya:
+> ls /etc/fail2ban/filter.d/apache-*.conf
+> sudo fail2ban-client -t
+
+Jika situs memakai aplikasi di balik reverse proxy seperti Cloudflare, Nginx, atau load balancer,
+pastikan Apache mencatat IP klien asli secara tepercaya. Jika tidak, Fail2ban bisa salah memblokir IP proxy atau bahkan tidak efektif.
+
+
+### Ban lebih lama untuk pelaku berulang
+Kamu bisa menambahkan jail recidive untuk menangani IP yang berulang kali diblokir oleh jail lain.
+Tambahkan ke jail.local:
+
+[recidive]
+enabled = true
+logpath = /var/log/fail2ban.log
+backend = auto
+findtime = 1d
+maxretry = 5
+bantime = 24h
+
+### Terapkan dan verifikasi konfigurasi
+Setelah semua konfigurasi selesai:
+
+# Periksa sintaks konfigurasi
+> sudo fail2ban-client -t
+
+# Restart layanan
+> sudo systemctl restart fail2ban
+
+# Periksa status layanan
+> sudo systemctl status fail2ban
+
+# Lihat semua jail aktif
+? sudo fail2ban-client status
+
+
+Periksa jail satu per satu:
+sudo fail2ban-client status sshd
+sudo fail2ban-client status apache-auth
+sudo fail2ban-client status apache-botsearch
+sudo fail2ban-client status recidive
+
+Periksa log ketika ada masalah:
+> sudo journalctl -u fail2ban -n 100 --no-pager
+> sudo tail -n 100 /var/log/fail2ban.log
+Jika suatu jail gagal berjalan, periksa apakah nama filter, lokasi log, dan backend sesuai dengan sistem kamu.
+
+Membuka blokir IP
+Jika IP milikmu terblokir secara tidak sengaja:
+> sudo fail2ban-client set sshd unbanip 203.0.113.10
+
+
+
+
+======== Pudin Saepudin ===============
