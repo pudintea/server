@@ -113,4 +113,84 @@ service fail2ban status
 service fail2ban enable
 
 
+
+
+UBUNTU 14.04
+==============
+> sudo nano /etc/fail2ban/jail.local
+[DEFAULT]
+ignoreip = 127.0.0.1/8
+bantime = 3600
+findtime = 600
+maxretry = 5
+
+[sshd]
+enabled = true
+filter = sshd
+port = ssh
+logpath = /var/log/auth.log
+maxretry = 5
+findtime = 600
+bantime = 3600
+
+> service fail2ban restart
+> sudo fail2ban-client status sshd
+> sudo fail2ban-client status ssh
+
+Konfigurasi Apache2
+=======================
+Periksa dahulu file yang tersedia:
+> ls -l /etc/fail2ban/filter.d/apache*
+> ls -l /etc/fail2ban/filter.d/*mysql*
+> ls -l /etc/fail2ban/filter.d/*mysqld*
+
+> ls -l /etc/fail2ban/filter.d/apache-noscript.conf
+> ls -l /etc/fail2ban/filter.d/apache-botsearch.conf
+> ls -l /var/log/apache2/*error.log
+
+Filter yang tersedia dan bisa kita pertimbangkan:
+apache-auth: mendeteksi kegagalan autentikasi HTTP.
+apache-badbots: mendeteksi user-agent bot yang cocok dengan daftar filter.
+apache-noscript: mendeteksi pola request tertentu ke skrip yang tidak sesuai.
+apache-overflows: mendeteksi pola request yang mencurigakan sesuai filter.
+Saya sarankan memulai dengan apache-auth dan apache-badbots. Filter lainnya bisa ditambahkan setelah log dan kecocokan pola diperiksa.
+
+Buka konfigurasi:
+> sudo nano /etc/fail2ban/jail.local
+Tambahkan:
+
+[apache-auth]
+enabled = true
+filter = apache-auth
+port = http,https
+logpath = /var/log/apache2/error.log
+maxretry = 5
+findtime = 600
+bantime = 3600
+
+[apache-badbots]
+enabled = true
+filter = apache-badbots
+port = http,https
+logpath = /var/log/apache2/access.log
+maxretry = 2
+findtime = 600
+bantime = 3600
+
+
+Penting: sebelum mengaktifkan konfigurasi ini, pastikan kedua file log memang tersedia:
+> ls -l /var/log/apache2/error.log
+> ls -l /var/log/apache2/access.log
+Jika situs kamu menggunakan log virtual host terpisah, sesuaikan logpath dengan lokasi log yang sebenarnya. Pastikan pula filter yang digunakan cocok dengan format log tersebut.
+
+
+sudo service fail2ban restart
+sudo fail2ban-client status
+sudo fail2ban-client status apache-auth
+sudo fail2ban-client status apache-badbots
+
+
+
+
+
 ======== Pudin Saepudin ===============
