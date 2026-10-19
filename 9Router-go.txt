@@ -68,6 +68,26 @@ Saran sebelum install di 9Router sudah buat "combo & Vision Adapter"
 > hermes doctor   # cek semua dependency oke
 > hermes # Untuk mulai ber komunikasi
 
+Tahapan Install Hermes
+- Full Setup
+- Provider : Custom
+- Masukan Base Url 9Router
+- Masukan Api Key dari 9Router
+- API Compatibility mode : 1
+- Pilih API Combo yang sudah kita buat. Biasanya : 1 (sesuaikan)
+- Context Length in tokens : Enter aja
+- Display name : 9Router (Bebas)
+- Select Reasoning effort : medium
+- Select terminal backend : Keep Curent (local)
+- Select platform to configure : Telegram (siapkan ID Boot dan ID Account Telegram)
+- Pilih 2 atau manual
+- Tools for CLI : Enter aja
+- Choose a provider : Local Browser
+- Choose a provider : Skip - keep default / configure later
+- Choose a provider (Suara) : Microsoft Edge TTS
+- Selest Search Provider : DuckDuckGo
+
+
 Connect ke Telegram bot
 Satu gateway process buat Telegram (dan platform lain kalau mau).
 
@@ -76,7 +96,6 @@ Satu gateway process buat Telegram (dan platform lain kalau mau).
 > hermes gateway install
 > hermes gateway start
 > hermes gateway status
-
 
 
 =========== PUDIN SAEPUDIN ===========
