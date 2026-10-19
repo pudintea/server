@@ -107,7 +107,10 @@ Membuka blokir IP
 Jika IP milikmu terblokir secara tidak sengaja:
 > sudo fail2ban-client set sshd unbanip 203.0.113.10
 
-
+## Cara Lama
+service fail2ban restart
+service fail2ban status
+service fail2ban enable
 
 
 ======== Pudin Saepudin ===============
