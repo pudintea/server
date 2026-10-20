@@ -1,0 +1,113 @@
+Install Ollama
+Jalankan di terminal server:
+> sudo apt update
+> sudo apt install -y curl
+> sudo apt-get install zstd
+
+> curl -fsSL https://ollama.com/install.sh | sh
+> sudo systemctl status ollama
+> ollama --version
+
+
+Download model coding
+> ollama pull qwen2.5-coder:3b
+
+Lalu tes modelnya:
+> ollama run qwen2.5-coder:3b
+
+
+Cek API Ollama
+Buka terminal lain atau keluar dari sesi model, lalu jalankan:
+> curl http://127.0.0.1:11434/api/tags
+
+Jika muncul JSON yang mencantumkan qwen2.5-coder:3b, berarti API Ollama bisa diakses secara lokal.
+
+
+Untuk server RAM 8 GB, saya sarankan mulai dari model-model berikut.
+
+
+qwen2.5-coder:3b , Coding, debugging, skrip
+qwen2.5:3b , Chat umum dan instruksi
+llama3.2:3b , Chatbot alternatif
+qwen2.5-coder:7b , Coding lebih kompleks
+
+Uji setelah cek hardware
+> ollama pull qwen2.5-coder:3b 
+> ollama pull qwen2.5-coder:7b
+> ollama pull qwen2.5:3b
+
+Tes model 7B
+> ollama run qwen2.5-coder:3b 
+> ollama run qwen2.5-coder:7b
+> ollama run qwen2.5:3b
+
+
+sudo systemctl status ollama --no-pager
+ollama list
+
+Lalu periksa apakah ketiga model terbaca:
+sudo nano /etc/systemd/system/9router-go.service
+
+curl http://127.0.0.1:11434/api/tags
+
+
+
+[Unit]
+Description=9router-go AI Gateway
+After=network-online.target ollama.service
+Wants=network-online.target
+Requires=ollama.service
+
+[Service]
+Type=simple
+User=9router
+Group=9router
+WorkingDirectory=/var/lib/9router
+
+EnvironmentFile=/etc/9router-go.env
+Environment=HOST=127.0.0.1
+Environment=PORT=20130
+Environment=DATA_DIR=/var/lib/9router
+
+ExecStart=/usr/local/bin/9router-go
+
+Restart=on-failure
+RestartSec=5
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/9router
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+
+sudo systemctl cat 9routergo && curl -s http://127.0.0.1:11434/api/tags
+
+
+[Service]
+Environment="ALLOW_PRIVATE_NETWORKING=true"
+Simpan dan keluar. Kemudian jalankan:
+
+
+bash
+sudo systemctl daemon-reload
+sudo systemctl restart 9routergo
+sudo systemctl show 9routergo -p Environment
+
+
+
+http://127.0.0.1:11434/v1
+http://127.0.0.1:11434/v1/chat/completion
+
+
+
+
+
+
+====== PUDIN SAEPUDIN ======
