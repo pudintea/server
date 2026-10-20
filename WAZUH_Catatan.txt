@@ -1,0 +1,58 @@
+Top 5 vulnerabilities, Count
+CVE-2021-3773, 2
+CVE-2025-40074, 2
+CVE-2025-68745, 2
+CVE-2026-100075, 2
+CVE-2026-53384, 2
+
+Top 5 packages, Count
+linux-image-6.8.0-100-generic, 299
+linux-image-6.8.0-147-generic, 242
+
+Langkah berikutnya: pastikan kernel terbaru tersedia
+Ada satu hal yang perlu diperhatikan: apt list --upgradable tidak menampilkan pembaruan kernel, meskipun Wazuh masih menemukan kerentanan kernel.
+Selain itu, CVE-2026-100075 tercatat sebagai kerentanan yang perlu diperiksa untuk Ubuntu 24.04. Jadi, jangan menganggap kernel 6.8.0-147 sudah menyelesaikan semua temuan. 
+
+Open Source Vulnerabilities
++1
+
+Jalankan perintah pemeriksaan berikut terlebih dahulu. Perintah ini hanya membaca informasi paket, tidak mengubah sistem.
+apt-cache policy linux-image-virtual linux-image-generic linux-generic linux-virtual
+apt-cache policy linux-image-6.8.0-147-generic
+apt-mark showhold
+
+
+
+
+Pastikan kernel aktif
+Jalankan:
+uname -r
+
+Pastikan hasilnya:
+6.8.0-147-generic
+
+Langkah 2 — Simulasikan penghapusan kernel lama
+Jalankan:
+
+sudo apt -s purge linux-image-6.8.0-100-generic
+
+Perintah dengan opsi -s hanya melakukan simulasi. Periksa paket-paket yang akan dihapus.
+
+Jika hanya kernel lama dan paket terkait versi 6.8.0-100 yang dihapus, kita dapat melanjutkan setelah meninjau daftar tersebut.
+Jika ada paket penting lain yang ikut dihapus, jangan lanjutkan dulu.
+
+Langkah 3 — Hapus kernel lama
+Jika hasil simulasi aman, jalankan:
+> sudo apt purge linux-image-6.8.0-100-generic
+> sudo apt autoremove --purge
+> sudo update-grub
+
+Periksa kembali kernel yang terpasang:
+> dpkg -l 'linux-image*' | grep '^ii'
+
+Pastikan linux-image-6.8.0-147-generic dan linux-image-virtual tetap terpasang.
+
+
+
+
+==== PUDIN SAEPUDIN ===
