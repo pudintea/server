@@ -1,0 +1,88 @@
+
+MKCERT
+
+> wget -O mkcert https://dl.filippo.io/mkcert/latest?for=linux/amd64
+> chmod +x mkcert
+> ./mkcert -version
+
+> ip addr
+Misalnya IP server kamu 192.168.1.10. Buat direktori sertifikat:
+
+> sudo mkdir -p /etc/apache2/ssl
+
+Lalu buat sertifikat:
+
+./mkcert \
+  -cert-file app.localdomain.pem \
+  -key-file app.localdomain-key.pem \
+  app.localdomain 192.168.1.10 localhost 127.0.0.1
+
+
+Ganti 192.168.1.10 dengan IP server sebenarnya. Perintah tersebut menghasilkan sertifikat dan private key di direktori kerja saat ini.
+
+Pindahkan file ke direktori Apache:
+> sudo mv app.localdomain.pem /etc/apache2/ssl/
+> sudo mv app.localdomain-key.pem /etc/apache2/ssl/
+
+> sudo chmod 644 /etc/apache2/ssl/app.localdomain.pem
+> sudo chmod 600 /etc/apache2/ssl/app.localdomain-key.pem
+
+Penting: jangan bagikan private key CA mkcert (rootCA-key.pem) ke perangkat lain.
+
+Aktifkan SSL Apache
+> sudo a2enmod ssl
+> sudo a2ensite default-ssl
+
+Buka konfigurasi:
+> sudo nano /etc/apache2/sites-available/default-ssl.conf
+Pastikan konfigurasi virtual host HTTPS menggunakan sertifikat yang baru dibuat:
+
+<VirtualHost *:443>
+    ServerName app.localdomain
+    DocumentRoot /var/www/html
+
+    SSLEngine on
+    SSLCertificateFile /etc/apache2/ssl/app.localdomain.pem
+    SSLCertificateKeyFile /etc/apache2/ssl/app.localdomain-key.pem
+
+    <Directory /var/www/html>
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+
+Jika aplikasi kamu tidak berada di /var/www/html, ganti DocumentRoot dan direktori yang sesuai. Konfigurasi ini mengasumsikan Apache 2.4;
+jika server menggunakan Apache 2.2, sintaks akses direktori perlu disesuaikan.
+
+Tes dan reload Apache:
+> sudo apache2ctl configtest
+> sudo service apache2 reload
+
+Jika muncul Syntax OK, konfigurasi Apache berhasil dibaca.
+
+4. Atur domain di perangkat LAN
+Di komputer klien, tambahkan ke file hosts:
+
+192.168.1.10 app.localdomain
+
+Gunakan IP server kamu yang sebenarnya. Untuk HP atau banyak perangkat, lebih praktis membuat DNS lokal pada router.
+
+5. Percayai CA mkcert pada perangkat klien
+Cari lokasi CA publik:
+> ./mkcert -CAROOT
+
+Salin hanya file rootCA.pem ke perangkat klien melalui jalur yang aman, lalu instal sebagai CA tepercaya. Jangan salin rootCA-key.pem.
+
+Setelah DNS dan kepercayaan CA sudah dikonfigurasi, akses:
+
+https://app.localdomain
+
+Jika masih gagal, cek port dan log:
+> sudo netstat -tlnp | grep ':443'
+> sudo tail -n 50 /var/log/apache2/error.log
+Satu hal yang perlu dipastikan: aplikasi Apache kamu menggunakan direktori /var/www/html atau sebenarnya berada di /var/www/app.localdomain?
+Kalau kamu beri tahu lokasi folder aplikasi dan IP server, saya bisa sesuaikan konfigurasi virtual host-nya secara tepat.
+
+
+
+=== PUDIN SAEPUDIN ===
