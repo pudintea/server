@@ -1,5 +1,7 @@
 == UPDATE KERNEL ==
 
+> apt update && apt upgrade -y
+
 Melihat list semua kernel dan kernel aktif
 > dpkg --list | grep linux-image
 > ls /boot/vmlinuz-*
@@ -17,11 +19,13 @@ Gunakan kernel terbaru, ini perintahnya
 Kalau kernel baru sudah jalan,
 hapus kernel lama
 
-sudo apt remove linux-image-6.8.0-124-generic
+> sudo apt remove linux-image-6.8.0-124-generic
 atau
-sudo apt purge linux-image-6.8.0-117-generic linux-image-6.8.0-124-generic
-sudo apt autoremove --purge
+> sudo apt purge linux-image-6.8.0-117-generic linux-image-6.8.0-124-generic
 
-Jangan hapus semua, minimal sisakan 1 kernel untuk antisipasi jika gagal boot.
+> sudo apt autoremove --purge
+> sudo reboot
+
+Jangan hapus semua kernel yang tidak digunakan, minimal sisakan 1 kernel untuk antisipasi jika gagal boot.
 
 ==== PUDIN SAEPUDIN ====
