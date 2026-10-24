@@ -68,6 +68,15 @@ Saran sebelum install di 9Router sudah buat "combo & Vision Adapter"
 > hermes doctor   # cek semua dependency oke
 > hermes # Untuk mulai ber komunikasi
 
+
+Atau Bisa seperti ini, Sama saja :
+> curl -fsSL https://hermes-agent.nousresearch.com/install.sh -o /tmp/hermes-install.sh
+> bash /tmp/hermes-install.sh --skip-browser --skip-computer-use
+> source ~/.bashrc
+> hermes doctor   # cek semua dependency oke
+> hermes # Untuk mulai ber komunikasi
+
+
 Tahapan Install Hermes
 - Full Setup
 - Provider : Custom
