@@ -1,4 +1,5 @@
-Install 9 Router
+Install 9 Router NodeJS
+============================
 
 Persiapan
 > sudo apt update && sudo apt upgrade -y
@@ -55,24 +56,18 @@ Misalnya, hasil command -v 9router adalah (debian):
 /usr/local/bin/9router
 
 
-Karena Anda menggunakan systemd, kita bisa mengaturnya langsung di service tanpa PM2 atau nodemon.
-Langkah 1. Buat file konfigurasi rahasia
-> sudo mkdir -p /etc/9router
-> sudo nano /etc/9router/9router.env
-
+Buat file konfigurasi untuk Password Pertama Kita, bukan 123456, Karena 123456 bisa digunakan jika kita hanya aksess dari localhost.
+> sudo mkdir -p /etc/9router && sudo nano /etc/9router/9router.env
 
 Isi dengan password baru pilihan Anda dan secret acak. Jangan gunakan 123456.
 INITIAL_PASSWORD=GantiPassword
 JWT_SECRET=c0face7e18adb60cfae5c6cc52e52325c260e12065549bf69416dda591972e35
 
-
 Untuk membuat secret acak, jalankan:
-openssl rand -hex 32
-
+> openssl rand -hex 32
 
 Salin hasilnya ke nilai JWT_SECRET. Simpan file dengan izin terbatas:
-sudo chmod 600 /etc/9router/9router.env
-sudo chown root:root /etc/9router/9router.env
+> sudo chmod 600 /etc/9router/9router.env && sudo chown root:root /etc/9router/9router.env
 
 
 Buat service systemd
@@ -89,7 +84,7 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=root
+User=u9router
 EnvironmentFile=/etc/9router/9router.env
 Environment=NODE_ENV=production
 Environment=PORT=20128
@@ -103,12 +98,7 @@ RestartSec=5
 WantedBy=multi-user.target
 
 
-
-
-Perhatian: contoh di atas mengasumsikan executable berada di /usr/bin/9router dan data disimpan di /root/.9router. Sesuaikan ExecStart dengan hasil command -v 9router.
-
-Untuk VPS produksi, saya lebih menyarankan membuat pengguna khusus 9router daripada menjalankannya sebagai root. Jika instalasi Anda menggunakan konfigurasi di /root/.9router, jangan langsung mengganti User=root tanpa memindahkan atau mengatur permission data terlebih dahulu.
-
+Perhatian: contoh di atas mengasumsikan executable berada di /usr/local/bin/9router dan data disimpan di /root/.9router. Sesuaikan ExecStart dengan hasil command -v 9router.
 Konfigurasi service mengikuti mekanisme deployment systemd standar Linux; opsi startup --no-browser didukung oleh CLI 9Router.
 
 Aktifkan dan jalankan service
@@ -119,35 +109,19 @@ Setelah menyimpan file, jalankan:
 
 
 Periksa statusnya:
-sudo systemctl status 9router
+> sudo systemctl status 9router
 
 
 Jika muncul Active: active (running), service sedang berjalan.
 
-Periksa log dan uji API
-Untuk melihat log secara langsung:
+Periksa log dan uji API, untuk melihat log secara langsung:
 > sudo journalctl -u 9router -f
-
 
 Untuk melihat 100 baris terakhir:
 > sudo journalctl -u 9router -n 100 --no-pager
 
-
 Uji port API:
-curl -I http://127.0.0.1:20128
+> curl -I http://127.0.0.1:20128
 
 
 ============ PUDIN SAEPUDIN =================
-
-
-
-
-
-
-
-
-
-
-
-
-
