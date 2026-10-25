@@ -65,10 +65,18 @@ JWT_SECRET=c0face7e18adb60cfae5c6cc52e52325c260e12065549bf69416dda591972e35
 
 Untuk membuat secret acak, jalankan:
 > openssl rand -hex 32
+Salin hasilnya ke nilai JWT_SECRET. Simpan file dengan izin terbatas,
 
-Salin hasilnya ke nilai JWT_SECRET. Simpan file dengan izin terbatas:
-> sudo chmod 600 /etc/9router/9router.env && sudo chown root:root /etc/9router/9router.env
+Membuat user khusus
+Disarankan tidak menjalankan agent sebagai root.
 
+sudo useradd \
+-r \
+-s /usr/sbin/nologin \
+-d /var/lib/beszel-agent \
+u9router
+
+> sudo chmod 600 /etc/9router/9router.env && sudo chown u9router:u9router /etc/9router/9router.env
 
 Buat service systemd
 Buat file service:
