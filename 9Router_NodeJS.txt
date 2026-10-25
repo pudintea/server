@@ -1,0 +1,153 @@
+Install 9 Router
+
+Persiapan
+> sudo apt update && sudo apt upgrade -y
+> sudo apt install -y curl ca-certificates gnupg nano
+
+
+Install NodeJS
+> curl -fsSL https://deb.nodesource.com/setup_24.x -o /tmp/nodesource_setup.sh
+> sudo -E bash /tmp/nodesource_setup.sh
+> sudo apt install -y nodejs
+
+Cek Versi NodeJS
+> node --version
+> npm --version
+
+Install 9Router
+> sudo npm install -g 9router
+
+Setelah proses selesai, periksa apakah perintahnya tersedia:
+> 9router --version
+> 9router --help
+
+Jika perintah 9router dikenali, berarti instalasi berhasil.
+
+Jalankan 9Router pertama kali
+> 9router --no-browser
+
+Opsi --no-browser berguna di server yang tidak memiliki desktop GUI.
+
+Secara default, dashboard dan API menggunakan port 20128.
+Dokumentasi paket juga mencantumkan dashboard di /dashboard.
+Ctrl + C untuk Close.
+
+
+Buka terminal SSH kedua, lalu periksa apakah server merespons:
+> curl -i http://127.0.0.1:20128/health
+
+
+Jika endpoint /health tidak tersedia pada versi yang Anda pasang, periksa dashboard:
+> curl -I http://127.0.0.1:20128/dashboard
+
+Biarkan proses 9Router tetap berjalan selama pengujian.
+Dokumentasi instalasi mencantumkan password awal 123456
+
+Runningkan 9 Router 
+Pastikan lokasi executable 9Router
+Jalankan:
+> command -v 9router
+> node --version
+> npm --version
+
+
+Misalnya, hasil command -v 9router adalah (debian):
+/usr/local/bin/9router
+
+
+Karena Anda menggunakan systemd, kita bisa mengaturnya langsung di service tanpa PM2 atau nodemon.
+Langkah 1. Buat file konfigurasi rahasia
+> sudo mkdir -p /etc/9router
+> sudo nano /etc/9router/9router.env
+
+
+Isi dengan password baru pilihan Anda dan secret acak. Jangan gunakan 123456.
+INITIAL_PASSWORD=GantiPassword
+JWT_SECRET=c0face7e18adb60cfae5c6cc52e52325c260e12065549bf69416dda591972e35
+
+
+Untuk membuat secret acak, jalankan:
+openssl rand -hex 32
+
+
+Salin hasilnya ke nilai JWT_SECRET. Simpan file dengan izin terbatas:
+sudo chmod 600 /etc/9router/9router.env
+sudo chown root:root /etc/9router/9router.env
+
+
+Buat service systemd
+Buat file service:
+> sudo nano /etc/systemd/system/9router.service
+
+
+Isi dengan konfigurasi berikut:
+
+[Unit]
+Description=9Router AI API Router
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+EnvironmentFile=/etc/9router/9router.env
+Environment=NODE_ENV=production
+Environment=PORT=20128
+Environment=DATA_DIR=/root/.9router
+WorkingDirectory=/root
+ExecStart=/usr/local/bin/9router --no-browser --skip-update
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+
+Perhatian: contoh di atas mengasumsikan executable berada di /usr/bin/9router dan data disimpan di /root/.9router. Sesuaikan ExecStart dengan hasil command -v 9router.
+
+Untuk VPS produksi, saya lebih menyarankan membuat pengguna khusus 9router daripada menjalankannya sebagai root. Jika instalasi Anda menggunakan konfigurasi di /root/.9router, jangan langsung mengganti User=root tanpa memindahkan atau mengatur permission data terlebih dahulu.
+
+Konfigurasi service mengikuti mekanisme deployment systemd standar Linux; opsi startup --no-browser didukung oleh CLI 9Router.
+
+Aktifkan dan jalankan service
+Setelah menyimpan file, jalankan:
+> sudo systemctl daemon-reload
+> sudo systemctl start 9router
+> sudo systemctl enable --now 9router
+
+
+Periksa statusnya:
+sudo systemctl status 9router
+
+
+Jika muncul Active: active (running), service sedang berjalan.
+
+Periksa log dan uji API
+Untuk melihat log secara langsung:
+> sudo journalctl -u 9router -f
+
+
+Untuk melihat 100 baris terakhir:
+> sudo journalctl -u 9router -n 100 --no-pager
+
+
+Uji port API:
+curl -I http://127.0.0.1:20128
+
+
+============ PUDIN SAEPUDIN =================
+
+
+
+
+
+
+
+
+
+
+
+
+
