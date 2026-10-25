@@ -1,5 +1,6 @@
 # PERINTAH PERINTAH UNTUK LIHAT LOG
 
+## UBUNTU
 ### Fail2Ban
 ```
 sudo journalctl -u fail2ban -n 50 --no-pager
