@@ -1,0 +1,67 @@
+## Cara Install Caddy Server di Linux
+Untuk menginstall Caddy di Linux, ikuti langkah-langkah berikut:
+
+1. Tambahkan repository Caddy
+Pertama, perlu menambahkan repository resmi Caddy ke sistem. Jalankan command berikut untuk menambahkan kunci repository:
+
+> sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https curl
+> curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+> curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+
+2. Instalasi Caddy
+Setelah repository ditambahkan, bisa menginstal Caddy menggunakan command ini:
+
+> sudo apt install caddy -y
+
+3. Cek Status Caddy
+Setelah instalasi selesai, pastikan Caddy berjalan dengan memeriksa statusnya:
+
+> sudo systemctl status caddy
+
+Jika berhasil, Caddy akan otomatis berjalan setelah installasi.
+
+Lokasi File Caddyfile
+File konfigurasi Caddy ada di /etc/caddy/Caddyfile. DomaiNesians bisa edit file ini untuk tambah domain, konfigurasi SSL, dan pengaturan lainnya.
+> sudo nano /etc/caddy/Caddyfile
+
+2. Menambahkan Domain
+Di dalam Caddyfile, bisa menentukan domain yang akan dilayani oleh Caddy. Misalnya, domain example.com, konfigurasi dasarnya seperti ini:
+
+example.com {
+    root * /var/www/html
+    file_server
+ 
+}
+
+
+Gunakan SSL/TLS dengan Caddy Server
+====================================
+Caddy sudah otomatis mengelola SSL dan TLS. Pastikan Caddy mengelola sertifikat SSL secara otomatis dengan menambahkan domain di Caddyfile seperti ini:
+
+example.com {
+    root * /var/www/html
+    file_server
+    tls youremail@example.com
+ 
+}
+
+Menambahkan Reverse Proxy (Opsional)
+Kalau mau menggunakan Caddy sebagai reverse proxy untuk aplikasi yang berjalan di backend, cukup tambah konfigurasi seperti ini:
+
+example.com {
+    reverse_proxy localhost:3000
+}
+
+Caddy akan mengarahkan semua permintaan ke port 3000 di localhost.
+
+5. Menyimpan dan Menerapkan Konfigurasi
+Setelah selesai edit Caddyfile, simpan perubahan dan keluar dari editor. Untuk menerapkan konfigurasi, restart Caddy dengan command:
+> sudo systemctl restart caddy
+
+6. Cek Caddy Status
+Untuk memastikan Caddy berjalan dengan baik, bisa cek statusnya:
+> sudo systemctl status caddy
+
+
+
+============ PUDIN SAEPUDIN =====================
