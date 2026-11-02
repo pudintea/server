@@ -74,5 +74,14 @@ Untuk memastikan Caddy berjalan dengan baik, bisa cek statusnya:
 ```
 sudo systemctl status caddy
 ```
+```
+caddy fmt --overwrite /etc/caddy/Caddyfile
+caddy validate --config /etc/caddy/Caddyfile
+sudo systemctl reload caddy
+```
+Pastikan aplikasi di belakang berjalan
+```
+curl -I http://127.0.0.1:3000
+```
 
 ## PUDIN SAEPUDIN
