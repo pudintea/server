@@ -53,5 +53,15 @@ www.pudin.eu.org {
 	file_server
 }
 ```
+## Service
+### Caddy Restart
+```
+sudo systemctl restart caddy
+```
+### Caddy Status
+Untuk memastikan Caddy berjalan dengan baik, bisa cek statusnya:
+```
+sudo systemctl status caddy
+```
 
 ## PUDIN SAEPUDIN
