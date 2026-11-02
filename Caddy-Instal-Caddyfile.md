@@ -76,9 +76,7 @@ sudo systemctl status caddy
 ```
 ### Restart setelah ada perubahan.
 ```
-caddy fmt --overwrite /etc/caddy/Caddyfile
-caddy validate --config /etc/caddy/Caddyfile
-systemctl reload caddy
+caddy fmt --overwrite /etc/caddy/Caddyfile && caddy validate --config /etc/caddy/Caddyfile && systemctl reload caddy
 ```
 Pastikan aplikasi di belakang berjalan
 ```
