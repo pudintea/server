@@ -74,6 +74,7 @@ Untuk memastikan Caddy berjalan dengan baik, bisa cek statusnya:
 ```
 sudo systemctl status caddy
 ```
+### Restart setelah ada perubahan.
 ```
 caddy fmt --overwrite /etc/caddy/Caddyfile
 caddy validate --config /etc/caddy/Caddyfile
