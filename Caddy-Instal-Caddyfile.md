@@ -53,6 +53,17 @@ www.pudin.eu.org {
 	file_server
 }
 ```
+### Redirect
+```
+pudin.eu.org {
+    redir https://www.pudin.eu.org{uri} permanent
+}
+
+www.pudin.eu.org {
+    reverse_proxy 127.0.0.1:3000
+}
+```
+
 ## Service
 ### Caddy Restart
 ```
