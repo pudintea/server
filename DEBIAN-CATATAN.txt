@@ -1,0 +1,22 @@
+
+
+## PERINTAH LL
+
+Anda bisa membuat perintah ll tersedia di Debian dengan cara menambahkan alias secara manual. Lakukan langkah berikut:
+
+Buka file konfigurasi shell Anda (biasanya ~/.bashrc atau ~/.bash_aliases) menggunakan editor teks seperti nano:
+> nano ~/.bashrc
+
+Tambahkan baris berikut di bagian bawah file:
+alias ll='ls -alF'
+
+(Catatan: ls -alF adalah standar umum untuk alias ll yang menampilkan detail file, file tersembunyi, dan penanda tipe file).
+Simpan file (tekan Ctrl+O, lalu Enter) dan keluar (Ctrl+X).
+
+Aktifkan perubahan dengan menjalankan:
+> source ~/.bashrc
+
+Setelah langkah ini, perintah ll akan berfungsi sama seperti di Ubuntu.
+
+
+=== PUDIN SAEPUDIN ===
