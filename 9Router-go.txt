@@ -1,7 +1,7 @@
 # 9 Router Golang
 
-Link Download : https://github.com/luqman-v1/9router-go/releases/tag/v1.9.10
-> wget https://github.com/luqman-v1/9router-go/releases/download/v1.9.10/9router-go-linux-amd64
+Link Download : https://github.com/luqman-v1/9router-go/releases?page=2#release-v1.9.15
+> wget https://github.com/luqman-v1/9router-go/releases/download/v1.9.15/9router-go-linux-amd64
 > chmod +x 9router-go-linux-amd64
 
 Jalankan Sementara :
