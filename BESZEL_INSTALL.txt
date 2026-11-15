@@ -1,0 +1,179 @@
+# Beszel dan Beszel Agent secara manual di Debian 13.
+
+Saya menggunakan struktur direktori berikut agar rapi dan mudah dikelola.
+
+/opt/beszel/
+├── hub/
+│   └── beszel
+└── agent/
+    └── beszel-agent
+
+/var/lib/beszel/
+├── hub/
+└── agent/
+
+/etc/beszel/
+├── hub.env
+└── agent.env
+
+/etc/systemd/system/
+├── beszel.service
+└── beszel-agent.service
+
+
+## 1. Cek arsitektur server
+Jalankan:
+uname -s && uname -m
+
+Misalnya hasilnya:
+Linux
+x86_64
+
+Berarti server menggunakan Linux AMD64.
+
+GitHub menyediakan binary terpisah untuk AMD64 dan ARM64. Kita akan menggunakan URL releases/latest/download agar selalu mengambil versi rilis terbaru
+
+
+## 2. Buat direktori instalasi
+Buat direktori untuk binary:
+> sudo mkdir -p /opt/beszel/hub && sudo mkdir -p /opt/beszel/agent
+
+
+
+Buat direktori penyimpanan data:
+> sudo mkdir -p /var/lib/beszel/hub && sudo mkdir -p /var/lib/beszel/agent
+
+Buat direktori konfigurasi:
+> sudo mkdir -p /etc/beszel && sudo chmod 750 /etc/beszel
+
+
+Buat user khusus untuk Hub:
+
+sudo useradd \
+  --system \
+  --home-dir /var/lib/beszel/hub \
+  --shell /usr/sbin/nologin \
+  beszel
+
+
+Atur permission:
+> sudo chown -R beszel:beszel /var/lib/beszel/hub && sudo chown -R beszel:beszel /opt/beszel/hub
+
+
+## 3. Download Beszel Hub dari GitHub
+Kita unduh langsung binary resmi, bukan menggunakan installer.
+Masuk ke direktori sementara:
+> cd /tmp
+
+Download:
+curl -fL \
+  "https://github.com/henrygd/beszel/releases/latest/download/beszel_Linux_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" \
+  -o beszel-hub.tar.gz
+
+Ekstrak binary:
+> tar -xzf beszel-hub.tar.gz beszel
+
+Pindahkan ke direktori instalasi:
+> sudo install -m 755 beszel /opt/beszel/hub/beszel
+
+Cek versi:
+> /opt/beszel/hub/beszel --version
+
+Cek file:
+> ls -lh /opt/beszel/hub/
+
+Hasilnya:
+> /opt/beszel/hub/beszel
+
+Penting: Binary disimpan di /opt, sedangkan database dan data aplikasi akan disimpan di /var/lib.
+Dengan demikian, ketika memperbarui binary, data monitoring tidak perlu dipindahkan.
+
+
+## 4. Buat systemd Beszel Hub
+Buat file service:
+sudo nano /etc/systemd/system/beszel.service
+
+Isi:
+[Unit]
+Description=Beszel Hub
+Documentation=https://beszel.dev/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+
+User=beszel
+Group=beszel
+
+WorkingDirectory=/var/lib/beszel/hub
+
+ExecStart=/opt/beszel/hub/beszel serve --http 0.0.0.0:8090
+
+Restart=always
+RestartSec=5
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=true
+ProtectSystem=strict
+ReadWritePaths=/var/lib/beszel/hub
+
+[Install]
+WantedBy=multi-user.target
+
+
+Penjelasan konfigurasi:
+
+Parameter
+Fungsi
+User=beszel
+Menjalankan Hub dengan user khusus
+
+WorkingDirectory
+Lokasi penyimpanan data aplikasi
+
+ExecStart
+Menjalankan Beszel Hub
+
+Restart=always
+Otomatis restart jika berhenti
+
+8090
+Port dashboard
+
+ProtectSystem=strict
+Membatasi akses tulis ke sistem
+
+Dengan WorkingDirectory=/var/lib/beszel/hub,
+data aplikasi seperti beszel_data akan berada di direktori tersebut.
+
+
+## 5. Aktifkan Beszel Hub
+
+Reload systemd:
+> sudo systemctl daemon-reload
+
+Aktifkan saat boot Dan Jalankan:: 
+> sudo systemctl enable beszel && sudo systemctl start beszel
+
+Cek status:
+> sudo systemctl status beszel
+
+Lihat log:
+> sudo journalctl -u beszel-hub -f
+
+Jika berhasil, buka:
+http://IP-SERVER:8090
+Buat akun administrator pertama kali.
+
+
+
+
+
+
+
+
+
+
+==== PUDIN SAEPUDIN ====
