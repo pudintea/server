@@ -350,8 +350,8 @@ Wants=network-online.target
 [Service]
 Type=simple
 
-User=root
-Group=root
+User=beszel
+Group=beszel
 
 WorkingDirectory=/var/lib/beszel/agent
 EnvironmentFile=/etc/beszel/agent.env
@@ -363,7 +363,7 @@ RestartSec=5
 [Install]
 WantedBy=multi-user.target
 
-Agent dijalankan sebagai root agar dapat membaca informasi sistem yang membutuhkan hak akses administratif.
+Agent dijalankan sebagai beszel.
 
 ### 5. Aktifkan Agent
 
