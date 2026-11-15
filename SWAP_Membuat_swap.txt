@@ -1,0 +1,15 @@
+# Membuat swap 2 GB, DEBIAN/UBUNTU
+
+> fallocate -l 2G /swapfile && chmod 600 /swapfile && mkswap /swapfile && swapon /swapfile
+
+Aktifkan otomatis saat reboot:
+> echo '/swapfile none swap sw 0 0' >> /etc/fstab
+
+Atur swappiness:
+> echo 'vm.swappiness=20' > /etc/sysctl.d/99-swappiness.conf && sysctl --system
+
+Periksa:
+> free -h
+> swapon --show
+
+==== PUDIN SAEPUDIN ====
