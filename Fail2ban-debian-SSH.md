@@ -354,5 +354,34 @@ bash
 ```bash
 sudo fail2ban-client status sshd
 ```
+## 9. Jika ingin melepas band yang tidak disengaja
+Untuk menghapus ban (unban) IP yang diblokir fail2ban:
+
+Unban IP dari jail tertentu
+```
+sudo fail2ban-client set sshd unbanip 1.2.3.4
+```
+Ganti sshd dengan nama jail-nya (lihat dari sudo fail2ban-client status), dan 1.2.3.4 dengan IP yang mau di-unban. 
+
+Unban IP dari semua jail sekaligus
+```
+sudo fail2ban-client unban 1.2.3.4
+```
+Perintah ini tersedia di fail2ban v0.10+ (standar di Debian 11/12). 
+
+Unban semua IP yang terban
+```
+sudo fail2ban-client unban --all
+```
+Tips: Setelah unban, tambahkan IP Anda ke ignoreip di /etc/fail2ban/jail.local supaya tidak terban lagi:
+```
+[DEFAULT]
+ignoreip = 127.0.0.1/8 ::1 1.2.3.4
+```
+Lalu reload:
+```
+sudo fail2ban-client reload
+```
+
 
 ### PUDIN SAEPUDIN
