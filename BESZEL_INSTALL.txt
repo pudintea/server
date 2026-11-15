@@ -21,7 +21,9 @@ Saya menggunakan struktur direktori berikut agar rapi dan mudah dikelola.
 └── beszel-agent.service
 
 
-## 1. Cek arsitektur server
+## BESZEL HUB, SERVER YANG MEMONITORING
+
+### 1. Cek arsitektur server
 Jalankan:
 uname -s && uname -m
 
@@ -34,7 +36,7 @@ Berarti server menggunakan Linux AMD64.
 GitHub menyediakan binary terpisah untuk AMD64 dan ARM64. Kita akan menggunakan URL releases/latest/download agar selalu mengambil versi rilis terbaru
 
 
-## 2. Buat direktori instalasi
+### 2. Buat direktori instalasi
 Buat direktori untuk binary:
 > sudo mkdir -p /opt/beszel/hub && sudo mkdir -p /opt/beszel/agent
 
@@ -60,7 +62,7 @@ Atur permission:
 > sudo chown -R beszel:beszel /var/lib/beszel/hub && sudo chown -R beszel:beszel /opt/beszel/hub
 
 
-## 3. Download Beszel Hub dari GitHub
+### 3. Download Beszel Hub dari GitHub
 Kita unduh langsung binary resmi, bukan menggunakan installer.
 Masuk ke direktori sementara:
 > cd /tmp
@@ -89,7 +91,7 @@ Penting: Binary disimpan di /opt, sedangkan database dan data aplikasi akan disi
 Dengan demikian, ketika memperbarui binary, data monitoring tidak perlu dipindahkan.
 
 
-## 4. Buat systemd Beszel Hub
+### 4. Buat systemd Beszel Hub
 Buat file service:
 sudo nano /etc/systemd/system/beszel.service
 
@@ -149,7 +151,7 @@ Dengan WorkingDirectory=/var/lib/beszel/hub,
 data aplikasi seperti beszel_data akan berada di direktori tersebut.
 
 
-## 5. Aktifkan Beszel Hub
+### 5. Aktifkan Beszel Hub
 
 Reload systemd:
 > sudo systemctl daemon-reload
@@ -169,11 +171,98 @@ Buat akun administrator pertama kali.
 
 
 
+## BESZEL AGENT
+
+### 1. Download Beszel Agent secara manual
+Jika server Debian 13 ini juga ingin dimonitor oleh Hub yang baru dipasang, lanjutkan bagian ini.
+
+Download binary Agent dari GitHub:
+> cd /tmp
+
+Download :
+curl -fL \
+  "https://github.com/henrygd/beszel/releases/latest/download/beszel-agent_Linux_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" \
+  -o beszel-agent.tar.gz
+
+Ekstrak:
+> tar -xzf beszel-agent.tar.gz beszel-agent
+
+Pindahkan binary:
+> sudo install -m 755 beszel-agent /opt/beszel/agent/beszel-agent
+
+Cek:
+? /opt/beszel/agent/beszel-agent -h
+Dokumentasi resmi menyediakan binary Agent terpisah dari Hub.
 
 
+### 2. Konfigurasi Agent
+Buka dashboard Beszel:
+Klik Add System.
+Masukkan nama server, misalnya Debian-13.
+Pilih instalasi Linux Binary.
+Ambil informasi KEY dan TOKEN yang diberikan dashboard.
 
 
+Buat file konfigurasi:
+> sudo nano /etc/beszel/agent.env
+
+Isi:
+KEY=PUBLIC_KEY_DARI_DASHBOARD
+TOKEN=TOKEN_DARI_DASHBOARD
+HUB_URL=ws://127.0.0.1:8090
+LISTEN=45876
+
+Ganti nilai KEY dan TOKEN sesuai informasi dari dashboard.
+
+Amankan file:
+> sudo chmod 600 /etc/beszel/agent.env && sudo chown root:root /etc/beszel/agent.env
 
 
+### 3. Buat systemd Beszel Agent
+Buat file:
+> sudo nano /etc/systemd/system/beszel-agent.service
+
+Isi:
+[Unit]
+Description=Beszel Agent
+Documentation=https://beszel.dev/
+After=network-online.target beszel-hub.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+
+User=root
+Group=root
+
+WorkingDirectory=/var/lib/beszel/agent
+EnvironmentFile=/etc/beszel/agent.env
+ExecStart=/opt/beszel/agent/beszel-agent
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+Agent dijalankan sebagai root agar dapat membaca informasi sistem yang membutuhkan hak akses administratif.
+
+### 4. Aktifkan Agent
+
+> sudo systemctl daemon-reload && sudo systemctl enable beszel-agent && sudo systemctl start beszel-agent
+
+Cek status:
+> sudo systemctl status beszel-agent
+
+Lihat log:
+> sudo journalctl -u beszel-agent -f
+Jika konfigurasi benar, Agent akan terhubung ke Hub dan sistem Debian 13 akan muncul di dashboard.
+
+
+### 4. Firewall
+Jika menggunakan UFW, buka port dashboard:
+> sudo ufw allow 8090/tcp
+Untuk Agent dengan koneksi HUB_URL (outgoing WebSocket), pastikan koneksi keluar menuju Hub diizinkan.
+Port Agent 45876 tidak perlu dibuka ke internet untuk skenario ini (localhost).
 
 ==== PUDIN SAEPUDIN ====
