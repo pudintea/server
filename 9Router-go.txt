@@ -64,6 +64,8 @@ Cara restart aplikasi
 Saran sebelum install di 9Router sudah buat "combo & Vision Adapter"
 
 > curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
+> curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --skip-browser --skip-computer-use
+
 > source ~/.bashrc
 > hermes doctor   # cek semua dependency oke
 > hermes # Untuk mulai ber komunikasi
