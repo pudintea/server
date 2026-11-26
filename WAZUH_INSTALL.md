@@ -77,18 +77,7 @@ wget \
 gnupg \
 apt-transport-https \
 ca-certificates \
-lsb-release \
-sudo \
-vim \
-chrony
-```
-
-Aktifkan sinkronisasi waktu:
-
-bash
-
-```bash
-sudo systemctl enable --now chrony
+lsb-release
 ```
 
 Periksa waktu:
