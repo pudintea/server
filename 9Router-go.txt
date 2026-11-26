@@ -109,4 +109,24 @@ Satu gateway process buat Telegram (dan platform lain kalau mau).
 > hermes gateway status
 
 
+UNINSTAL HERMES
+================
+Perintah uninstall resminya adalah:
+> hermes uninstall --dry-run
+
+Perintah ini hanya melihat apa yang akan dihapus, belum menghapus apa pun.
+
+Jika sudah yakin, jalankan:
+> hermes uninstall
+Jika ingin menghapus semuanya, termasuk konfigurasi, sesi, dan data pengguna:
+
+> hermes uninstall --full
+
+Pilih No 2,
+
+
+
+
+
+
 =========== PUDIN SAEPUDIN ===========
