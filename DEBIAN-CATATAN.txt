@@ -1,5 +1,25 @@
 # PERTAMA KALI INSTALL DEBIAN 13.xx
 
+## REPOSITORY DEBIAN 13
+
+> mv /etc/apt/sources.list /etc/apt/sources.list.disabled
+> nano /etc/apt/sources.list.d/debian.sources
+Masukan :
+Types: deb
+URIs: http://deb.debian.org/debian
+Suites: trixie trixie-updates
+Components: main non-free-firmware
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+Types: deb
+URIs: http://security.debian.org/debian-security
+Suites: trixie-security
+Components: main non-free-firmware
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+Update
+> apt update
+
 > apt update && apt upgrade -y
 > mv /etc/localtime /etc/localtime-asal && cp /usr/share/zoneinfo/Asia/Jakarta /etc/localtime && timedatectl set-timezone Asia/Jakarta
 
@@ -25,6 +45,30 @@ Aktifkan perubahan dengan menjalankan:
 > source ~/.bashrc
 
 Setelah langkah ini, perintah ll akan berfungsi sama seperti di Ubuntu.
+
+
+## GANTI IP ADDRESS, DEBIAN13
+Ini adalah metode standar untuk instalasi server.
+Buka file konfigurasi jaringan:
+> apt install sudo -y
+> sudo nano /etc/network/interfaces
+
+Temukan bagian antarmuka jaringan Anda (misalnya enp0s3 atau ens18) yang saat ini menggunakan inet dhcp,
+lalu ganti dengan konfigurasi statis berikut (sesuaikan IP, Gateway, dan DNS dengan jaringan Anda):
+
+auto enp0s3
+iface enp0s3 inet static
+    address 192.168.1.100/24
+    gateway 192.168.1.1
+    dns-nameservers 8.8.8.8 1.1.1.1
+
+Catatan: Pastikan nama antarmuka (enp0s3) sesuai dengan yang tertera di perintah ip -br link.
+Simpan file (Ctrl+O, Enter) dan keluar (Ctrl+X).
+Terapkan perubahan dengan me-restart layanan jaringan atau antarmuka:
+> sudo systemctl restart networking.service
+# Atau
+> sudo ifdown enp0s3 && sudo ifup enp0s3
+
 
 
 === PUDIN SAEPUDIN ===
