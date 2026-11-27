@@ -52,7 +52,43 @@ Periksa kembali kernel yang terpasang:
 
 Pastikan linux-image-6.8.0-147-generic dan linux-image-virtual tetap terpasang.
 
+======================================
+1. Jika Wazuh Agent di Ubuntu/Linux
+Edit file konfigurasi:
+> sudo nano /var/ossec/etc/ossec.conf
 
+Cari bagian berikut:
+xml
+<client>
+  <server>
+    <address>IP_SERVER_LAMA</address>
+    <port>1514</port>
+    <protocol>tcp</protocol>
+  </server>
+</client>
+
+Ganti IP_SERVER_LAMA dengan IP Wazuh Manager yang benar.
+
+Contoh:
+xml
+<client>
+  <server>
+    <address>192.168.1.100</address>
+    <port>1514</port>
+    <protocol>tcp</protocol>
+  </server>
+</client>
+
+Simpan konfigurasi:
+Tekan CTRL + O
+Tekan Enter
+Tekan CTRL + X
+
+Restart Wazuh Agent:
+> sudo systemctl restart wazuh-agent
+
+Periksa status:
+> sudo systemctl status wazuh-agent
 
 
 ==== PUDIN SAEPUDIN ===
