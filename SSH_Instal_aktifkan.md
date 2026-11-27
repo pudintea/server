@@ -153,4 +153,9 @@ AcceptEnv LANG LC_*
 Subsystem sftp /usr/lib/openssh/sftp-server
 ```
 
+Jika ingin mengizinkan user tertentu, tambahkan
+```
+AllowUsers ubuntu user2 user3
+```
+
 ## Pudin Saepudin : italazhar.com
