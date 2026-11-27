@@ -65,6 +65,7 @@ UsePAM no
 PubkeyAuthentication yes
 PermitRootLogin no
 MaxAuthTries 5
+MaxSessions 3
 LoginGraceTime 30
 PermitEmptyPasswords no
 
